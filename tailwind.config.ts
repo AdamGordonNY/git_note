@@ -18,6 +18,11 @@ const config = {
       },
     },
     extend: {
+      fontWeight: {
+        bold: "700",
+        regular: "400",
+        medium: "500",
+      },
       colors: {
         "gradient-start": "#43B7FE",
         "gradient-end": "##4F48E6",
@@ -91,6 +96,9 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+      },
+      screens: {
+        xs: "420px",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
