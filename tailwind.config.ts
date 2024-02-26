@@ -19,18 +19,38 @@ const config = {
     },
     extend: {
       colors: {
+        "gradient-start": "#43B7FE",
+        "gradient-end": "##4F48E6",
         primary: {
-          DEFAULT: "#0BAB7C",
-          foreground: "hsl(var(--primary-foreground))",
+          "500": "#42BBFF",
+          "800": "#0C3247",
+          "900": "rgba(66, 187, 255, 0.1)",
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+        black: {
+          "600": "#2E3757",
+          "700": "#1D2032",
+          "800": "#131625",
+          "900": "#10121E",
         },
+        white: {
+          "100": "#FFFFFF",
+          "300": "#ADB3CC",
+          "500": "#55597D",
+        },
+        purple: {
+          "500": "#9542FF",
+          "900": "rgba(149, 66, 255, 0.1)",
+        },
+        green: {
+          "400": "#68D1BF",
+          "500": "#42FF77",
+          "900": "rgba(66, 255, 119, 0.1)",
+        },
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
+
         foreground: "hsl(var(--foreground))",
 
         destructive: {
@@ -53,6 +73,9 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      fontFamily: {
+        default: ["Inter", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
