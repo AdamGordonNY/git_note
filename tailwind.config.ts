@@ -25,7 +25,7 @@ const config = {
       },
       colors: {
         "gradient-start": "#43B7FE",
-        "gradient-end": "##4F48E6",
+        "gradient-end": "#4F48E6",
         primary: {
           "500": "#42BBFF",
           "800": "#0C3247",
