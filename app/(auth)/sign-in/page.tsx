@@ -1,7 +1,14 @@
+import SignIn from "@/components/forms/auth/SignIn";
 import React from "react";
-import { Input } from "@/components/ui/input";
+
 const SignInPage = () => {
-  return <div>SignInPage</div>;
+  return (
+    <div className="flex-center flex-col">
+      <span className="justify-start display-2-bold text-white-100">Login</span>
+
+      <SignIn />
+    </div>
+  );
 };
 
 export default SignInPage;

@@ -1,8 +1,15 @@
 import React from "react";
-import { Input } from "@/components/ui/input";
 
+import SignUp from "@/components/forms/auth/SignUp";
 const SignUpPage = () => {
-  return <div>SignUpPage</div>;
+  return (
+    <div className="flex-center flex-col">
+      <span className="justify-start display-2-bold text-white-100">
+        Sign Up
+      </span>
+      <SignUp />
+    </div>
+  );
 };
 
 export default SignUpPage;
