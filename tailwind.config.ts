@@ -98,7 +98,7 @@ const config = {
         },
       },
       screens: {
-        xs: "420px",
+        xs: "430px",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
