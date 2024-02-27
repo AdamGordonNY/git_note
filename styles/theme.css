@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  display-1-bold {
+    @apply font-size: 32px line-height:40px font-weight: 700;
+  }
+  display-2-bold {
+    @apply font-size: 24px line-height:32px font-weight: 700;
+  }
+  h1-medium {
+    @apply font-size: 20px line-height:28px font-weight: 500;
+  }
+  h2-medium {
+    @apply font-size: 16px line-height:26px font-weight: 500;
+  }
+  paragraph-1-bold {
+    @apply font-size: 18px line-height:28px font-weight: 700;
+  }
+  paragraph-2-bold {
+    @apply font-size: 16px line-height:24px font-weight: 700;
+  }
+  paragraph-3-bold {
+    @apply font-size: 14px line-height:20px font-weight: 700;
+  }
+  paragraph-1-medium {
+    @apply font-size: 18px line-height:28px font-weight: 500;
+  }
+  paragraph-3-medium {
+    @apply font-size: 14px line-height:20px font-weight: 500;
+  }
+  paragraph-4-medium {
+    @apply font-size: 12px line-height:16px font-weight: 500;
+  }
+  paragraph-1-regular {
+    @apply font-size: 18px line-height:28px font-weight: 400;
+  }
+  paragraph-2-regular {
+    @apply font-size: 16px line-height:24px font-weight: 400;
+  }
+  paragraph-3-regular {
+    @apply font-size: 14px line-height:20px font-weight: 400;
+  }
+  paragraph-4-regular {
+    @apply font-size: 12px line-height:16px font-weight: 400;
+  }
+  caption-small {
+    @apply font-size: 10px line-height:12.1px font-weight: 400;
+  }
+}
