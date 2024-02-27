@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer utilities {
+  auth-background {
+    @apply bg-black-900 max-w-screen max-h-screen;
+  }
   display-1-bold {
     @apply font-size: 32px line-height:40px font-weight: 700;
   }
