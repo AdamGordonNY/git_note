@@ -1,27 +1,32 @@
+"use client";
 import React from "react";
 import { Button } from "../ui/button";
 import { twMerge } from "tailwind-merge";
-
+import SocialIcon from "./SocialIcon";
+import { signIn } from "next-auth/react";
 interface SocialButtonProps {
-  icon: React.JSX.Element;
+  icon: string;
   text: string;
-  onClick: () => void;
-  classname?: string;
+  provider: string;
+  className?: string;
 }
 const SocialAuthButton = ({
   icon,
   text,
-  onClick,
-  classname,
+  provider,
+  className,
 }: SocialButtonProps) => {
+  const onClick = async () => {
+    await signIn(provider);
+  };
   return (
     <Button
       onClick={onClick}
       title={text}
-      className={twMerge(`social-login-btn ${classname}`)}
+      className={twMerge(`social-login-btn ${className}`)}
     >
-      {icon}
-      {text}
+      <SocialIcon name={icon} className="" />
+      Continue with {text}
     </Button>
   );
 };

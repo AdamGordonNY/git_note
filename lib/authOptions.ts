@@ -1,3 +1,4 @@
+import { getServerSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -28,6 +29,13 @@ export const authOptions = {
     Google({
       clientId: process.env.GOOGLE_ID!,
       clientSecret: process.env.GOOGLE_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
     Credentials({
       name: "Credentials",
@@ -36,7 +44,7 @@ export const authOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "..." },
+        username: { label: "Email", type: "text", placeholder: "..." },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -55,5 +63,20 @@ export const authOptions = {
       },
     }),
   ],
-  callbacks: {},
+  callbacks: {
+    async signIn({
+      account,
+      profile,
+    }: {
+      account: { provider: string };
+      profile: { email_verified?: boolean; email?: string };
+    }) {
+      if (account.provider === "google") {
+        return profile.email_verified && profile.email?.endsWith("@gmail.com");
+      }
+      return true;
+    },
+  },
 };
+
+export const getSession = async () => await getServerSession(authOptions);
