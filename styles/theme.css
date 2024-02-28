@@ -51,4 +51,7 @@
   caption-small {
     @apply font-size: 10px line-height:12.1px font-weight: 400;
   }
+  social-login-btn {
+    @apply bg-black-700 paragraph-3-medium text-white-300 border-radius: 8px padding: 8px, 14px, 8px, 14px box-shadow: 0px 1px 3px 0px;
+  }
 }
