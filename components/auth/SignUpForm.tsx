@@ -1,8 +1,9 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import CustomButton from "@/components/shared/CustomButton";
 import {
   Form,
   FormControl,
@@ -14,15 +15,42 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { signUpSchema } from "@/lib/validations";
-const SignUp = () => {
+import { useRouter } from "next/navigation";
+
+const SignUpForm = () => {
+  const router = useRouter();
+  const [message, setMessage] = useState<string>("");
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      fullname: "",
       email: "",
       password: "",
     },
   });
-  const onSubmit = (data: z.infer<typeof signUpSchema>) => {};
+
+  const onSubmit = async () => {
+    const { fullname, email, password } = form.getValues();
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullname,
+          email,
+          password,
+        }),
+      });
+      res.status === 201 &&
+        router.push("/login?success=Account has been created");
+    } catch (err: any) {
+      setMessage(err);
+    }
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -45,9 +73,9 @@ const SignUp = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="..." {...field} />
+                <Input placeholder="example@example.com" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -59,21 +87,23 @@ const SignUp = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                Password must be at least 8 characters long.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <CustomButton type="submit" className="paragraph-3-medium">
+          Submit
+        </CustomButton>
       </form>
     </Form>
   );
 };
 
-export default SignUp;
+export default SignUpForm;

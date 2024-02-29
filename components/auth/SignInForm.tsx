@@ -4,19 +4,18 @@ import { Input } from "@/components/ui/input";
 import { signInSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+import CustomButton from "../shared/CustomButton";
 
-const SignIn = () => {
+const SignInForm = () => {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -54,17 +53,18 @@ const SignIn = () => {
               <FormControl>
                 <Input type="password" placeholder="Password" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <CustomButton
+          className="border-radius-4 bg-primary-500 text-left"
+          text="Create Account"
+          type="submit"
+        />
       </form>
     </Form>
   );
 };
 
-export default SignIn;
+export default SignInForm;

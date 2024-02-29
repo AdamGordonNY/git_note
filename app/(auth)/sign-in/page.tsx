@@ -1,5 +1,6 @@
-import SignIn from "@/components/forms/auth/SignIn";
+import SignIn from "@/components/auth/SignInForm";
 import React from "react";
+
 const SignInPage = () => {
   return (
     <div className="flex-center flex-col">

@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { twMerge } from "tailwind-merge";
-import SocialIcon from "./SocialIcon";
+import SocialIcon from "../shared/SocialIcon";
 import { signIn } from "next-auth/react";
 interface SocialButtonProps {
   icon: string;
@@ -22,10 +22,9 @@ const SocialAuthButton = ({
   return (
     <Button
       onClick={onClick}
-      title={text}
-      className={twMerge(`social-login-btn ${className}`)}
+      className={twMerge(`social-login-btn social-login-shadow ${className}`)}
     >
-      <SocialIcon name={icon} className="" />
+      <SocialIcon name={icon} width={16} height={16} className="" />
       Continue with {text}
     </Button>
   );
