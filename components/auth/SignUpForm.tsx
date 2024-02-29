@@ -29,7 +29,8 @@ const SignUpForm = () => {
     },
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: Event) => {
+    e.preventDefault();
     const { fullname, email, password } = form.getValues();
 
     try {
@@ -59,7 +60,7 @@ const SignUpForm = () => {
           name="fullname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel className="">Full Name</FormLabel>
               <FormControl>
                 <Input placeholder="..." {...field} />
               </FormControl>

@@ -89,6 +89,6 @@ body {
     @apply flex justify-start items-center;
   }
   .auth-background {
-    @apply bg-black-900 w-full h-full;
+    @apply bg-black-900 min-w-full min-h-full;
   }
 }
