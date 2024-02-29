@@ -39,7 +39,7 @@ const config = {
         },
         white: {
           "100": "#FFFFFF",
-          "300": "#ADB3CC",
+          "300": "#ADB2CC",
           "500": "#55597D",
         },
         purple: {

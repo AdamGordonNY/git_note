@@ -4,94 +4,98 @@
 
 @layer utilities {
   .auth-background {
-    @apply bg-black-900 w-full h-full;
+    @apply min-w-screen min-h-screen bg-black-900;
   }
+  /* Display 1 Bold */
   .display-1-bold {
-    font-size: 32px;
-    line-height: 40px;
-    font-weight: 700;
+    @apply text-4xl leading-10 font-bold;
   }
+
+  /* Display 2 Bold */
   .display-2-bold {
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 700;
+    @apply text-3xl leading-8 font-bold;
   }
+
+  /* H1 Medium */
   .h1-medium {
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: 500;
+    @apply text-2xl leading-7 font-medium;
   }
+
+  /* H2 Medium */
   .h2-medium {
-    font-size: 16px;
-    line-height: 26px;
-    font-weight: 500;
+    @apply text-base leading-[26px] font-medium; /* Custom line height */
   }
+
+  /* Paragraph 1 Bold */
   .paragraph-1-bold {
-    font-size: 18px;
-    line-height: 28px;
-    font-weight: 700;
+    @apply text-xl leading-7 font-bold;
   }
+
+  /* Paragraph 2 Bold */
   .paragraph-2-bold {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 700;
+    @apply text-base leading-6 font-bold;
   }
+
+  /* Paragraph 3 Bold */
   .paragraph-3-bold {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 700;
+    @apply text-sm leading-5 font-bold;
   }
+
+  /* Paragraph 1 Medium */
   .paragraph-1-medium {
-    font-size: 18px;
-    line-height: 28px;
-    font-weight: 500;
+    @apply text-xl leading-7 font-medium;
   }
+
+  /* Paragraph 3 Medium */
   .paragraph-3-medium {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 500;
+    @apply text-sm leading-5 font-medium;
   }
+
+  /* Paragraph 4 Medium */
   .paragraph-4-medium {
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 500;
+    @apply text-xs leading-4 font-medium;
   }
+
+  /* Paragraph 1 Regular */
   .paragraph-1-regular {
-    font-size: 18px;
-    line-height: 28px;
-    font-weight: 400;
+    @apply text-xl leading-7 font-normal;
   }
+
+  /* Paragraph 2 Regular */
   .paragraph-2-regular {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
+    @apply text-base leading-6 font-normal;
   }
+
+  /* Paragraph 3 Regular */
   .paragraph-3-regular {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 400;
+    @apply text-sm leading-5 font-normal;
   }
+
+  /* Paragraph 4 Regular */
   .paragraph-4-regular {
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 400;
+    @apply text-xs leading-4 font-normal;
   }
+
+  /* Caption Small */
   .caption-small {
-    font-size: 10px;
-    line-height: 12.1px;
-    font-weight: 400;
+    @apply text-[10px] leading-[12px] font-normal; /* Custom font size and line height */
   }
+  /* Login Button */
   .login-btn {
-    padding: 10px 14px;
-    @apply bg-primary-500 text-white-300 rounded  text-left h-[36px];
+    @apply py-2.5 px-3.5 bg-primary-500 text-white-300 rounded text-left h-9 w-full;
   }
   .social-login-btn {
-    padding: 8px 14px;
-    @apply bg-black-700  text-white-300 rounded  text-left h-[36px];
+    @apply py-2 px-3.5 bg-black-900 text-white-300 rounded text-left h-9 w-full;
   }
   .social-login-shadow {
     box-shadow:
       0px 0px 0px rgba(18, 18, 18, 0.1),
+      0px 1px 1px rgba(18, 18, 18, 0.1);
+  }
+  .social-btn-shadow {
+    box-shadow:
+      0px 1px 3px rgba(18, 18, 18, 0.1),
+      0px 0px 0px rgba(18, 18, 18, 0.07),
       0px 1px 1px rgba(18, 18, 18, 0.1);
   }
 }

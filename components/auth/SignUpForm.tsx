@@ -29,8 +29,7 @@ const SignUpForm = () => {
     },
   });
 
-  const onSubmit = async (e: Event) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     const { fullname, email, password } = form.getValues();
 
     try {
@@ -45,8 +44,7 @@ const SignUpForm = () => {
           password,
         }),
       });
-      res.status === 201 &&
-        router.push("/login?success=Account has been created");
+      res.status === 201 && router.push("/onboarding");
     } catch (err: any) {
       setMessage(err);
     }
@@ -60,7 +58,9 @@ const SignUpForm = () => {
           name="fullname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="">Full Name</FormLabel>
+              <FormLabel className="paragraph-3-minimum text-white-300">
+                Full Name
+              </FormLabel>
               <FormControl>
                 <Input placeholder="..." {...field} />
               </FormControl>
@@ -74,9 +74,15 @@ const SignUpForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="paragraph-3-minimum text-left text-white-300">
+                Email
+              </FormLabel>
               <FormControl>
-                <Input placeholder="example@example.com" {...field} />
+                <Input
+                  className="text-white-300"
+                  placeholder="example@example.com"
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -88,20 +94,24 @@ const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="paragraph-3-minimum text-left text-white-300">
+                Password
+              </FormLabel>
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
-              <FormDescription>
+              <FormDescription className="text-white-300">
                 Password must be at least 8 characters long.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <CustomButton type="submit" className="paragraph-3-medium">
-          Submit
-        </CustomButton>
+        <CustomButton
+          type="submit"
+          className="paragraph-3-medium h-9 w-full rounded bg-primary-500 px-3.5 py-2.5 text-left text-white-300"
+          text="Login"
+        />
       </form>
     </Form>
   );

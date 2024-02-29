@@ -1,14 +1,15 @@
 import React from "react";
-
-import SignUp from "@/components/auth/SignUpForm";
-const SignUpPage = () => {
+import SignUpForm from "@/components/auth/SignUpForm";
+import { SocialAuthGroup } from "@/components/auth/SocialAuthGroup";
+const SignUpPage = async () => {
   return (
     <div className="flex-center flex-col">
-      <span className="justify-start text-2xl leading-8 text-white-100">
+      <span className="text-left text-2xl leading-8 tracking-[-0.02rem] text-white-100">
         Create An Account
       </span>
       <div className="h-[472px] w-[400px]">
-        <SignUp />
+        <SignUpForm />
+        <SocialAuthGroup />
       </div>
     </div>
   );
