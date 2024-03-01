@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../../ui/input";
 import Image from "next/image";
 import searchIcon from "@/public/icons/search.svg";
-import cmdKIcon from "@/public/icons/cmd-k.svg";
+import cmdKIcon from "@/public/icons/shortcut-cmdk.svg";
 import useDebounce from "@/lib/hooks/useDebounce";
 interface Props {
   otherClasses?: string | undefined;

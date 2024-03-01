@@ -114,11 +114,7 @@
     @apply w-[290px] flex flex-col h-screen bg-black-800;
   }
   .sidebar-btn {
-    background: linear-gradient(90deg, #43b7fe 0%, #4f48e6 100%);
-    padding: 11px, 6px, 11px, 6px;
-    border-radius: 6px;
-    gap: 4px;
-    @apply w-[235px] h-[38px] text-white-100;
+    @apply rounded-md py-3 px-1.5 w-[235px] h-[38px] text-white-100 bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] flex gap-1 items-center justify-center;
   }
   .no-outline {
     @apply border-none focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!ring-offset-0;

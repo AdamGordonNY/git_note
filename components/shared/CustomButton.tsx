@@ -7,12 +7,7 @@ interface CustomButtonProps extends ButtonProps {
   text?: string;
 }
 const CustomButton = ({ className, text, children }: CustomButtonProps) => {
-  return (
-    <Button className={twMerge(`${className}, 'gap-4'`)}>
-      {children}
-      {text}
-    </Button>
-  );
+  return <Button className={twMerge(`${className}, 'gap-4'`)}>{text}</Button>;
 };
 
 export default CustomButton;
