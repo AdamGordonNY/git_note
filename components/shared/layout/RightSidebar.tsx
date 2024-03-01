@@ -1,7 +1,7 @@
 import React from "react";
 
 const RightSidebar = () => {
-  return <section>RightSidebar</section>;
+  return <section className="sidebar-right">RightSidebar</section>;
 };
 
 export default RightSidebar;

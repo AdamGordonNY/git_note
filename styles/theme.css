@@ -107,7 +107,23 @@
       0px 0px 0px rgba(18, 18, 18, 0.07),
       0px 1px 1px rgba(18, 18, 18, 0.1);
   }
-  .sidebar {
+  .sidebar-left {
     @apply w-[292px] flex flex-col h-screen bg-black-800;
+  }
+  .sidebar-right {
+    @apply w-[290px] flex flex-col h-screen bg-black-800;
+  }
+  .sidebar-btn {
+    background: linear-gradient(90deg, #43b7fe 0%, #4f48e6 100%);
+    padding: 11px, 6px, 11px, 6px;
+    border-radius: 6px;
+    gap: 4px;
+    @apply w-[235px] h-[38px] text-white-100;
+  }
+  .no-outline {
+    @apply border-none focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!ring-offset-0;
+  }
+  .sidebar-icon_border {
+    border: 1.5px solid rgba(85, 89, 125, 1);
   }
 }

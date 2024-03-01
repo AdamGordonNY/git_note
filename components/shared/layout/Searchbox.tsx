@@ -6,55 +6,57 @@ import { Input } from "../../ui/input";
 import Image from "next/image";
 import searchIcon from "@/public/icons/search.svg";
 import cmdKIcon from "@/public/icons/cmd-k.svg";
+import useDebounce from "@/lib/hooks/useDebounce";
 interface Props {
-  filters: {
-    name: string;
-    value: string;
-  }[];
   otherClasses?: string | undefined;
   containerClasses?: string;
 }
-const Searchbox = ({ filters, otherClasses, containerClasses }: Props) => {
+const Searchbox = ({ otherClasses, containerClasses }: Props) => {
   // modeled after my searchbox from devoverflow
+  // placeholder code for now
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const query = searchParams.get("q");
   const [search, setSearch] = useState(query || "");
-  const [isOpen, setIsOpen] = useState(false);
-
+  // const [isOpen, setIsOpen] = useState(false);
+  const debouncedSearch = useDebounce<string>(search, 300);
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (search) {
-        const newUrl = formUrlQuery({
+    if (debouncedSearch) {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "q",
+        value: debouncedSearch,
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      if (query) {
+        const newUrl = removeKeysFromQuery({
           params: searchParams.toString(),
-          key: "global",
-          value: search,
+          keysToRemove: ["q"],
         });
 
         router.push(newUrl, { scroll: false });
-      } else {
-        if (query) {
-          const newUrl = removeKeysFromQuery({
-            params: searchParams.toString(),
-            keysToRemove: ["global", "type"],
-          });
-
-          router.push(newUrl, { scroll: false });
-        }
       }
-    }, 300);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [search, router, pathname, searchParams, query]);
+    }
+  }, [debouncedSearch, router, pathname, searchParams, query]);
   return (
     <div
-      className={`${containerClasses} relative max-w-full bg-black-700 max-sm:hidden`}
+      className={`${containerClasses} relative flex max-w-full gap-x-2 rounded-sm bg-black-700 px-2 max-sm:hidden`}
     >
-      <div>
-        <Image src={searchIcon} alt="search" />
-        <Input />
-      </div>
+      <Image src={searchIcon} alt="search" className="sidebar-icon_border" />
+      <Input
+        className="paragraph-4-medium no-outline   bg-black-700 text-white-500"
+        onChange={(e) => {
+          setSearch(e.target.value);
+          /*  if (!isOpen) setIsOpen(true);
+          if (e.target.value === "") setIsOpen(false); */
+        }}
+        placeholder="Search.."
+        value={search}
+      ></Input>
+      <Image src={cmdKIcon} alt="cmd-k" className="gap-[2px]" />
     </div>
   );
 };
