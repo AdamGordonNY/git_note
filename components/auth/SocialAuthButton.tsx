@@ -2,30 +2,30 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { twMerge } from "tailwind-merge";
-import SocialIcon from "../shared/SocialIcon";
+import Image from "next/image";
 import { signIn } from "next-auth/react";
 interface SocialButtonProps {
   icon: string;
-  text: string;
   provider: string;
   className?: string;
 }
-const SocialAuthButton = ({
-  icon,
-  text,
-  provider,
-  className,
-}: SocialButtonProps) => {
+const SocialAuthButton = ({ icon, provider, className }: SocialButtonProps) => {
   const onClick = async () => {
-    await signIn(provider);
+    await signIn(provider.toLowerCase());
   };
   return (
     <Button
       onClick={onClick}
       className={twMerge(`social-login-btn social-login-shadow ${className}`)}
     >
-      <SocialIcon name={icon} width={16} height={16} className="" />
-      Continue with {text}
+      <Image
+        src={icon}
+        alt={provider}
+        width={20}
+        height={20}
+        className="mr-2"
+      />
+      Continue with {provider}
     </Button>
   );
 };

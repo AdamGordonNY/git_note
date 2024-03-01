@@ -1,19 +1,12 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import React from "react";
 import Image from "next/image";
-
+import logo from "@/public/images/site-logo.png";
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="auth-background">
-      <div className="flex-center flex-col">
-        <Image
-          src="/images/site-logo.png"
-          alt="logo"
-          width={212}
-          height={50}
-          className="mt-[72px]"
-        />
-      </div>
+    <main className="auth-layout">
+      <Image src={logo} alt="logo" width={212} height={50} />
+
       {children}
     </main>
   );

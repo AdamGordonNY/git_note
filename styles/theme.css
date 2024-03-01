@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer utilities {
-  .auth-background {
-    @apply min-h-screen min-w-full bg-black-900;
+  .auth-layout {
+    @apply h-screen bg-black-900  flex flex-col items-center justify-start gap-y-40 pt-[72px];
   }
   /* Display 1 Bold */
   .display-1-bold {
