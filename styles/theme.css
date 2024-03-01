@@ -4,7 +4,7 @@
 
 @layer utilities {
   .auth-background {
-    @apply min-w-screen min-h-screen bg-black-900;
+    @apply min-h-screen min-w-full bg-black-900;
   }
   /* Display 1 Bold */
   .display-1-bold {
