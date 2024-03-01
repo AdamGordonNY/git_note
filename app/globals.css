@@ -75,9 +75,6 @@ body {
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 @layer utilities {
   .flex-center {
@@ -90,5 +87,8 @@ body {
 
   .flex-start {
     @apply flex justify-start items-center;
+  }
+  .auth-background {
+    @apply bg-black-900 min-w-full min-h-full;
   }
 }

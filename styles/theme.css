@@ -3,49 +3,99 @@
 @tailwind utilities;
 
 @layer utilities {
-  display-1-bold {
-    @apply font-size: 32px line-height:40px font-weight: 700;
+  .auth-background {
+    @apply min-h-screen min-w-full bg-black-900;
   }
-  display-2-bold {
-    @apply font-size: 24px line-height:32px font-weight: 700;
+  /* Display 1 Bold */
+  .display-1-bold {
+    @apply text-4xl leading-10 font-bold;
   }
-  h1-medium {
-    @apply font-size: 20px line-height:28px font-weight: 500;
+
+  /* Display 2 Bold */
+  .display-2-bold {
+    @apply text-3xl leading-8 font-bold;
   }
-  h2-medium {
-    @apply font-size: 16px line-height:26px font-weight: 500;
+
+  /* H1 Medium */
+  .h1-medium {
+    @apply text-2xl leading-7 font-medium;
   }
-  paragraph-1-bold {
-    @apply font-size: 18px line-height:28px font-weight: 700;
+
+  /* H2 Medium */
+  .h2-medium {
+    @apply text-base leading-[26px] font-medium; /* Custom line height */
   }
-  paragraph-2-bold {
-    @apply font-size: 16px line-height:24px font-weight: 700;
+
+  /* Paragraph 1 Bold */
+  .paragraph-1-bold {
+    @apply text-xl leading-7 font-bold;
   }
-  paragraph-3-bold {
-    @apply font-size: 14px line-height:20px font-weight: 700;
+
+  /* Paragraph 2 Bold */
+  .paragraph-2-bold {
+    @apply text-base leading-6 font-bold;
   }
-  paragraph-1-medium {
-    @apply font-size: 18px line-height:28px font-weight: 500;
+
+  /* Paragraph 3 Bold */
+  .paragraph-3-bold {
+    @apply text-sm leading-5 font-bold;
   }
-  paragraph-3-medium {
-    @apply font-size: 14px line-height:20px font-weight: 500;
+
+  /* Paragraph 1 Medium */
+  .paragraph-1-medium {
+    @apply text-xl leading-7 font-medium;
   }
-  paragraph-4-medium {
-    @apply font-size: 12px line-height:16px font-weight: 500;
+
+  /* Paragraph 3 Medium */
+  .paragraph-3-medium {
+    @apply text-sm leading-5 font-medium;
   }
-  paragraph-1-regular {
-    @apply font-size: 18px line-height:28px font-weight: 400;
+
+  /* Paragraph 4 Medium */
+  .paragraph-4-medium {
+    @apply text-xs leading-4 font-medium;
   }
-  paragraph-2-regular {
-    @apply font-size: 16px line-height:24px font-weight: 400;
+
+  /* Paragraph 1 Regular */
+  .paragraph-1-regular {
+    @apply text-xl leading-7 font-normal;
   }
-  paragraph-3-regular {
-    @apply font-size: 14px line-height:20px font-weight: 400;
+
+  /* Paragraph 2 Regular */
+  .paragraph-2-regular {
+    @apply text-base leading-6 font-normal;
   }
-  paragraph-4-regular {
-    @apply font-size: 12px line-height:16px font-weight: 400;
+
+  /* Paragraph 3 Regular */
+  .paragraph-3-regular {
+    @apply text-sm leading-5 font-normal;
   }
-  caption-small {
-    @apply font-size: 10px line-height:12.1px font-weight: 400;
+
+  /* Paragraph 4 Regular */
+  .paragraph-4-regular {
+    @apply text-xs leading-4 font-normal;
+  }
+
+  /* Caption Small */
+  .caption-small {
+    @apply text-[10px] leading-[12px] font-normal; /* Custom font size and line height */
+  }
+  /* Login Button */
+  .login-btn {
+    @apply py-2.5 px-3.5 bg-primary-500 text-white-300 rounded text-left h-9 w-full;
+  }
+  .social-login-btn {
+    @apply py-2 px-3.5 bg-black-900 text-white-300 rounded text-left h-9 w-full;
+  }
+  .social-login-shadow {
+    box-shadow:
+      0px 0px 0px rgba(18, 18, 18, 0.1),
+      0px 1px 1px rgba(18, 18, 18, 0.1);
+  }
+  .social-btn-shadow {
+    box-shadow:
+      0px 1px 3px rgba(18, 18, 18, 0.1),
+      0px 0px 0px rgba(18, 18, 18, 0.07),
+      0px 1px 1px rgba(18, 18, 18, 0.1);
   }
 }
