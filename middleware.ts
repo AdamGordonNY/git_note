@@ -7,10 +7,8 @@ export async function middleware(req: NextRequest) {
   // Skip middleware for static files and API routes
 
   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const { pathname } = req.nextUrl;
-
-  // Redirect to sign-up if there's no session and not on the sign-up page
-  if (!session && pathname !== "/sign-up") {
+  // Redirect to sign-up if there's no session
+  if (!session) {
     const url = req.nextUrl.clone();
     url.pathname = "/sign-up";
     return NextResponse.redirect(url);
