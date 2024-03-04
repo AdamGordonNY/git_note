@@ -6,7 +6,7 @@ interface CustomButtonProps extends ButtonProps {
   children?: React.ReactNode;
   text?: string;
 }
-const CustomButton = ({ className, text }: CustomButtonProps) => {
+const CustomButton = ({ className, text, children }: CustomButtonProps) => {
   return <Button className={twMerge(`${className}, 'gap-4'`)}>{text}</Button>;
 };
 

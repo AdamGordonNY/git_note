@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "GitNote - Personal Git Notebook",
   description:
     "A platform for Software Developers to store information and knowledge.",
+  icons: {
+    icon: "/assets/images/site-logo.svg",
+  },
 };
 
 export default function RootLayout({

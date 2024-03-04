@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+  .flex-start {
+    @apply flex justify-start items-center;
+  }
   .auth-layout {
     @apply h-screen bg-black-900  flex flex-col items-center justify-start gap-y-40 pt-[72px];
   }
@@ -97,5 +106,20 @@
       0px 1px 3px rgba(18, 18, 18, 0.1),
       0px 0px 0px rgba(18, 18, 18, 0.07),
       0px 1px 1px rgba(18, 18, 18, 0.1);
+  }
+  .sidebar-left {
+    @apply w-[292px] flex flex-col h-screen bg-black-800 fixed left-0;
+  }
+  .sidebar-right {
+    @apply w-[290px] flex flex-col h-screen bg-black-800 fixed right-0;
+  }
+  .sidebar-btn {
+    @apply rounded-md py-3 px-1.5 w-[235px] h-[38px] text-white-100 bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] flex gap-1 items-center justify-center;
+  }
+  .no-outline {
+    @apply border-none focus-visible:!ring-0 focus-visible:!ring-transparent focus-visible:!ring-offset-0;
+  }
+  .sidebar-icon_border {
+    border: 1.5px solid rgba(85, 89, 125, 1);
   }
 }

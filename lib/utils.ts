@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { getToken } from "next-auth/jwt";
-
+import qs from "query-string";
 import type { NextApiRequest, NextApiResponse } from "next";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -17,3 +17,31 @@ export default async function handler(
   const token = await getToken({ req });
   res.send(JSON.stringify(token, null, 2));
 }
+interface URLQueryParams {
+  params: string;
+  key: string;
+  value: string | null;
+}
+export const formUrlQuery = ({ params, key, value }: URLQueryParams) => {
+  const currentURL = qs.parse(params);
+  currentURL[key] = value;
+  return qs.stringifyUrl(
+    { url: window.location.pathname, query: currentURL },
+    { skipNull: true }
+  );
+};
+interface RemoveURLQueryParams {
+  params: string;
+  keysToRemove: string[];
+}
+export const removeKeysFromQuery = ({
+  params,
+  keysToRemove,
+}: RemoveURLQueryParams) => {
+  const currentURL = qs.parse(params);
+  keysToRemove.forEach((key) => delete currentURL[key]);
+  return qs.stringifyUrl(
+    { url: window.location.pathname, query: currentURL },
+    { skipNull: true }
+  );
+};
