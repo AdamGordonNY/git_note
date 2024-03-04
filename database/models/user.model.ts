@@ -16,11 +16,33 @@ export interface IUser extends Document {
   socials?: string[];
   posts?: string[];
 }
-// User Schema is going to include references to other collections that havent't been created yet,
-//  Object Id type is used to reference other collections
-// TechnologyStack, ExperienceLevel, and Tags are going to be arrays of Object Ids, and Role Based Authentication
-// required is off for now until I get to that implementation.
-// I'm not totally sure if this is correct, but I'm submitting it for Review for feedback
+
+const SocialsSchema = new Schema({
+  twitter: {
+    type: String,
+    required: false,
+  },
+  facebook: {
+    type: String,
+    required: false,
+  },
+  linkedin: {
+    type: String,
+    required: false,
+  },
+  github: {
+    type: String,
+    required: false,
+  },
+  instagram: {
+    type: String,
+    required: false,
+  },
+  dribbble: {
+    type: String,
+    required: false,
+  },
+});
 const UserSchema = new Schema(
   {
     fullname: {
@@ -47,7 +69,6 @@ const UserSchema = new Schema(
     role: {
       type: [Schema.Types.ObjectId],
       required: false,
-      default: "user",
       ref: "Role",
     },
     technologyStack: {
@@ -69,7 +90,7 @@ const UserSchema = new Schema(
       required: false,
     },
     socials: {
-      type: [Schema.Types.ObjectId],
+      type: SocialsSchema,
       required: false,
       ref: "Social",
     },
