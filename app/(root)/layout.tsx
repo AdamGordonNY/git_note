@@ -1,5 +1,5 @@
 import LeftSidebar from "@/components/shared/layout/LeftSidebar";
-// import RightSidebar from "@/components/shared/layout/RightSidebar";
+import RightSidebar from "@/components/shared/layout/RightSidebar";
 import React from "react";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
@@ -7,7 +7,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <main className="bg-black-900">
       <LeftSidebar />
       {children}
-      {/* <RightSidebar /> */}
+      <RightSidebar />
     </main>
   );
 };
