@@ -77,18 +77,4 @@ body {
   }
 }
 @layer utilities {
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
-
-  .flex-between {
-    @apply flex justify-between items-center;
-  }
-
-  .flex-start {
-    @apply flex justify-start items-center;
-  }
-  .auth-background {
-    @apply bg-black-900 min-w-full min-h-full;
-  }
 }
