@@ -12,7 +12,6 @@ type SidebarLinkType =
   | "profile";
 interface SidebarLinkProps extends React.PropsWithChildren {
   linkType?: SidebarLinkType;
-  props: any;
   href: string;
 }
 const SidebarLink = ({
