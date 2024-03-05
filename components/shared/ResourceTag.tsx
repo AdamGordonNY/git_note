@@ -5,15 +5,19 @@ import componentBadge from "@/public/icons/numberlist.svg";
 import Image from "next/image";
 type ResourceTagType = "knowledge" | "component" | "workflow" | "plain";
 interface CustomBadgeProps extends React.PropsWithChildren {
-  type: ResourceTagType;
+  type?: ResourceTagType;
   text?: string;
 }
 
-const ResourceTag = (props: CustomBadgeProps) => {
-  const { children, type, text } = props;
+const ResourceTag = ({
+  type = "plain",
+
+  ...props
+}: CustomBadgeProps) => {
+  const { children, text } = props;
   const badgeType = type || "plain";
   const baseClass =
-    "inline-flex px-0.5 py-1 gap-1 rounded-[3px] items-center justify-center rounded-[3px]";
+    "inline-flex px-0.5 py-.5 gap-1 rounded-[3px] items-center justify-center rounded-[3px]";
 
   const label = {
     component: "Component",
@@ -37,7 +41,7 @@ const ResourceTag = (props: CustomBadgeProps) => {
 
   return (
     <span
-      className={`${baseClass} ${color[type]} hover:${color[type]}`}
+      className={`${baseClass} ${color[type || "plain"]} hover:${color[type || "plain"]}`}
       {...props}
     >
       {iconSrc[badgeType] && (
