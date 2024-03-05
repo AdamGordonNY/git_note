@@ -5,16 +5,14 @@ import LeftButtonGroup from "./LeftButtonGroup";
 
 const LeftSidebar = () => {
   return (
-   
-      <section className="sidebar-left border-r-[1.5px]">
-        <Image
-          src={siteLogo}
-          alt="logo"
-          className="ml-[28px] mt-[40px] h-[24px] w-[102px]"
-        />
-        <LeftButtonGroup />
-      </section>
-   
+    <section className="w-72 border-r-[1.5px] bg-black-800">
+      <Image
+        src={siteLogo}
+        alt="logo"
+        className="ml-[28px] mt-[40px] h-[24px] w-[102px]"
+      />
+      <LeftButtonGroup />
+    </section>
   );
 };
 
