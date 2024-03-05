@@ -4,9 +4,10 @@ import React from "react";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="bg-black-900">
+    <main className="flex min-h-screen bg-black-900">
       <LeftSidebar />
-      {children}
+      <section className="flex-1">{children}</section>
+
       <RightSidebar />
     </main>
   );
