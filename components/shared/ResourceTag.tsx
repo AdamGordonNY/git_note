@@ -4,7 +4,7 @@ import knowledgeBadge from "@/public/icons/greenbubble.svg";
 import componentBadge from "@/public/icons/numberlist.svg";
 import Image from "next/image";
 type ResourceTagType = "knowledge" | "component" | "workflow" | "plain";
-interface CustomBadgeProps extends React.PropsWithChildren {
+interface ResourceTagProps extends React.PropsWithChildren {
   type?: ResourceTagType;
   text?: string;
 }
@@ -13,11 +13,11 @@ const ResourceTag = ({
   type = "plain",
 
   ...props
-}: CustomBadgeProps) => {
+}: ResourceTagProps) => {
   const { children, text } = props;
   const badgeType = type || "plain";
   const baseClass =
-    "inline-flex px-0.5 py-.5 gap-1 rounded-[3px] items-center justify-center rounded-[3px]";
+    "inline-flex px-0.5 py-0.5 gap-1 rounded-[3px] items-center justify-center rounded-[3px]";
 
   const label = {
     component: "Component",

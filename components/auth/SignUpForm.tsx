@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import CustomButton from "@/components/shared/CustomButton";
+import CustomButton from "../shared/CustomButton";
 import {
   Form,
   FormControl,
@@ -107,11 +107,9 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <CustomButton
-          type="submit"
-          className="paragraph-3-medium h-9 w-full rounded bg-primary-500 px-3.5 py-2.5 text-left text-white-300"
-          text="Login"
-        />
+        <CustomButton buttonType="primary" type="submit">
+          Login
+        </CustomButton>
       </form>
     </Form>
   );

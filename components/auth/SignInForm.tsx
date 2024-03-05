@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+
 import CustomButton from "../shared/CustomButton";
 
 const SignInForm = () => {
@@ -23,7 +24,10 @@ const SignInForm = () => {
       password: "",
     },
   });
-  const onSubmit = (data: z.infer<typeof signInSchema>) => {};
+  const onSubmit = (data: z.infer<typeof signInSchema>) => {
+    console.log(data);
+    console.log(form.clearErrors());
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -57,11 +61,9 @@ const SignInForm = () => {
             </FormItem>
           )}
         />
-        <CustomButton
-          className="border-radius-4 bg-primary-500 text-left"
-          text="Create Account"
-          type="submit"
-        />
+        <CustomButton buttonType="primary" type="submit">
+          Login
+        </CustomButton>
       </form>
     </Form>
   );
