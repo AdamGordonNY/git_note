@@ -5,7 +5,7 @@ import LeftButtonGroup from "./LeftButtonGroup";
 
 const LeftSidebar = () => {
   return (
-    <>
+   
       <section className="sidebar-left border-r-[1.5px]">
         <Image
           src={siteLogo}
@@ -14,7 +14,7 @@ const LeftSidebar = () => {
         />
         <LeftButtonGroup />
       </section>
-    </>
+   
   );
 };
 
