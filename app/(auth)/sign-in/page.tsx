@@ -1,15 +1,19 @@
 import SignIn from "@/components/auth/SignInForm";
 import { SocialAuthGroup } from "@/components/auth/SocialAuthGroup";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const SignInPage = () => {
+const SignInPage = async () => {
+  const session = await getServerSession();
+  if (session) {
+    redirect("/home");
+  }
   return (
-    <div className="flex-center flex-col">
-      <span className="display-2-bold justify-start text-white-100">Login</span>
-
+    <section>
       <SignIn />
       <SocialAuthGroup />
-    </div>
+    </section>
   );
 };
 

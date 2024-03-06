@@ -6,9 +6,10 @@ export interface IUser extends Document {
   password: string;
   createdAt: Date;
   updatedAt: Date;
+  image?: string;
   portfolio?: string;
   learningGoals?: string[];
-  role?: string[];
+  role?: "user" | "admin";
   technologyStack?: string[];
   experienceLevel?: string[];
   availability?: Date[];
@@ -59,6 +60,10 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    image: {
+      type: String,
+      required: true,
+    },
     portfolio: {
       type: String,
       required: false,
@@ -68,9 +73,9 @@ const UserSchema = new Schema(
       required: false,
     },
     role: {
-      type: [Schema.Types.ObjectId],
+      type: String,
       required: false,
-      ref: "Role",
+      default: "user",
     },
     technologyStack: {
       type: [Schema.Types.ObjectId],
