@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 const SignUpForm = () => {
   const router = useRouter();
   const [message, setMessage] = useState<string>("");
+  const [disabled, setDisabled] = useState<boolean>(false);
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -30,6 +31,7 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async () => {
+    setDisabled(true);
     const { fullname, email, password } = form.getValues();
 
     try {
@@ -38,12 +40,9 @@ const SignUpForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          fullname,
-          email,
-          password,
-        }),
+        body: JSON.stringify({ fullname, email, password }),
       });
+
       res.status === 201 && router.push("/onboarding");
     } catch (err: any) {
       setMessage(err);
@@ -62,7 +61,7 @@ const SignUpForm = () => {
                 Full Name
               </FormLabel>
               <FormControl>
-                <Input placeholder="..." {...field} />
+                <Input placeholder="Full Name" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -98,7 +97,7 @@ const SignUpForm = () => {
                 Password
               </FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input type="password" placeholder="" {...field} />
               </FormControl>
               <FormDescription className="text-white-300">
                 Password must be at least 8 characters long.
@@ -107,7 +106,7 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <CustomButton buttonType="primary" type="submit">
+        <CustomButton buttonType="primary" type="submit" disabled={disabled}>
           Login
         </CustomButton>
       </form>

@@ -24,10 +24,7 @@ const SignInForm = () => {
       password: "",
     },
   });
-  const onSubmit = (data: z.infer<typeof signInSchema>) => {
-    console.log(data);
-    console.log(form.clearErrors());
-  };
+  const onSubmit = (data: z.infer<typeof signInSchema>) => {};
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -2,7 +2,7 @@ import { Schema, Document, model, models } from "mongoose";
 
 export interface IUser extends Document {
   fullname: string;
-  email: string;
+  username: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
@@ -43,13 +43,14 @@ const SocialsSchema = new Schema({
     required: false,
   },
 });
+// need to add enumeration for some fields but wanted to make sure signIn logic works first.
 const UserSchema = new Schema(
   {
     fullname: {
       type: String,
       required: true,
     },
-    email: {
+    username: {
       type: String,
       required: true,
       unique: true,

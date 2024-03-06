@@ -10,7 +10,9 @@ interface SocialButtonProps {
   className?: string;
 }
 const SocialAuthButton = ({ icon, provider, className }: SocialButtonProps) => {
+  // this logic is what it looks like in the documentation, again confusing me as to what's on and off the server.
   const onClick = async () => {
+    "use server";
     await signIn(provider.toLowerCase());
   };
   return (

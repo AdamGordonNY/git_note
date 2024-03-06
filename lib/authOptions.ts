@@ -4,6 +4,7 @@ import {
   Profile,
   User as AuthUser,
   getServerSession,
+  DefaultSession,
 } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
@@ -11,18 +12,36 @@ import Google from "next-auth/providers/google";
 import dbConnect from "@/database/dbConnect";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/database/clientPromise";
-import User from "@/database/models/user.model";
 import { AdapterUser } from "next-auth/adapters";
-import * as bcrypt from "bcryptjs";
+import { getOneUser } from "./actions/user.actions";
+import { validatePassword } from "./utils";
 
+// not completely sure how this part works here or if I need it.
+declare module "next-auth" {
+  export interface Session {
+    user: {
+      _id: string;
+    } & DefaultSession["user"];
+  }
+}
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise!, { databaseName: "git_note" }),
   secret: process.env.NEXTAUTH_SECRET!,
+  pages: {
+    signIn: "/sign-in",
+    signOut: "/sign-in",
+  },
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 24,
   },
+  // what exactly is the purpose of these , is it for logging purposes?
+  events: {
+    createUser: async (message) => {},
+    updateUser: async (message) => {},
+  },
   providers: [
+    // what specifically do i need to get back from github in my authorize function
     Github({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
@@ -40,24 +59,24 @@ export const authOptions: NextAuthOptions = {
     }),
     Credentials({
       name: "Credentials",
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
+      // TODO: im a little confused as to how the signin flow works, since a signUp needs to create a new user and the form has
+      // TODO: extra data (full name) and needs some way of flagging this afterr sign up to redirect to onboarding
       credentials: {
-        username: { label: "Email", type: "text", placeholder: "..." },
+        username: { label: "Email", type: "email", placeholder: "..." },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials, req) {
+        // TODO: confused about where exactly things need to be encapsulated regarding server/client side logic asnd this file and the button
+        // that triggers the signIn process.
         await dbConnect();
-        if (credentials === null) return null;
+        if (credentials?.password! || credentials?.username! === null)
+          return null;
         try {
-          const user = await User.findOne({
-            email: credentials?.username,
-            password: credentials?.password,
-          });
+          const user = await getOneUser(credentials?.username!);
+
           if (user) {
-            const isMatch = await bcrypt.compare(
+            const isMatch = await validatePassword(
               credentials!.password,
               user.password
             );
@@ -86,18 +105,24 @@ export const authOptions: NextAuthOptions = {
       if (params.account?.provider === "google") {
         return params.profile?.email?.endsWith("@gmail.com") ?? false;
       }
+      if (params.account?.provider === "github") {
+        // TODO: not sure which fields exactly i need back from github
+        // return params.user.id;
+      }
       return true;
     },
-    async jwt({ token, user }: any) {
-      if (user) {
-        token.user = {
-          _id: user._id,
-          email: user.email,
-          name: user.name,
-        };
+    // while i kind of understand whats happening here, i also kind of don't
+    async jwt({ token, user, account }: any) {
+      if (account) {
+        console.log("Adding user to token", account);
+        token.accessToken = account?.accessToken;
+        if (user) {
+          return { ...token, _id: user._id };
+        }
       }
       return token;
     },
+    // same as above
     session: async ({ session, token }: any) => {
       if (token) {
         session.user = token.user;
@@ -106,5 +131,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
+// this is supposed to be a wrapper for the session , on which component should the wrapper go though, the main layout a la Clerk?
 export const getSession = async () => await getServerSession(authOptions);
