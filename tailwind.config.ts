@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        resource:
+          "box-shadow: 0px 1px 3px rgba(18, 18, 18, 0.1), 0px 0px 0px rgba(18, 18, 18, 0.07), 0px 1px 1px rgba(18, 18, 18, 0.1)",
+      },
       fontWeight: {
         bold: "700",
         regular: "400",
