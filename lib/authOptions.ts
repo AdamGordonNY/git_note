@@ -8,8 +8,6 @@ import clientPromise from "@/database/clientPromise";
 import { getOneUser } from "./actions/user.actions";
 import { validatePassword } from "./utils";
 
-// not completely sure how this part works here or if I need it.
-
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise!, { databaseName: "git_note" }),
   secret: process.env.NEXTAUTH_SECRET!,
@@ -47,14 +45,13 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials, req) {
-        console.log(credentials);
         await dbConnect();
-        if (credentials?.password! || credentials?.username! === null)
+        if (credentials?.password === null || credentials?.username === null)
           throw new Error("Please fill Out all Fields");
         try {
           const user = await getOneUser(credentials?.username!);
 
-          if (!user) {
+          if (user) {
             const isMatch = await validatePassword(
               credentials!.password,
               user.password
@@ -84,7 +81,7 @@ export const authOptions: NextAuthOptions = {
 
       return token;
     },
-    // same as above
+
     session: async ({ session, token }: any) => {
       if (token) {
         session.user = token.user;

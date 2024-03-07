@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -18,7 +18,8 @@ import { signUpSchema } from "@/lib/validations";
 import { signIn } from "next-auth/react";
 const SignUpForm = () => {
   const [message, setMessage] = useState<string>("");
-  const [disabled, setDisabled] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -29,19 +30,19 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async () => {
-    setDisabled(true);
     const { fullname, username, password } = form.getValues();
 
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fullname, username, password }),
+      startTransition(async () => {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ fullname, username, password }),
+        });
+        if (res) await signIn("credentials", { username, password });
       });
-      if (res) await signIn("credentials", { username, password });
-      setDisabled(false);
     } catch (err: any) {
       setMessage(err);
     }
@@ -71,7 +72,7 @@ const SignUpForm = () => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-minimum text-left text-white-300">
+              <FormLabel className="paragraph-3-minimum text-left ">
                 Email
               </FormLabel>
               <FormControl>
@@ -104,8 +105,8 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <CustomButton buttonType="primary" type="submit" disabled={disabled}>
-          Login
+        <CustomButton buttonType="primary" type="submit" disabled={isPending}>
+          Sign Up
         </CustomButton>
       </form>
     </Form>
