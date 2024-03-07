@@ -50,7 +50,9 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Please fill Out all Fields");
         try {
           const user = await getOneUser(credentials?.username!);
-
+          if (!user) {
+            throw new Error("User not found, please check your credentials");
+          }
           if (user) {
             const isMatch = await validatePassword(
               credentials!.password,

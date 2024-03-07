@@ -27,8 +27,10 @@ const SignInForm = () => {
   const onSubmit = async () => {
     const { username, password } = form.getValues();
     await signIn("credentials", {
+      redirect: true,
       username,
       password,
+      callbackUrl: "/",
     });
   };
   return (

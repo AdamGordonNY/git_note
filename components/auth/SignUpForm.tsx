@@ -18,8 +18,8 @@ import { signUpSchema } from "@/lib/validations";
 import { signIn } from "next-auth/react";
 const SignUpForm = () => {
   const [message, setMessage] = useState<string>("");
+  const [formError, setFormError] = useState<string>("");
   const [isPending, startTransition] = useTransition();
-
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -41,7 +41,17 @@ const SignUpForm = () => {
           },
           body: JSON.stringify({ fullname, username, password }),
         });
-        if (res) await signIn("credentials", { username, password });
+
+        if (res.ok) {
+          await signIn("credentials", {
+            redirect: true,
+            username,
+            password,
+            callbackUrl: "/",
+          });
+        } else {
+          setFormError(res.statusText);
+        }
       });
     } catch (err: any) {
       setMessage(err);
@@ -56,7 +66,7 @@ const SignUpForm = () => {
           name="fullname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-minimum text-white-300">
+              <FormLabel className="paragraph-3-medium text-white-300">
                 Full Name
               </FormLabel>
               <FormControl>
@@ -72,7 +82,7 @@ const SignUpForm = () => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-minimum text-left ">
+              <FormLabel className="paragraph-3-medium text-left ">
                 Email
               </FormLabel>
               <FormControl>
@@ -92,7 +102,7 @@ const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-minimum text-left text-white-300">
+              <FormLabel className="paragraph-3-medium text-left text-white-300">
                 Password
               </FormLabel>
               <FormControl>
@@ -105,6 +115,9 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
+        {formError && (
+          <span className="paragraph-3-medium text-red-600">{formError}</span>
+        )}
         <CustomButton buttonType="primary" type="submit" disabled={isPending}>
           Sign Up
         </CustomButton>

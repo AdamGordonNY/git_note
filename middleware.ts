@@ -20,15 +20,10 @@ export async function middleware(req: NextRequest) {
 export default withAuth({
   callbacks: {
     authorized({ req, token }: { req: NextRequest; token: any }) {
-      // TODO: Need to figure out how to bypass this in development
-      // if (process.env.NODE_ENV === "development") {
-      //   // Automatically authorize all routes in development
-      //   return true;
-      // }
       if (req.nextUrl.pathname === "/admin") {
         return token?.userRole === "admin";
       }
-      // `/me` only requires the user to be logged in
+
       return !!token;
     },
   },
@@ -36,6 +31,6 @@ export default withAuth({
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|sign-in|sign-up|home|favicon.ico).*)",
+    "/((?!api|_next/static|_next/image|sign-in|sign-up|favicon.ico).*)",
   ],
 };
