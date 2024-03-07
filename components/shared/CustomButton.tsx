@@ -21,7 +21,7 @@ interface CustomButtonProps extends ButtonProps {
 
 const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
   ({ ...props }, ref) => {
-    const { buttonType, className, children } = props;
+    const { buttonType, className, children, ...rest } = props;
     const buttonTypes = {
       primary: {
         className: `${baseClass} bg-primary-500 text-black-900 w-full paragraph-3-bold self-start py-3  `,
@@ -54,7 +54,7 @@ const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
       <Button
         ref={ref}
         className={`${button.className} ${className}`}
-        {...props}
+        {...rest}
       >
         {button.icon && <Image src={button.icon} alt={buttonType} />}
         {children}

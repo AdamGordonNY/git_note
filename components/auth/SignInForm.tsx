@@ -13,30 +13,40 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
-
+import { signIn } from "next-auth/react";
 import CustomButton from "../shared/CustomButton";
 
 const SignInForm = () => {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
-  const onSubmit = (data: z.infer<typeof signInSchema>) => {
-    console.log(data);
-    console.log(form.clearErrors());
+  const onSubmit = async () => {
+    const { username, password } = form.getValues();
+    await signIn("credentials", {
+      redirect: true,
+      username,
+      password,
+      callbackUrl: "/",
+    });
   };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <span className="display-2-bold py-[8px] align-top text-white-100">
+          Login
+        </span>
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-medium">Email</FormLabel>
+              <FormLabel className="paragraph-3-medium text-white-300">
+                Email
+              </FormLabel>
               <FormControl>
                 <Input
                   className="paragraph-4-regular bg-black-700 text-white-300"
@@ -53,7 +63,9 @@ const SignInForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="paragraph-3-medium text-white-300">
+                Password
+              </FormLabel>
               <FormControl>
                 <Input type="password" placeholder="Password" {...field} />
               </FormControl>

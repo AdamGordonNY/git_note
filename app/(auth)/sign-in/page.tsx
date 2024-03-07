@@ -1,13 +1,15 @@
 import SignIn from "@/components/auth/SignInForm";
+import { SocialAuthGroup } from "@/components/auth/SocialAuthGroup";
+import Divider from "@/components/shared/Divider";
 import React from "react";
 
-const SignInPage = () => {
+const SignInPage = async () => {
   return (
-    <div className="flex-center flex-col">
-      <span className="display-2-bold justify-start text-white-100">Login</span>
-
+    <section>
       <SignIn />
-    </div>
+      <Divider />
+      <SocialAuthGroup />
+    </section>
   );
 };
 

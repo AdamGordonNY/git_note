@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { getToken } from "next-auth/jwt";
 import qs from "query-string";
 import type { NextApiRequest, NextApiResponse } from "next";
+import bcrypt from "bcryptjs";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -44,4 +45,16 @@ export const removeKeysFromQuery = ({
     { url: window.location.pathname, query: currentURL },
     { skipNull: true }
   );
+};
+
+export const validatePassword = async (
+  hashedPassword: string,
+  password: string
+) => {
+  const isMatch = await bcrypt.compare(hashedPassword, password);
+  if (isMatch) {
+    return true;
+  } else {
+    throw new Error("Passwords don't match.");
+  }
 };

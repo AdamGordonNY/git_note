@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,36 +15,44 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { signUpSchema } from "@/lib/validations";
-import { useRouter } from "next/navigation";
-
+import { signIn } from "next-auth/react";
 const SignUpForm = () => {
-  const router = useRouter();
   const [message, setMessage] = useState<string>("");
+  const [formError, setFormError] = useState<string>("");
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       fullname: "",
-      email: "",
+      username: "",
       password: "",
     },
   });
 
   const onSubmit = async () => {
-    const { fullname, email, password } = form.getValues();
+    const { fullname, username, password } = form.getValues();
 
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fullname,
-          email,
-          password,
-        }),
+      startTransition(async () => {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ fullname, username, password }),
+        });
+
+        if (res.ok) {
+          await signIn("credentials", {
+            redirect: true,
+            username,
+            password,
+            callbackUrl: "/",
+          });
+        } else {
+          setFormError(res.statusText);
+        }
       });
-      res.status === 201 && router.push("/onboarding");
     } catch (err: any) {
       setMessage(err);
     }
@@ -58,23 +66,23 @@ const SignUpForm = () => {
           name="fullname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-minimum text-white-300">
+              <FormLabel className="paragraph-3-medium text-white-300">
                 Full Name
               </FormLabel>
               <FormControl>
-                <Input placeholder="..." {...field} />
+                <Input placeholder="Full Name" {...field} />
               </FormControl>
 
-              <FormMessage />
+              <FormMessage title={message} />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-minimum text-left text-white-300">
+              <FormLabel className="paragraph-3-medium text-left ">
                 Email
               </FormLabel>
               <FormControl>
@@ -85,7 +93,7 @@ const SignUpForm = () => {
                 />
               </FormControl>
 
-              <FormMessage />
+              <FormMessage title={message} />
             </FormItem>
           )}
         />
@@ -94,11 +102,11 @@ const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="paragraph-3-minimum text-left text-white-300">
+              <FormLabel className="paragraph-3-medium text-left text-white-300">
                 Password
               </FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input type="password" placeholder="" {...field} />
               </FormControl>
               <FormDescription className="text-white-300">
                 Password must be at least 8 characters long.
@@ -107,8 +115,11 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <CustomButton buttonType="primary" type="submit">
-          Login
+        {formError && (
+          <span className="paragraph-3-medium text-red-600">{formError}</span>
+        )}
+        <CustomButton buttonType="primary" type="submit" disabled={isPending}>
+          Sign Up
         </CustomButton>
       </form>
     </Form>

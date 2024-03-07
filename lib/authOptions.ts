@@ -1,31 +1,29 @@
-import {
-  Account,
-  NextAuthOptions,
-  Profile,
-  User as AuthUser,
-  getServerSession,
-} from "next-auth";
+import { NextAuthOptions, getServerSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import dbConnect from "@/database/dbConnect";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/database/clientPromise";
-import User from "@/database/models/user.model";
-import { AdapterUser } from "next-auth/adapters";
-import * as bcrypt from "bcryptjs";
+import { getOneUser } from "./actions/user.actions";
+import { validatePassword } from "./utils";
 
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise!, { databaseName: "git_note" }),
   secret: process.env.NEXTAUTH_SECRET!,
+  pages: {
+    signIn: "/",
+    signOut: "/sign-up",
+    newUser: "/onboarding",
+  },
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 24,
   },
   providers: [
     Github({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -40,27 +38,27 @@ export const authOptions: NextAuthOptions = {
     }),
     Credentials({
       name: "Credentials",
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
+
       credentials: {
-        username: { label: "Email", type: "text", placeholder: "..." },
+        username: { label: "Email", type: "email", placeholder: "..." },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials, req) {
         await dbConnect();
-        if (credentials === null) return null;
+        if (credentials?.password === null || credentials?.username === null)
+          throw new Error("Please fill Out all Fields");
         try {
-          const user = await User.findOne({
-            email: credentials?.username,
-            password: credentials?.password,
-          });
+          const user = await getOneUser(credentials?.username!);
+          if (!user) {
+            throw new Error("User not found, please check your credentials");
+          }
           if (user) {
-            const isMatch = await bcrypt.compare(
+            const isMatch = await validatePassword(
               credentials!.password,
               user.password
             );
+
             if (isMatch) {
               return user;
             } else {
@@ -76,28 +74,16 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn(params: {
-      user: AuthUser | AdapterUser;
-      account: Account | null;
-      profile?: Profile;
-      email?: { verificationRequest?: boolean };
-      credentials?: Record<string, unknown>;
-    }): Promise<boolean> {
-      if (params.account?.provider === "google") {
-        return params.profile?.email?.endsWith("@gmail.com") ?? false;
-      }
-      return true;
-    },
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, isNewUser }: any) {
       if (user) {
-        token.user = {
-          _id: user._id,
-          email: user.email,
-          name: user.name,
-        };
+        token.isNewUser = !!isNewUser;
+        token.user = user;
+        return { ...token, user };
       }
+
       return token;
     },
+
     session: async ({ session, token }: any) => {
       if (token) {
         session.user = token.user;
