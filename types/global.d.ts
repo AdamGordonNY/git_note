@@ -11,7 +11,7 @@ export interface URLProps {
   searchParams: { [key: string]: string | undefined };
 }
 export interface SidebarLink {
-  imgURL: string;
+  linkType: "plain" | "component" | "knowledge" | "workflow";
   route: string;
   label: string;
 }

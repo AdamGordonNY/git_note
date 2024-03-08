@@ -1,12 +1,14 @@
 import { Schema, Document, model, models } from "mongoose";
 
 export interface IUser extends Document {
+  _id: string;
   fullname: string;
   username: string;
   password: string;
+  image: string;
   createdAt: Date;
   updatedAt: Date;
-  image?: string;
+
   portfolio?: string;
   learningGoals?: string[];
   role?: "user" | "admin";

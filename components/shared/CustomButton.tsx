@@ -16,12 +16,11 @@ const baseClass = `rounded-[4px] shadow-resource inline-flex px-3.5 py-2.5 gap-x
 interface CustomButtonProps extends ButtonProps {
   buttonType: ReusableButtonType;
   className?: string;
-  type?: any;
 }
 
 const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
   ({ ...props }, ref) => {
-    const { buttonType, className, children, ...rest } = props;
+    const { buttonType, className, children } = props;
     const buttonTypes = {
       primary: {
         className: `${baseClass} bg-primary-500 text-black-900 w-full paragraph-3-bold self-start py-3  `,
@@ -54,7 +53,7 @@ const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
       <Button
         ref={ref}
         className={`${button.className} ${className}`}
-        {...rest}
+        {...props}
       >
         {button.icon && <Image src={button.icon} alt={buttonType} />}
         {children}
