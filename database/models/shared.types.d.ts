@@ -51,7 +51,7 @@ export interface UpdateTagParams {
 export interface DeleteTagParams {
   _id: string;
 }
-export interface createNewPostParams {
+export interface CreateNewPostParams {
   title: string;
   body: string;
   author: string;
@@ -63,7 +63,7 @@ export interface createNewPostParams {
   };
 }
 export interface GetPostByIdParams {
-  postId: string;
+  _id: Schema.Types.ObjectId;
 }
 export interface UpdatePostParams {
   postId: string;
@@ -71,7 +71,7 @@ export interface UpdatePostParams {
   path: string;
 }
 export interface DeletePostParams {
-  postId: string;
+  _id: string;
 }
 export interface GetPostByTagParams {
   tag: string;
@@ -80,12 +80,9 @@ export interface GetPostByTagParams {
 export interface GetPostByAuthorParams {
   author: string;
 }
-export interface GetPostByTypeParams {
-  type: string;
-}
-export interface GetPostByResourceLinkParams {
-  url: string;
-}
 export interface GetPostByQueryParams {
-  query: string;
+  query?: string;
+  filter?: string;
+  page?: number;
+  pageSize?: number;
 }

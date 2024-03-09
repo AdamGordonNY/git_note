@@ -3,39 +3,50 @@ import { revalidatePath } from "next/cache";
 import dbConnect from "@/database/dbConnect";
 import { FilterQuery } from "mongoose";
 
+import { CreateNewPostParams, GetPostParams } from "./shared.types";
+
 // just using basic crud funcitons for now
-export const getAllPosts = async (params: any) => {
+export const getAllPosts = async (params: GetPostParams) => {
   try {
     await dbConnect();
     const { searchQuery, filter, page = 1, pageSize = 10 } = params;
+
     const skipAmount = (page - 1) * pageSize;
-    const query: FilterQuery<typeof postModel> = {};
+
+    const query: FilterQuery<IPost> = {};
+
     if (searchQuery) {
       query.$or = [{ name: { $regex: new RegExp(searchQuery, "i") } }];
     }
     let sortOptions = {};
 
     switch (filter) {
-      case "userId":
-        sortOptions = { questions: -1 };
-        break;
-      case "postId":
+      case "components":
+        query.postType = "components";
         sortOptions = { createdAt: -1 };
         break;
-
+      case "knowledge":
+        query.postType = "knowledge";
+        sortOptions = { createdAt: -1 };
+        break;
+      case "workflows":
+        query.postType = "workflows";
+        sortOptions = { createdAt: -1 };
+        break;
       default:
+        sortOptions = { createdAt: -1 };
         break;
     }
     const totalPosts = await postModel.countDocuments(query);
 
-    const posts = await postModel
+    const filteredPosts = await postModel
       .find(query)
       .sort(sortOptions)
       .skip(skipAmount)
       .limit(pageSize);
     const isNext = totalPosts > skipAmount + postModel.length;
 
-    return { posts: posts as IPost[], isNext };
+    return { posts: filteredPosts as IPost[], isNext };
   } catch (error) {
     console.log(error);
   }
@@ -51,35 +62,24 @@ export const getPostById = async (postId: string) => {
   }
 };
 
-type createNewPostParams = {
-  title: string;
-  body: string;
-  author: string;
-  postType: string;
-  tags: string[];
-  resourceLink: {
-    label: string;
-    url: string;
-  };
-};
-
-export const createNewPost = async (data: createNewPostParams) => {
+export const createNewPost = async (data: CreateNewPostParams) => {
   try {
     await dbConnect();
-    const post = await postModel.create({
+    const post = (await postModel.create({
       title: data.title,
       body: data.body,
       author: data.author,
       postType: data.postType,
       tags: data.tags,
       resourceLink: data.resourceLink,
-    });
+    })) as IPost;
 
-    return post;
+    return post as IPost;
   } catch (error) {
     console.log(error);
   }
 };
+
 export const updatePost = async (
   postId: string,
   updateData: Partial<IPost>,
@@ -97,6 +97,7 @@ export const updatePost = async (
     console.log(error);
   }
 };
+
 export const deletePostById = async (postId: string) => {
   try {
     await dbConnect();
