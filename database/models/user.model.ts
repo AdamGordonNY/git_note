@@ -1,14 +1,14 @@
 import { Schema, Document, model, models } from "mongoose";
 
 export interface IUser extends Document {
-  _id: string;
+  _id: Schema.Types.ObjectId;
   fullname: string;
   username: string;
   password: string;
   image: string;
+  location?: string;
   createdAt: Date;
   updatedAt: Date;
-
   portfolio?: string;
   learningGoals?: string[];
   role?: "user" | "admin";
@@ -17,7 +17,7 @@ export interface IUser extends Document {
   availability?: Date[];
   tags?: string[];
   socials?: string[];
-  posts?: string[];
+  posts?: Schema.Types.ObjectId[];
 }
 
 const SocialsSchema = new Schema({
@@ -46,6 +46,13 @@ const SocialsSchema = new Schema({
     required: false,
   },
 });
+const technologyStackSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
 // need to add enumeration for some fields but wanted to make sure signIn logic works first.
 const UserSchema = new Schema(
   {
@@ -61,6 +68,10 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    location: {
+      type: String,
+      required: false,
     },
     image: {
       type: String,
@@ -80,12 +91,11 @@ const UserSchema = new Schema(
       default: "user",
     },
     technologyStack: {
-      type: [Schema.Types.ObjectId],
+      type: technologyStackSchema,
       required: false,
-      ref: "Technology",
     },
     experienceLevel: {
-      type: [Schema.Types.ObjectId],
+      type: [String],
       required: false,
     },
     availability: {
@@ -100,7 +110,6 @@ const UserSchema = new Schema(
     socials: {
       type: SocialsSchema,
       required: false,
-      ref: "Social",
     },
     posts: {
       type: [Schema.Types.ObjectId],
@@ -111,4 +120,4 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-export default models.User || model("User", UserSchema);
+export default models.User || model<IUser>("User", UserSchema);
