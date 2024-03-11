@@ -1,7 +1,7 @@
 import dbConnect from "@/database/dbConnect";
 import User, { IUser } from "@/database/models/user.model";
 import { revalidatePath } from "next/cache";
-import { UpdateUserParams } from "./shared.actions";
+import { UpdateUserParams } from "./shared.types";
 
 export const getOneUser = async (email: string) => {
   try {
@@ -12,21 +12,11 @@ export const getOneUser = async (email: string) => {
     console.log(error);
   }
 };
-export const getUserId = async (
-  email: string
-): Promise<string | null | undefined> => {
-  try {
-    await dbConnect();
-    const user = await User.findOne({ email });
-    return user?._id as string;
-  } catch (error) {
-    console.log(error);
-  }
-};
+
 export const getUserById = async ({ _id }: { _id: string }) => {
   try {
     await dbConnect();
-    const user = await User.findById(_id);
+    const user = (await User.findById(_id)) as IUser;
     return user as IUser;
   } catch (error) {
     console.log(error);
