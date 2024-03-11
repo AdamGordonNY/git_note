@@ -1,7 +1,9 @@
 import dbConnect from "@/database/dbConnect";
 import User, { IUser } from "@/database/models/user.model";
 import { revalidatePath } from "next/cache";
-import { UpdateUserParams } from "./shared.types";
+import { UpdateUserParams, CreateUserParams } from "./shared.types";
+
+import bcryptjs from "bcryptjs";
 
 export const getOneUser = async (email: string) => {
   try {
@@ -39,11 +41,17 @@ export async function updateUser(params: UpdateUserParams) {
     throw error;
   }
 }
-export const createNewUser = async (userData: Partial<IUser>) => {
+export const createNewUser = async (userData: CreateUserParams) => {
   try {
     await dbConnect();
-    const user = await User.create(userData);
-    return user as IUser;
+    const hashedPassword = await bcryptjs.hash(userData.password, 5);
+    const newUser = await User.create({
+      fullname: userData.fullname,
+      username: userData.username,
+      password: hashedPassword,
+    });
+
+    return newUser as IUser;
   } catch (error) {
     console.log(error);
   }
