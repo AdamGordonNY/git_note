@@ -4,7 +4,6 @@ export interface ITag extends Document {
   _id: Schema.Types.ObjectId;
   name: string;
   posts: Schema.Types.ObjectId[];
-  users: Schema.Types.ObjectId[];
 }
 
 export const Tag = new Schema(
@@ -15,15 +14,8 @@ export const Tag = new Schema(
     },
     posts: [
       {
-        type: [Schema.Types.ObjectId],
+        type: Schema.Types.ObjectId,
         ref: "Post",
-        required: false,
-      },
-    ],
-    users: [
-      {
-        type: [Schema.Types.ObjectId],
-        ref: "User",
         required: false,
       },
     ],

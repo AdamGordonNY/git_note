@@ -3,7 +3,12 @@ import { revalidatePath } from "next/cache";
 import dbConnect from "@/database/dbConnect";
 import { FilterQuery } from "mongoose";
 
-import { CreateNewPostParams, GetPostParams } from "./shared.types";
+import {
+  CreateNewPostParams,
+  DeletePostParams,
+  GetPostParams,
+  UpdatePostParams,
+} from "./shared.types";
 
 // just using basic crud funcitons for now
 export const getAllPosts = async (params: GetPostParams) => {
@@ -80,15 +85,15 @@ export const createNewPost = async (data: CreateNewPostParams) => {
   }
 };
 
-export const updatePost = async (
-  postId: string,
-  updateData: Partial<IPost>,
-  path: string
-) => {
+export const updatePost = async ({
+  _id,
+  updateData,
+  path,
+}: UpdatePostParams) => {
   try {
     await dbConnect();
 
-    const post = await postModel.findByIdAndUpdate(postId, updateData, {
+    const post = await postModel.findByIdAndUpdate(_id, updateData, {
       new: true,
     });
     revalidatePath(path);
@@ -98,10 +103,10 @@ export const updatePost = async (
   }
 };
 
-export const deletePostById = async (postId: string) => {
+export const deletePostById = async (_id: DeletePostParams) => {
   try {
     await dbConnect();
-    const deletedPost = await postModel.findByIdAndDelete(postId);
+    const deletedPost = await postModel.findByIdAndDelete(_id);
     return deletedPost as IPost;
   } catch (error) {
     console.log(error);

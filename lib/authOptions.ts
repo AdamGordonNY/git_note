@@ -40,16 +40,16 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
 
       credentials: {
-        username: { label: "Email", type: "email", placeholder: "..." },
+        email: { label: "Email", type: "email", placeholder: "..." },
         password: { label: "Password", type: "password" },
       },
 
       async authorize(credentials, req) {
         await dbConnect();
-        if (credentials?.password === null || credentials?.username === null)
+        if (credentials?.password === null || credentials?.email === null)
           throw new Error("Please fill Out all Fields");
         try {
-          const user = await getOneUser(credentials?.username!);
+          const user = await getOneUser(credentials?.email!);
           if (!user) {
             throw new Error("User not found, please check your credentials");
           }

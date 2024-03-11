@@ -1,7 +1,11 @@
 import dbConnect from "@/database/dbConnect";
 import User, { IUser } from "@/database/models/user.model";
 import { revalidatePath } from "next/cache";
-import { UpdateUserParams, CreateUserParams } from "./shared.types";
+import {
+  UpdateUserParams,
+  CreateUserParams,
+  DeleteUserParams,
+} from "./shared.types";
 
 import bcryptjs from "bcryptjs";
 
@@ -47,7 +51,7 @@ export const createNewUser = async (userData: CreateUserParams) => {
     const hashedPassword = await bcryptjs.hash(userData.password, 5);
     const newUser = await User.create({
       fullname: userData.fullname,
-      username: userData.username,
+      email: userData.email,
       password: hashedPassword,
     });
 
@@ -56,7 +60,7 @@ export const createNewUser = async (userData: CreateUserParams) => {
     console.log(error);
   }
 };
-export const deleteUserById = async ({ _id }: { _id: string }) => {
+export const deleteUserById = async ({ _id }: DeleteUserParams) => {
   try {
     await dbConnect();
     await User.findByIdAndDelete(_id);

@@ -1,36 +1,18 @@
 import dbConnect from "@/database/dbConnect";
 import {
   GetTagByPostIdParams,
-  GetTagByUserIdParams,
   UpdateTagParams,
-  createNewTagParams,
+  CreateNewTagParams,
 } from "@/lib/actions/shared.types";
 import tagModel, { ITag } from "@/database/models/tag.model";
 import { revalidatePath } from "next/cache";
 
-export const getTagByPostAndUserId = async ({
-  userId,
-  postId,
-}: {
-  userId: string;
-  postId: string;
-}) => {
-  try {
-    await dbConnect();
-    const tag = await tagModel.find({ user: userId, post: postId });
-    return tag as ITag[];
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const createNewTag = async (data: createNewTagParams) => {
+export const createNewTag = async (data: CreateNewTagParams) => {
   try {
     await dbConnect();
     const tag = await tagModel.create({
       name: data.name,
-      posts: data.postId,
-      users: data.userId,
+      postId: data.postId,
     });
 
     return tag;
@@ -48,19 +30,11 @@ export const updateTag = async (params: UpdateTagParams) => {
     console.log(error);
   }
 };
-export const getTagByUserId = async ({ userId }: GetTagByUserIdParams) => {
-  try {
-    await dbConnect();
-    const tags = await tagModel.find({ users: userId });
-    return tags as ITag[];
-  } catch (error) {
-    console.log(error);
-  }
-};
+
 export const getTagByPostId = async ({ postId }: GetTagByPostIdParams) => {
   try {
     await dbConnect();
-    const tags = await tagModel.find({ posts: postId });
+    const tags = await tagModel.find({ postId });
     return tags as ITag[];
   } catch (error) {
     console.log(error);
@@ -70,6 +44,15 @@ export const getTagById = async ({ _id }: { _id: string }) => {
   try {
     await dbConnect();
     const tag = await tagModel.findById(_id);
+    return tag as ITag;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getTagByName = async ({ name }: { name: string }) => {
+  try {
+    await dbConnect();
+    const tag = await tagModel.findOne({ name });
     return tag as ITag;
   } catch (error) {
     console.log(error);
