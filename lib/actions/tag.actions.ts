@@ -4,7 +4,7 @@ import {
   GetTagByUserIdParams,
   UpdateTagParams,
   createNewTagParams,
-} from "@/database/models/shared.types";
+} from "@/lib/actions/shared.types";
 import tagModel, { ITag } from "@/database/models/tag.model";
 import { revalidatePath } from "next/cache";
 
