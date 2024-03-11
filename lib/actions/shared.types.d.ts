@@ -4,7 +4,6 @@ import { IPost } from "@/database/models/post.model";
 import { ITag } from "@/database/models/tag.model";
 
 export interface CreateUserParams {
-  username: any;
   email: string;
   password: string;
   fullname: string;
