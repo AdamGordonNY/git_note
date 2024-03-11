@@ -1,4 +1,4 @@
-import { NextAuthOptions, getServerSession } from "next-auth";
+import { NextAuthOptions, User, getServerSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -60,7 +60,7 @@ export const authOptions: NextAuthOptions = {
             );
 
             if (isMatch) {
-              return user;
+              return user as User;
             } else {
               throw new Error("Email or password is incorrect");
             }
