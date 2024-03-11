@@ -16,7 +16,6 @@ const baseClass = `rounded-[4px] shadow-resource inline-flex px-3.5 py-2.5 gap-x
 interface CustomButtonProps extends ButtonProps {
   buttonType: ReusableButtonType;
   className?: string;
-  type?: any;
 }
 
 const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(

@@ -14,7 +14,7 @@ interface SidebarLinkProps extends React.PropsWithChildren {
   linkType?: SidebarLinkType;
   href: string;
 }
-const SidebarLink = ({
+const ReusableSidebarLink = ({
   linkType = "plain",
   children,
   href,
@@ -58,4 +58,4 @@ const SidebarLink = ({
   );
 };
 
-export default SidebarLink;
+export default ReusableSidebarLink;
