@@ -7,6 +7,7 @@ import {
   CreateNewPostParams,
   DeletePostParams,
   GetPostParams,
+  GetTagByPostIdParams,
   UpdatePostParams,
 } from "./shared.types";
 
@@ -57,7 +58,7 @@ export const getAllPosts = async (params: GetPostParams) => {
   }
 };
 
-export const getPostById = async (postId: string) => {
+export const getPostById = async (postId: GetTagByPostIdParams) => {
   try {
     await dbConnect();
     const post = await postModel.findById(postId);
