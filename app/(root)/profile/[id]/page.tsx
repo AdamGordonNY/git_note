@@ -14,6 +14,7 @@ const ProfilePage = async () => {
 
   if (session) {
     user = await getOneUser(session?.user?.email!);
+    console.log(user);
   }
 
   return (

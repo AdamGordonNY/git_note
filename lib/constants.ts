@@ -7,17 +7,25 @@ import {
   FaInstagram,
   FaJava,
   FaJs,
+  FaLaravel,
   FaLinkedin,
   FaNodeJs,
+  FaPhp,
   FaPython,
   FaReact,
   FaTwitter,
 } from "react-icons/fa";
-import { BiLogoTailwindCss } from "react-icons/bi";
+import { TbBrandNextjs } from "react-icons/tb";
+import { BiLogoTailwindCss, BiLogoTypescript } from "react-icons/bi";
 import { IconType } from "react-icons/lib";
 
 export const githubClientID = process.env.GITHUB_CLIENT_ID!;
 export const githubClientSecret = process.env.GITHUB_CLIENT_SECRET!;
+
+export const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME!;
+export const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY!;
+export const cloudinaryApiSecret = process.env.CLOUDINARY_API_SECRET!;
+
 export const quickLinks: SidebarLink[] = [
   {
     linkType: "plain",
@@ -65,8 +73,8 @@ export const socialLinks: SocialLink[] = [
   },
   {
     linkType: "instagram",
-    route: "/rss.xml",
-    label: "RSS",
+    route: "https://instagram.com",
+    label: "InstaGram",
     icon: FaInstagram,
   },
 ];
@@ -84,6 +92,10 @@ export const TechIcons: IconType[] = [
   FaJava,
   FaGithub,
   BiLogoTailwindCss,
+  TbBrandNextjs,
+  FaLaravel,
+  FaPhp,
+  BiLogoTypescript,
 ];
 export const techStackBadges: TechStackBadges[] = [
   {
@@ -121,5 +133,21 @@ export const techStackBadges: TechStackBadges[] = [
   {
     key: "tailwind",
     icon: TechIcons[8],
+  },
+  {
+    key: "nextjs",
+    icon: TechIcons[9],
+  },
+  {
+    key: "laravel",
+    icon: TechIcons[10],
+  },
+  {
+    key: "php",
+    icon: TechIcons[11],
+  },
+  {
+    key: "typescript",
+    icon: TechIcons[12],
   },
 ];

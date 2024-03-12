@@ -1,7 +1,7 @@
 import { Schema, Document, model, models } from "mongoose";
 
 export interface IUser extends Document {
-  _id: Schema.Types.ObjectId;
+  _id: string;
   fullname: string;
   email: string;
   password: string;
@@ -15,7 +15,6 @@ export interface IUser extends Document {
   technologyStack?: string[];
   experienceLevel?: string[];
   availability?: Date[];
-  tags?: string[];
   socials?: string[];
   posts?: Schema.Types.ObjectId[];
 }
@@ -102,11 +101,7 @@ const UserSchema = new Schema(
       type: [Date],
       required: false,
     },
-    tags: {
-      type: [Schema.Types.ObjectId],
-      ref: "Tag",
-      required: false,
-    },
+
     socials: {
       type: SocialsSchema,
       required: false,
@@ -120,4 +115,4 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-export default models.User || model<IUser>("User", UserSchema);
+export default models?.User || model<IUser>("User", UserSchema);

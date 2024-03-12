@@ -17,7 +17,7 @@
   }
   /* Display 1 Bold */
   .display-1-bold {
-    @apply text-4xl leading-10 font-bold;
+    @apply text-[32px] leading-10 font-bold;
   }
 
   /* Display 2 Bold */
@@ -121,5 +121,18 @@
   }
   .sidebar-icon_border {
     border: 1.5px solid rgba(85, 89, 125, 1);
+  }
+  .upload-button {
+    /* Black/700 */
+    background: #1d2032;
+    /* Button/Secondary/normal */
+    box-shadow:
+      0px 1px 1px rgba(18, 18, 18, 0.1),
+      0px 0px 0px 1px rgba(18, 18, 18, 0.07),
+      0px 1px 3px rgba(18, 18, 18, 0.1);
+    border-radius: 5px;
+  }
+  .profile-input {
+    @apply w-[256px] h-[38px] rounded-md bg-black-700 text-white-100;
   }
 }

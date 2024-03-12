@@ -9,7 +9,9 @@ type ReusableButtonType =
   | "gradient"
   | "onboarding"
   | "addResource"
-  | "formSubmit";
+  | "formSubmit"
+  | "profileButton";
+
 const baseClass = `rounded-[4px] shadow-resource inline-flex px-3.5 py-2.5 gap-x-2`;
 
 // take the prop type from a regular button, now our button expects onClicks, children, etc...
