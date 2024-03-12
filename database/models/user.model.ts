@@ -18,7 +18,10 @@ export interface IUser extends Document {
   socials?: string[];
   posts?: Schema.Types.ObjectId[];
 }
-
+const GoalSchema = new Schema({
+  name: { type: String, required: true },
+  completed: { type: Boolean, required: true },
+});
 const SocialsSchema = new Schema({
   twitter: {
     type: String,
@@ -81,7 +84,7 @@ const UserSchema = new Schema(
       required: false,
     },
     learningGoals: {
-      type: [String],
+      type: [GoalSchema],
       required: false,
     },
     role: {
@@ -90,9 +93,10 @@ const UserSchema = new Schema(
       default: "user",
     },
     technologyStack: {
-      type: technologyStackSchema,
+      type: [technologyStackSchema],
       required: false,
     },
+
     experienceLevel: {
       type: [String],
       required: false,

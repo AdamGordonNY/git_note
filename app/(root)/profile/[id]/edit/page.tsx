@@ -21,7 +21,7 @@ const EditProfilePage = async () => {
         Edit Profile
       </span>
       <div className="px-[30]">
-        <UploadPhoto email={user?.email!} image={user?.image} />
+        <UploadPhoto image={user?.image} />
         <EditProfile user={user!} _id={JSON.stringify(user?.id)} />
       </div>
     </div>

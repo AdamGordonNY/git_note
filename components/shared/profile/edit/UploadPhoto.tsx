@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import Image from "next/image";
@@ -8,27 +8,27 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { uploadImage } from "@/lib/actions/cloudinary.actions";
 interface UploadPhotoProps {
-  email: string;
   image?: string;
 }
-const UploadPhoto = ({ email, image }: UploadPhotoProps) => {
-  const { register, handleSubmit, getValues } = useForm();
-  const fileInputRef = React.useRef(getValues("file"));
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
+const UploadPhoto = ({ image }: UploadPhotoProps) => {
+  const { register, handleSubmit, getValues, watch } = useForm();
+  const watchInput = watch("file");
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const { ref, ...rest } = register("file");
   const onSubmit = async () => {
+    inputRef.current?.click();
+  };
+  useEffect(() => {
     const file = getValues("file")[0];
-    // confused as to how this worked in the video but it's not working for me
+    if (!file) return;
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = async () => {
       const fileData = reader.result;
-      const uploadResponse = uploadImage(fileData);
-      console.log("File Uploaded Successfully", uploadResponse);
+      await uploadImage(fileData);
     };
-  };
-
+  }, [getValues, watchInput]);
   return (
     <>
       <div className="inline-flex flex-row px-[30px]">
@@ -40,9 +40,17 @@ const UploadPhoto = ({ email, image }: UploadPhotoProps) => {
           className="inset-inline-start mr-[8px]"
         />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Input type="file" className="hidden" {...register("file")} />
+          <Input
+            type="file"
+            className="hidden"
+            {...rest}
+            ref={(e) => {
+              ref(e);
+              inputRef.current = e; // you can still assign to ref
+            }}
+          />
           <button
-            onClick={handleButtonClick}
+            type="submit"
             className="paragraph-3-medium h-[40px] w-[200px] rounded-[5px] border-[5px] bg-black-700 text-white-300"
           >
             {" "}

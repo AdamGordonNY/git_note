@@ -30,11 +30,15 @@ export const getUserById = async ({ _id }: { _id: string }) => {
   }
 };
 // having issues with  forms and updating user data
-export async function updateUser({ _id, updateData, path }: UpdateUserParams) {
+export async function updateUser({
+  email,
+  updateData,
+  path,
+}: UpdateUserParams) {
   try {
     await dbConnect();
 
-    const user = await userModel.findOneAndUpdate({ _id }, updateData, {
+    const user = await userModel.findOneAndUpdate({ email }, updateData, {
       new: true,
     });
 

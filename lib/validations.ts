@@ -43,6 +43,10 @@ const SocialsZodSchema = z.object({
 const TechnologyStackZodSchema = z.object({
   name: z.string(),
 });
+const GoalZodSchema = z.object({
+  name: z.string().min(10).max(10),
+  completed: z.boolean().default(false),
+});
 
 const UserEditZodSchema = z.object({
   fullname: z.string().optional(),
@@ -50,7 +54,7 @@ const UserEditZodSchema = z.object({
   location: z.string().optional(),
   image: z.string().optional(),
   portfolio: z.string().optional(),
-  learningGoals: z.array(z.string()).optional(),
+  learningGoals: GoalZodSchema.array().optional(),
   technologyStack: TechnologyStackZodSchema.array().optional(),
   experienceLevel: z.array(z.string()).optional(),
   availability: z.array(z.date()).optional(),
