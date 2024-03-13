@@ -1,11 +1,8 @@
 import { Schema, Document, model, models } from "mongoose";
-export interface IGoal extends Document {
-  name: string;
-  completed: string;
-}
+
 export interface IUser extends Document {
   _id: string;
-  fullname: string;
+  fullname?: string;
   email: string;
   password: string;
   image: string;
@@ -16,18 +13,24 @@ export interface IUser extends Document {
   learningGoals?: {
     name: string;
     completed: boolean;
-  };
+  }[];
   role?: "user" | "admin";
-  technologyStack?: string[];
-  experienceLevel?: string[];
+  technologies?: string[];
+  experiences: string[];
   availability?: Date[];
-  socials?: Object[];
+  socials?: {
+    twitter?: string;
+    facebook?: string;
+    linkedin?: string;
+    github?: string;
+    instagram?: string;
+    dribbble?: string;
+  }[];
   posts?: Schema.Types.ObjectId[];
 }
-
 const GoalSchema = new Schema({
   name: { type: String, required: true },
-  completed: { type: Boolean, required: true },
+  completed: { type: Boolean, required: true }, // Ensure this aligns with your form's handling
 });
 const SocialsSchema = new Schema({
   twitter: {
@@ -62,6 +65,16 @@ const technologyStackSchema = new Schema({
   },
 });
 
+const AvailabilitySchema = new Schema({
+  dates: {
+    type: [Date],
+    required: true,
+  },
+  times: {
+    type: [String],
+    required: true,
+  },
+});
 // need to add enumeration for some fields but wanted to make sure signIn logic works first.
 const UserSchema = new Schema(
   {
@@ -90,28 +103,32 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
-    learningGoals: {
-      type: [GoalSchema],
-      required: false,
-    },
+    learningGoals: [
+      {
+        type: GoalSchema,
+        required: false,
+      },
+    ],
     role: {
       type: String,
       required: false,
       default: "user",
     },
-    technologyStack: {
-      type: [technologyStackSchema],
+    technologies: {
+      type: technologyStackSchema,
       required: false,
     },
 
-    experienceLevel: {
+    experiences: {
       type: [String],
       required: false,
     },
-    availability: {
-      type: [Date],
-      required: false,
-    },
+    availability: [
+      {
+        type: AvailabilitySchema,
+        required: false,
+      },
+    ],
 
     socials: {
       type: SocialsSchema,

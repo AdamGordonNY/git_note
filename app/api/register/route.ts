@@ -3,8 +3,8 @@ import { createNewUser, getOneUser } from "@/lib/actions/user.actions";
 
 export const POST = async (request: NextRequest) => {
   try {
-    const { fullname, username, password } = await request.json();
-    const existingUser = await getOneUser(username);
+    const { fullname, email, password } = await request.json();
+    const existingUser = await getOneUser(email);
     if (existingUser) {
       // User already exists, return an error message
       return new NextResponse(JSON.stringify(Error), {
@@ -13,7 +13,7 @@ export const POST = async (request: NextRequest) => {
       });
     }
     const user = await createNewUser({
-      username,
+      email,
       password,
       fullname,
     });

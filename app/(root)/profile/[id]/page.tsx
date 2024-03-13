@@ -20,17 +20,15 @@ const ProfilePage = async () => {
   return (
     <div className="box-border flex min-h-[screen] w-full flex-col ">
       {user && <ProfileHeader />}
-      {user && (
-        <LearningGoals user={user} learningGoals={user.learningGoals ?? []} />
-      )}
+      {user && <LearningGoals user={user} />}
       {user && (
         <ExperienceLevels
           user={user}
-          experienceLevels={user.experienceLevel ?? []}
+          experienceLevels={user.experiences ?? []}
         />
       )}
       {user && (
-        <TechStacks user={user} technologies={user.technologyStack ?? []} />
+        <TechStacks user={user} technologies={user.technologies ?? []} />
       )}
     </div>
   );
