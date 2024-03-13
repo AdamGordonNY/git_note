@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useEffect, useTransition } from "react";
+import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
@@ -18,15 +18,17 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomButton from "../../CustomButton";
 import { Input } from "@/components/ui/input";
-
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import LearningGoal from "../LearningGoal";
+
 interface EditProfileProps {
   user: IUser;
   _id: string;
 }
 const EditProfile = ({ user }: EditProfileProps) => {
   const pathname = usePathname();
+
   const form = useForm<z.infer<typeof UserEditZodSchema>>({
     resolver: zodResolver(UserEditZodSchema),
     defaultValues: {
@@ -34,14 +36,36 @@ const EditProfile = ({ user }: EditProfileProps) => {
       fullname: user.fullname || "",
       location: user.location || "",
       portfolio: user.portfolio || "",
-      learningGoals: user.learningGoals || [],
-      technologyStack: user.technologyStack || [],
+      learningGoals: (
+        (user?.learningGoals || []) as { name: string; completed: boolean }[]
+      ).map((goal) => ({
+        name: goal.name,
+        completed: goal.completed === true ? true : goal.completed === false,
+      })),
+      technologyStack: (user.technologyStack || []).map((item) => ({
+        name: item,
+      })),
       experienceLevel: user.experienceLevel || [],
       availability: user.availability || [],
-      socials: user.socials || [],
+      socials: {
+        twitter: "",
+        facebook: "",
+        linkedin: "",
+        github: "",
+        instagram: "",
+        dribbble: "",
+      } as {
+        twitter?: string;
+        facebook?: string;
+        linkedin?: string;
+        github?: string;
+        instagram?: string;
+        dribbble?: string;
+      },
     },
   });
-
+  const formValues = form.watch();
+  useEffect(() => {}, [formValues]);
   const {
     fields: learningGoalsFields,
     append: appendLearningGoal,
@@ -61,6 +85,15 @@ const EditProfile = ({ user }: EditProfileProps) => {
   });
 
   const {
+    fields: experienceLevelFields,
+    append: appendExperienceLevel,
+    remove: removeExperienceLevel,
+  } = useFieldArray({
+    name: "experienceLevel",
+    control: form.control,
+  });
+
+  const {
     fields: availabilityFields,
     append: appendAvailability,
     remove: removeAvailability,
@@ -70,13 +103,29 @@ const EditProfile = ({ user }: EditProfileProps) => {
   });
 
   const onSubmit = async () => {
-    const updateData = form.getValues();
+    const {
+      portfolio,
+      learningGoals,
+      technologyStack,
+      fullname,
+      location,
+      experienceLevel,
+      availability,
+    } = form.getValues();
 
     if (user._id) {
       try {
         await updateUser({
           email: user.email,
-          updateData,
+          updateData: {
+            fullname,
+            portfolio,
+            experienceLevel,
+            ...technologyStack,
+            location,
+            ...learningGoals,
+            ...availability,
+          },
           path: pathname,
         });
       } catch (error) {
@@ -157,16 +206,24 @@ const EditProfile = ({ user }: EditProfileProps) => {
               <FormItem>
                 <FormLabel>Learning Goals</FormLabel>
                 <FormControl>
-                  {learningGoalsFields.map((goal, index) => (
-                    <div key={goal.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        {...form.register(`learningGoals.${index}.completed`)}
-                        checked={goal.completed}
-                        className="bg-primary-500"
-                      />
-                      <span>{goal.name}</span>
-                    </div>
-                  ))}
+                  {user?.learningGoals &&
+                    learningGoalsFields.map((goal, index) => (
+                      <div
+                        key={goal.id}
+                        className="flex items-center space-x-2"
+                      >
+                        <LearningGoal
+                          name={goal.name}
+                          completed={goal.completed}
+                        />
+                        <Checkbox
+                          {...form.register(`learningGoals.${index}.completed`)}
+                          checked={goal.completed}
+                          className="bg-primary-500"
+                        />
+                        <span>{goal.name}</span>
+                      </div>
+                    ))}
                 </FormControl>
                 <FormDescription>
                   Select the goals you have achieved.
@@ -175,33 +232,77 @@ const EditProfile = ({ user }: EditProfileProps) => {
               </FormItem>
             )}
           />
+          <CustomButton
+            buttonType="profileButton"
+            onClick={() => removeLearningGoal()}
+          ></CustomButton>
+          <CustomButton
+            buttonType="profileButton"
+            onClick={() => appendLearningGoal}
+          >
+            Add Goal{" "}
+          </CustomButton>
           <FormField
             control={form.control}
-            name="technologyStack"
+            name="experienceLevel"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Technologies</FormLabel>
+                <FormLabel>Experience Levels</FormLabel>
                 <FormControl>
-                  {technologyStackFields.map((item, index) => (
+                  {experienceLevelFields.map((item, index) => (
                     <div key={item.name}>
                       <Input
                         {...form.register(`technologyStack.${index}.name`)}
                         defaultValue={item.name} // This will make each input controlled
                       />
-                      <button
-                        type="button"
+                      <CustomButton
+                        buttonType="profileButton"
+                        onClick={() => removeExperienceLevel(index)}
+                      >
+                        Remove
+                      </CustomButton>
+                    </div>
+                  ))}
+                  <CustomButton
+                    buttonType="profileButton"
+                    type="button"
+                    onClick={() => appendExperienceLevel({ name: field.name })}
+                  >
+                    Add Experience
+                  </CustomButton>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="technologyStack"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Technology Stack</FormLabel>
+                <FormControl>
+                  {technologyStackFields.map((tech, index) => (
+                    <div key={tech.id}>
+                      <Input
+                        {...form.register(`technologyStack.${index}.name`)}
+                        defaultValue={tech.name} // Ensure defaultValue is correctly set
+                      />
+                      <CustomButton
+                        buttonType="profileButton"
                         onClick={() => removeTechnologyStack(index)}
                       >
                         Remove
-                      </button>
+                      </CustomButton>
                     </div>
                   ))}
-                  <button
-                    type="button"
+                  <CustomButton
+                    buttonType="profileButton"
                     onClick={() => appendTechnologyStack({ name: "" })}
                   >
                     Add Technology
-                  </button>
+                  </CustomButton>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -212,28 +313,34 @@ const EditProfile = ({ user }: EditProfileProps) => {
             name="availability"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Availability</FormLabel>
+                <FormLabel className="text-white-300">Availability</FormLabel>
                 <FormControl>
                   {availabilityFields.map((item, index) => (
                     <div key={index}>
                       <Calendar
+                        onSelect={(date: any) => {
+                          const dateString = date.toISOString(); // Or format the date as needed
+                          form.setValue(`availability.${index}`, dateString);
+                        }}
                         {...form.register(`availability.${index}`)}
-                        selected={item} // Assuming you are using a date picker that accepts a 'selected' prop
+                        defaultMonth={new Date()} // Convert the string representation of the current date to a Date object
                       />
-                      <button
+                      <CustomButton
+                        buttonType="profileButton"
                         type="button"
                         onClick={() => removeAvailability(index)}
                       >
                         Remove Date
-                      </button>
+                      </CustomButton>
+                      <CustomButton
+                        buttonType="profileButton"
+                        type="button"
+                        onClick={() => appendAvailability(item)}
+                      >
+                        Add Date
+                      </CustomButton>
                     </div>
                   ))}
-                  <button
-                    type="button"
-                    onClick={() => appendAvailability(new Date())}
-                  >
-                    Add Date
-                  </button>
                 </FormControl>
                 <FormMessage />
               </FormItem>

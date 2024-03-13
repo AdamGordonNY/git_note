@@ -32,12 +32,12 @@ export const onboardingSchema = z.object({
 });
 
 const SocialsZodSchema = z.object({
-  twitter: z.string().optional(),
-  facebook: z.string().optional(),
-  linkedin: z.string().optional(),
-  github: z.string().optional(),
-  instagram: z.string().optional(),
-  dribbble: z.string().optional(),
+  twitter: z.string().url(),
+  facebook: z.string().url(),
+  linkedin: z.string().url(),
+  github: z.string().url(),
+  instagram: z.string().url(),
+  dribbble: z.string().url(),
 });
 
 const TechnologyStackZodSchema = z.object({
@@ -50,15 +50,17 @@ const GoalZodSchema = z.object({
 
 const UserEditZodSchema = z.object({
   fullname: z.string().optional(),
-  email: z.string().optional().readonly(), // Note: Changing usernames might require additional checks for uniqueness.
+  email: z.string().optional().readonly(),
   location: z.string().optional(),
   image: z.string().optional(),
   portfolio: z.string().optional(),
-  learningGoals: GoalZodSchema.array().optional(),
-  technologyStack: TechnologyStackZodSchema.array().optional(),
-  experienceLevel: z.array(z.string()).optional(),
-  availability: z.array(z.date()).optional(),
-  socials: SocialsZodSchema.optional(),
+  learningGoals: z.array(GoalZodSchema).optional(), // Array of objects as per GoalZodSchema
+  technologyStack: z.array(TechnologyStackZodSchema).optional(), // Array of strings for technologyStack
+  experienceLevel: z.array(z.string().min(5).max(100)).optional(),
+  availability: z
+    .array(z.date().min(new Date(Date.now().toFixed(2)))) // Array of dates for availability
+    .optional(),
+  socials: SocialsZodSchema.optional(), // Object with optional string properties for social links
 });
 
 export default UserEditZodSchema;

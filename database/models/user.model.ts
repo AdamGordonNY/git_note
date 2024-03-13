@@ -1,5 +1,8 @@
 import { Schema, Document, model, models } from "mongoose";
-
+export interface IGoal extends Document {
+  name: string;
+  completed: string;
+}
 export interface IUser extends Document {
   _id: string;
   fullname: string;
@@ -10,14 +13,18 @@ export interface IUser extends Document {
   createdAt: Date;
   updatedAt: Date;
   portfolio?: string;
-  learningGoals?: string[];
+  learningGoals?: {
+    name: string;
+    completed: boolean;
+  };
   role?: "user" | "admin";
   technologyStack?: string[];
   experienceLevel?: string[];
   availability?: Date[];
-  socials?: string[];
+  socials?: Object[];
   posts?: Schema.Types.ObjectId[];
 }
+
 const GoalSchema = new Schema({
   name: { type: String, required: true },
   completed: { type: Boolean, required: true },
