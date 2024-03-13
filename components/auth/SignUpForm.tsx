@@ -16,6 +16,7 @@ import {
 import { z } from "zod";
 import { signUpSchema } from "@/lib/validations";
 import { signIn } from "next-auth/react";
+import { createNewUser } from "@/lib/actions/user.actions";
 const SignUpForm = () => {
   const [message, setMessage] = useState<string>("");
   const [formError, setFormError] = useState<string>("");
@@ -30,16 +31,19 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async () => {
-    const { email, password } = form.getValues();
+    const { fullname, email, password } = form.getValues();
 
     try {
       startTransition(async () => {
-        await signIn("credentials", {
-          redirect: true,
-          email,
-          password,
-          callbackUrl: "/",
-        });
+        const res = await createNewUser({ fullname, email, password });
+
+        if (res?.ok)
+          await signIn("credentials", {
+            redirect: true,
+            email,
+            password,
+            callbackUrl: `${window.location.origin}`,
+          });
       });
     } catch (err: any) {
       setMessage(err);
@@ -108,7 +112,7 @@ const SignUpForm = () => {
           <span className="paragraph-3-medium text-red-600">{formError}</span>
         )}
         <CustomButton buttonType="primary" type="submit" disabled={isPending}>
-          Sign Up
+          Create An Account
         </CustomButton>
       </form>
     </Form>

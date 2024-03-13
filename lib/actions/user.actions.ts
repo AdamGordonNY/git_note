@@ -10,13 +10,13 @@ import {
 } from "./shared.types";
 
 import bcryptjs from "bcryptjs";
-import userModel, { IUser } from "@/database/models/user.model";
+import User, { IUser } from "@/database/models/user.model";
 import { getSession } from "../authOptions";
 
 export const getOneUser = async (email: string) => {
   try {
     await dbConnect();
-    const user = (await userModel.findOne({ email })) as IUser;
+    const user = (await User.findOne({ email })) as IUser;
     return user;
   } catch (error) {
     console.log(error);
@@ -26,7 +26,7 @@ export const getOneUser = async (email: string) => {
 export const getUserById = async ({ _id }: { _id: string }) => {
   try {
     await dbConnect();
-    const user = (await userModel.findById(_id)) as IUser;
+    const user = (await User.findById(_id)) as IUser;
     return user as IUser;
   } catch (error) {
     console.log(error);
@@ -40,7 +40,7 @@ export async function updateUser({ updateData, path }: UpdateUserParams) {
     if (!session?.user?.email) {
       throw new Error("You are not authorized to update this user");
     }
-    const user = await userModel.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { email: session.user.email },
       updateData,
       {
@@ -59,13 +59,13 @@ export const createNewUser = async (userData: CreateUserParams) => {
   try {
     await dbConnect();
     const hashedPassword = await bcryptjs.hash(userData.password, 5);
-    const newUser = await userModel.create({
+    const newUser = await User.create({
       fullname: userData.fullname,
       email: userData.email,
       password: hashedPassword,
     });
 
-    return newUser as IUser;
+    return { user: newUser, ok: true };
   } catch (error) {
     console.log(error);
   }
@@ -73,7 +73,7 @@ export const createNewUser = async (userData: CreateUserParams) => {
 export const deleteUserById = async ({ _id }: DeleteUserParams) => {
   try {
     await dbConnect();
-    await userModel.findByIdAndDelete(_id);
+    await User.findByIdAndDelete(_id);
     return true;
   } catch (error) {
     console.log(error);
