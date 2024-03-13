@@ -12,12 +12,13 @@ import {
   Form,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import UserEditZodSchema from "@/lib/validations";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomButton from "../../CustomButton";
 import { Input } from "@/components/ui/input";
+import LearningGoal from "../LearningGoal";
 
 interface EditProfileProps {
   user?: Partial<IUser>;
@@ -42,24 +43,26 @@ const EditProfile = ({ user }: EditProfileProps) => {
     },
   });
 
-  useEffect(() => {}, []);
-
-  const onSubmit = async () => {
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "learningGoals",
+  });
+  // https://react-hook-form.com/docs/usefieldarray
+  const onSubmit = async (data: z.infer<typeof UserEditZodSchema>) => {
     const {
-      portfolio,
-      learningGoals,
-      technologies,
       fullname,
-      location,
+      portfolio,
       experiences,
+      technologies,
+      location,
+      learningGoals,
       availability,
       socials,
-    } = form.getValues();
-
+    } = data;
+    console.log(data);
     if (user?._id) {
       try {
         await updateUser({
-          email: user.email!,
           updateData: {
             fullname,
             portfolio,
@@ -143,6 +146,24 @@ const EditProfile = ({ user }: EditProfileProps) => {
               </FormItem>
             )}
           />
+          {fields.map((goal, idx) => {
+            return (
+              <>
+                <LearningGoal key={goal.name} {...goal}></LearningGoal>
+                <CustomButton
+                  buttonType={`primary`}
+                  onClick={() => remove(idx)}
+                  type="button"
+                >
+                  Remove Goal
+                </CustomButton>
+              </>
+            );
+          })}
+          <CustomButton
+            onClick={() => append({ name: "dsgrgrgg", completed: true })}
+            buttonType="profileButton"
+          ></CustomButton>
           <FormField
             control={form.control}
             name="learningGoals"

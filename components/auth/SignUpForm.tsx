@@ -24,37 +24,26 @@ const SignUpForm = () => {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       fullname: "",
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   const onSubmit = async () => {
-    const { fullname, username, password } = form.getValues();
+    const { email, password } = form.getValues();
 
     try {
       startTransition(async () => {
-        const res = await fetch("/api/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ fullname, username, password }),
+        await signIn("credentials", {
+          redirect: true,
+          email,
+          password,
+          callbackUrl: "/",
         });
-
-        if (res.ok) {
-          await signIn("credentials", {
-            redirect: true,
-            username,
-            password,
-            callbackUrl: "/",
-          });
-        } else {
-          setFormError(res.statusText);
-        }
       });
     } catch (err: any) {
       setMessage(err);
+      setFormError(err);
     }
   };
 
@@ -79,7 +68,7 @@ const SignUpForm = () => {
         />
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="paragraph-3-medium text-left ">

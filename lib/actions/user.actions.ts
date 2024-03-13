@@ -1,3 +1,5 @@
+"use server";
+// in .ts files need use server
 import dbConnect from "@/database/dbConnect";
 
 import { revalidatePath } from "next/cache";
@@ -9,6 +11,7 @@ import {
 
 import bcryptjs from "bcryptjs";
 import userModel, { IUser } from "@/database/models/user.model";
+import { getSession } from "../authOptions";
 
 export const getOneUser = async (email: string) => {
   try {
@@ -30,17 +33,20 @@ export const getUserById = async ({ _id }: { _id: string }) => {
   }
 };
 // having issues with  forms and updating user data
-export async function updateUser({
-  email,
-  updateData,
-  path,
-}: UpdateUserParams) {
+export async function updateUser({ updateData, path }: UpdateUserParams) {
   try {
     await dbConnect();
-
-    const user = await userModel.findOneAndUpdate({ email }, updateData, {
-      new: true,
-    });
+    const session = await getSession();
+    if (!session?.user?.email) {
+      throw new Error("You are not authorized to update this user");
+    }
+    const user = await userModel.findOneAndUpdate(
+      { email: session.user.email },
+      updateData,
+      {
+        new: true,
+      }
+    );
 
     revalidatePath(path);
     return user as IUser;

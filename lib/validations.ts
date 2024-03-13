@@ -52,7 +52,7 @@ const UserEditZodSchema = z.object({
   image: z.string().optional(),
   portfolio: z.string().optional(),
   learningGoals: z.array(GoalZodSchema).optional(), // Array of objects as per GoalZodSchema
-  technologies: z.array(z.string().optional()).optional(), // Array of strings for technologyStack
+  technologies: z.array(z.string()).optional(), // Array of strings for technologyStack
   experiences: z.array(z.string().min(5).max(100)).optional(),
   availability: z
     .array(z.date().min(new Date(Date.now().toFixed(2)))) // Array of dates for availability

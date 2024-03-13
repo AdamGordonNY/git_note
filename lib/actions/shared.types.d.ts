@@ -73,7 +73,6 @@ export interface UpdateTagParams {
   path: string;
 }
 export interface UpdateUserParams {
-  email: string;
   updateData: Partial<IUser>;
   path: string;
 }

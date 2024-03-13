@@ -15,6 +15,7 @@ const EditProfilePage = async () => {
   } else {
     redirect("/sign-in");
   }
+  const cleanUser = JSON.parse(JSON.stringify(user));
   return (
     <div className="box-border flex min-h-[screen] w-full flex-col justify-start px-[30px] align-top   ">
       <span className="display-1-bold pl-[30px] pt-[30px] text-white-100">
@@ -22,7 +23,7 @@ const EditProfilePage = async () => {
       </span>
       <div className="px-[30]">
         <UploadPhoto image={user?.image} />
-        <EditProfile user={user!} _id={JSON.stringify(user?.id)} />
+        <EditProfile user={cleanUser} _id={JSON.stringify(user?.id)} />
       </div>
     </div>
   );

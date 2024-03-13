@@ -16,10 +16,9 @@ const LearningGoal = ({
     setIsCompleted(completed);
   }, [completed]);
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = async () => {
     setIsCompleted(!isCompleted);
   };
-
   return (
     <div className="inline-flex w-full flex-row">
       <Checkbox
