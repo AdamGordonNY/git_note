@@ -40,9 +40,10 @@ const SocialsZodSchema = z.object({
   dribbble: z.string().url(),
 });
 
-const GoalZodSchema = z.object({
-  name: z.string().min(10).max(100),
-  completed: z.boolean().default(false),
+export const GoalZodSchema = z.object({
+  goals: z
+    .array(z.object({ name: z.string(), completed: z.boolean() }))
+    .optional(),
 });
 
 const UserEditZodSchema = z.object({
@@ -51,13 +52,13 @@ const UserEditZodSchema = z.object({
   location: z.string().optional(),
   image: z.string().optional(),
   portfolio: z.string().optional(),
-  learningGoals: z.array(GoalZodSchema).optional(), // Array of objects as per GoalZodSchema
-  technologies: z.array(z.string()).optional(), // Array of strings for technologyStack
-  experiences: z.array(z.string().min(5).max(100)).optional(),
+  learningGoals: GoalZodSchema,
+  technologies: z.array(z.string()).optional(),
+  experiences: z.array(z.object({ name: z.string() })).optional(),
   availability: z
-    .array(z.date().min(new Date(Date.now().toFixed(2)))) // Array of dates for availability
+    .array(z.date().min(new Date(Date.now().toFixed(2))))
     .optional(),
-  socials: z.array(SocialsZodSchema).optional(), // Object with optional string properties for social links
+  socials: z.array(SocialsZodSchema).optional(),
 });
 
 export default UserEditZodSchema;

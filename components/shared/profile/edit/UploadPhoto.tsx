@@ -51,12 +51,10 @@ const UploadPhoto = ({ image }: UploadPhotoProps) => {
           />
           <button
             type="submit"
-            className="paragraph-3-medium h-[40px] w-[200px] rounded-[5px] border-[5px] bg-black-700 text-white-300"
+            className="paragraph-3-medium h-[40px] w-[200px] rounded-[5px] border-[5px] bg-black-700 text-white-300 flex flex-row justify-center items-center px-3.5 py-2 gap-2  shadow shadow-gray-800/10 "
           >
             {" "}
-            <span className="paragraph-3-medium text-white-300">
-              <FaCloudUploadAlt size={32} /> Upload a Picture
-            </span>
+            <FaCloudUploadAlt size={32} /> Upload a Picture
           </button>
         </form>
       </div>

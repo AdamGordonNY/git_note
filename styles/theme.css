@@ -123,6 +123,19 @@
     border: 1.5px solid rgba(85, 89, 125, 1);
   }
   .upload-button {
+    /* Button */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 14px;
+    gap: 8px;
+
+    width: 199px;
+    height: 36px;
+
     /* Black/700 */
     background: #1d2032;
     /* Button/Secondary/normal */
@@ -131,8 +144,64 @@
       0px 0px 0px 1px rgba(18, 18, 18, 0.07),
       0px 1px 3px rgba(18, 18, 18, 0.1);
     border-radius: 5px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
   }
   .profile-input {
     @apply w-[256px] h-[38px] rounded-md bg-black-700 text-white-100;
+  }
+  .profile-goals-wrapper {
+    @apply paragraph-3-regular flex flex-row justify-between gap-[14px] w-full;
+  }
+  .profile-goals {
+    @apply px-3 py-3.5;
+  }
+  .profile {
+    align-items: center;
+    padding: 14px 12px;
+    gap: 8px;
+
+    width: 800px;
+    height: 48px;
+
+    /* Black/700 */
+    background: #1d2032;
+    /* Input/normal */
+    box-shadow:
+      0px 1px 1px rgba(18, 18, 18, 0.1),
+      0px 0px 0px 1px rgba(18, 18, 18, 0.1);
+    border-radius: 4px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+  }
+  .profile-sidebar-wrapper {
+    @apply w-full flex flex-col justify-start gap-[6px] mt[50px] ml-[28px] absolute;
+  }
+  .profile-sidebar-avatar-wrapper {
+    @apply flex flex-row size-9 rounded-[2px];
+  }
+  .sidebar-avatar {
+    @apply size-9 rounded-[2px];
+  }
+  .profile-sidebar-details {
+    /* title */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+
+    width: 118px;
+    height: 36px;
+
+    @apply order-1 flex-grow-0 flex-col;
   }
 }

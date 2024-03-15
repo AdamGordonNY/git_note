@@ -79,7 +79,7 @@ export const socialLinks: SocialLink[] = [
   },
 ];
 export interface TechStackBadges {
-  key: string;
+  text: string;
   icon: IconType;
 }
 export const TechIcons: IconType[] = [
@@ -99,55 +99,55 @@ export const TechIcons: IconType[] = [
 ];
 export const techStackBadges: TechStackBadges[] = [
   {
-    key: "react",
+    text: "react",
     icon: TechIcons[0],
   },
   {
-    key: "node",
+    text: "node",
     icon: TechIcons[1],
   },
   {
-    key: "html",
+    text: "html",
     icon: TechIcons[2],
   },
   {
-    key: "css",
+    text: "css",
     icon: TechIcons[3],
   },
   {
-    key: "javascript",
+    text: "javascript",
     icon: TechIcons[4],
   },
   {
-    key: "python",
+    text: "python",
     icon: TechIcons[5],
   },
   {
-    key: "java",
+    text: "java",
     icon: TechIcons[6],
   },
   {
-    key: "github",
+    text: "github",
     icon: TechIcons[7],
   },
   {
-    key: "tailwind",
+    text: "tailwind",
     icon: TechIcons[8],
   },
   {
-    key: "nextjs",
+    text: "nextjs",
     icon: TechIcons[9],
   },
   {
-    key: "laravel",
+    text: "laravel",
     icon: TechIcons[10],
   },
   {
-    key: "php",
+    text: "php",
     icon: TechIcons[11],
   },
   {
-    key: "typescript",
+    text: "typescript",
     icon: TechIcons[12],
   },
 ];
