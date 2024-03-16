@@ -181,15 +181,15 @@ const EditProfile = ({ user }: EditProfileProps) => {
           <Input
             type="checkbox"
             color="green"
-            className="size-9 order-1 bg-black-700 text-white-100"
-            id={`goals[${index}]CB`}
-            {...register(`goals[${index}].checked` as any)}
+            className="order-1 size-9 bg-black-700 text-white-100"
+            id={`learningGoals[${index}]CB`}
+            {...register(`learningGoals[${index}].completed` as any)}
           />
           <Input
             className="order-2"
-            id={`goals[${index}]`}
+            id={`learningGoals[${index}]`}
             placeholder="Enter your goal"
-            {...register(`goals[${index}].name` as any)}
+            {...register(`learningGoals[${index}].name` as any)}
           />
           <Button
             type="button"
