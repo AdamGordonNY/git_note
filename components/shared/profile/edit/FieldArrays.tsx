@@ -16,7 +16,7 @@ const FieldArrays = ({
 }: any) => {
   return (
     <>
-      {fields?.map((field: any, index: number) => {
+      {fields?.map((field: any, index: number) => (
         <div
           key={field.id}
           className="inline-flex w-full flex-row gap-x-[4px] paragraph-3-medium"
@@ -41,7 +41,7 @@ const FieldArrays = ({
             onClick={() => remove(index)}
           ></CustomButton>
         </div>;
-      })}
+      ))}
     </>
   );
 };
