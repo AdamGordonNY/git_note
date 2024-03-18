@@ -4,51 +4,30 @@ import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
-
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomButton from "../../CustomButton";
 import { Input } from "@/components/ui/input";
-import LearningGoal from "../LearningGoal";
-
-import ExperienceLevels from "../ExperienceLevels";
-
-import plusCircle from "@/public/icons/pluscircle.svg";
-import {
-  AvailabilitySchema,
-  CompleteProfileEditSchema,
-} from "@/lib/profileValidations";
-import { PlusSquareIcon } from "lucide-react";
-import Image from "next/image";
+import { CompleteProfileEditSchema } from "@/lib/profileValidations";
 import { Button } from "@/components/ui/button";
-
 interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
 }
-type Goal = {
-  name: string;
-  completed: boolean;
-};
-
 const EditProfile = ({ user }: EditProfileProps) => {
   const pathname = usePathname();
-  const dbGoalNames = user?.learningGoals?.map((goal, idx) => ({
+  const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
-    key: idx,
+
     completed: goal.completed,
   }));
-  const dbGoalCompleted = user?.learningGoals?.map((goal) => ({
-    name: goal.completed === true ? goal.name : "",
-    completed: goal.completed === true ? goal.name : false,
+  const experienceNames = user?.experiences?.map((experience) => ({
+    name: experience,
   }));
   const {
     register,
     handleSubmit,
     control,
-    setValue,
-    setFocus,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof CompleteProfileEditSchema>>({
     resolver: zodResolver(CompleteProfileEditSchema),
@@ -57,14 +36,13 @@ const EditProfile = ({ user }: EditProfileProps) => {
       fullname: user?.fullname || "",
       location: user?.location || "",
       portfolio: user?.portfolio || "",
-      learningGoals: dbGoalNames || [],
-      technologies: user?.technologies || [],
-      availability: user?.availability || [],
-      socials: user?.socials || [],
-      experiences: user?.experiences?.map((experience) => experience) || [], // Added 'experienceLevel' property
+      learningGoals: dbGoals || [],
+      experiences: experienceNames || [],
     },
   });
-
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   const {
     fields: goalFields,
     append: appendGoal,
@@ -86,35 +64,16 @@ const EditProfile = ({ user }: EditProfileProps) => {
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
   > = async (data) => {
-    const {
-      fullname,
-      portfolio,
-      experiences,
-      technologies,
-      location,
-      learningGoals,
-      availability,
-      socials,
-    } = data;
-    const goalArray = learningGoals.map((goal: any, idx: number) => ({
-      name: goal.name,
-      completed: goal.completed,
-    }));
-    console.log(data);
+    const { fullname, portfolio, learningGoals, experiences } = data;
+    const dbExperiences = experiences?.map((experience) => experience.name);
     if (user?._id) {
       try {
         await updateUser({
           updateData: {
             fullname,
             portfolio,
-            experiences: experiences?.map(
-              (experience: any) => experience.name as string
-            ),
-            technologies,
-            location,
-            learningGoals: goalArray,
-            availability: availability.map((date: any) => date),
-            socials,
+            learningGoals,
+            experiences: dbExperiences,
           },
           path: pathname,
         });
@@ -124,12 +83,11 @@ const EditProfile = ({ user }: EditProfileProps) => {
     }
   };
 
-  useEffect(() => {});
   // TODO: substitute FormFields with regular tags
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 flex flex-col px-[30px] w-full"
+      className="flex w-full flex-col space-y-6 px-[30px]"
     >
       <div className="space-y-2">
         <label htmlFor="fullname" className="block text-white-300">
@@ -166,16 +124,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
           placeholder="portfolio"
         />
       </div>
-      {user?.learningGoals &&
-        user.learningGoals.map((goal) => (
-          <div key={goal.name}>
-            <LearningGoal
-              completed={goal.completed}
-              name={goal.name}
-              onChange={() => removeGoal(...goal)}
-            />
-          </div>
-        ))}
       {goalFields.map((field, index: number) => (
         <div key={field.id} className="profile-goals-wrapper">
           <Input
@@ -200,25 +148,44 @@ const EditProfile = ({ user }: EditProfileProps) => {
           </Button>
         </div>
       ))}
-      {/* @ts-ignore */}
       <CustomButton
         buttonType="profileButton"
         type="button"
+        // @ts-ignore
         onClick={() => appendGoal({ name: "", completed: false })}
       >
         Add Goal
       </CustomButton>
 
-      <ExperienceLevels experienceLevels={user?.experiences || []} />
+      {/* <ExperienceLevels experienceLevels={user?.experiences || []} /> */}
       {experienceFields.map((field, index) => {
         return (
           <>
-            <div key={field.id}>
-              <Input id={`experiences[${index}]`} type="text" />
+            <div className="profile-goals-wrapper" key={field.id}>
+              <Button
+                className="text-white-100"
+                type="button"
+                onClick={() => removeExperience(index)}
+              >
+                {" "}
+                Remove
+              </Button>
+              <Input
+                id={`experiences[${index}].name`}
+                type="text"
+                {...register(`experiences[${index}].name` as any)}
+              />
             </div>
           </>
         );
       })}
+      <CustomButton
+        buttonType="profileButton"
+        type="button"
+        onClick={() => appendExperience({ name: "" })}
+      >
+        Add Experience
+      </CustomButton>
       <CustomButton buttonType={`primary`} type="submit">
         Submit
       </CustomButton>

@@ -24,7 +24,11 @@ const LearningGoalsSchema = z.array(GoalSchema);
 const TechnologiesSchema = z.array(z.string()); // Assuming technologies are strings
 
 // Experiences Form Schema
-const ExperiencesSchema = z.array(z.string());
+const ExperiencesSchema = z.array(
+  z.object({
+    name: z.string(),
+  })
+);
 
 // Availability Form Schema
 const AvailabilitySchema = z.object({
@@ -48,11 +52,11 @@ const CompleteProfileEditSchema = z.object({
   email: z.string().email(),
   location: z.string().optional(),
   portfolio: z.string().url().optional(),
-  learningGoals: LearningGoalsSchema,
-  technologies: TechnologiesSchema,
-  experiences: ExperiencesSchema,
-  availability: z.array(z.date().optional()),
-  socials: z.array(SocialsSchema),
+  learningGoals: LearningGoalsSchema.optional(),
+  technologies: TechnologiesSchema.optional(),
+  experiences: ExperiencesSchema.optional(),
+  availability: z.array(z.date().optional()).optional(),
+  socials: z.array(SocialsSchema).optional(),
 });
 
 export {

@@ -48,6 +48,7 @@ export async function updateUser({ updateData, path }: UpdateUserParams) {
       }
     );
 
+    console.log(user);
     revalidatePath(path);
     return user as IUser;
   } catch (error) {
