@@ -24,6 +24,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
   const experienceNames = user?.experiences?.map((experience) => ({
     name: experience,
   }));
+  const techStackNames = user?.technologies?.map((tech) => ({ name: tech }));
   const {
     register,
     handleSubmit,
@@ -38,6 +39,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
       portfolio: user?.portfolio || "",
       learningGoals: dbGoals || [],
       experiences: experienceNames || [],
+      technologies: techStackNames || [],
     },
   });
   useEffect(() => {
@@ -60,6 +62,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
     control,
     name: "experiences",
   });
+
   // https://react-hook-form.com/docs/usefieldarray
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
@@ -157,7 +160,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
         Add Goal
       </CustomButton>
 
-      {/* <ExperienceLevels experienceLevels={user?.experiences || []} /> */}
       {experienceFields.map((field, index) => {
         return (
           <>
@@ -179,6 +181,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           </>
         );
       })}
+      <Input {...register(`technologies`)} />
       <CustomButton
         buttonType="profileButton"
         type="button"

@@ -18,6 +18,17 @@ import {
 import { TbBrandNextjs } from "react-icons/tb";
 import { BiLogoTailwindCss, BiLogoTypescript } from "react-icons/bi";
 import { IconType } from "react-icons/lib";
+import {
+  DiCss3,
+  DiGithub,
+  DiHtml5,
+  DiJava,
+  DiJavascript,
+  DiLaravel,
+  DiNodejs,
+  DiPython,
+  DiReact,
+} from "react-icons/di";
 
 export const githubClientID = process.env.GITHUB_CLIENT_ID!;
 export const githubClientSecret = process.env.GITHUB_CLIENT_SECRET!;
@@ -81,6 +92,7 @@ export const socialLinks: SocialLink[] = [
 export interface TechStackBadges {
   text: string;
   icon: IconType;
+  color?: string;
 }
 export const TechIcons: IconType[] = [
   FaReact,
@@ -100,54 +112,58 @@ export const TechIcons: IconType[] = [
 export const techStackBadges: TechStackBadges[] = [
   {
     text: "react",
-    icon: TechIcons[0],
+    icon: DiReact,
+    color: "text-blue-500",
   },
   {
     text: "node",
-    icon: TechIcons[1],
+    icon: DiNodejs,
+    color: "bg-green-500",
   },
   {
     text: "html",
-    icon: TechIcons[2],
+    icon: DiHtml5,
+    color: "bg-red-500",
   },
   {
     text: "css",
-    icon: TechIcons[3],
+    icon: DiCss3,
   },
   {
     text: "javascript",
-    icon: TechIcons[4],
+    icon: DiJavascript,
   },
   {
     text: "python",
-    icon: TechIcons[5],
+    icon: DiPython,
   },
   {
     text: "java",
-    icon: TechIcons[6],
+    icon: DiJava,
   },
   {
     text: "github",
-    icon: TechIcons[7],
+    icon: DiGithub,
   },
   {
     text: "tailwind",
-    icon: TechIcons[8],
+    icon: BiLogoTailwindCss,
   },
   {
     text: "nextjs",
-    icon: TechIcons[9],
+    icon: TbBrandNextjs,
   },
   {
     text: "laravel",
-    icon: TechIcons[10],
+    icon: DiLaravel,
+    color: "bg-red-500",
   },
   {
     text: "php",
-    icon: TechIcons[11],
+    icon: FaPhp,
   },
   {
     text: "typescript",
-    icon: TechIcons[12],
+    icon: BiLogoTypescript,
   },
 ];

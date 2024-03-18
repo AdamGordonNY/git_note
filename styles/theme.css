@@ -204,4 +204,27 @@
 
     @apply order-1 flex-grow-0 flex-col;
   }
+  .vertical-divider {
+    /* Line 3 */
+
+    width: 20px;
+    height: 0px;
+
+    /* White/300 */
+    border: 1px solid #adb3cc;
+    transform: rotate(90deg);
+
+    /* Inside auto layout */
+    flex: none;
+    order: 3;
+    flex-grow: 0;
+
+    @apply w-[1px] h-[36px] bg-black-800;
+  }
+  .tech-wrapper {
+    @apply flex flex-row items-center gap-2 px-3.5 py-3;
+  }
+  .tech-badges {
+    @apply px-0.5 py-2 gap-1 rounded-[3px] h-[24px] border-[1px] w-full;
+  }
 }
