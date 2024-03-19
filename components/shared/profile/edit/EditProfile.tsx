@@ -3,6 +3,7 @@ import { IUser } from "@/database/models/user.model";
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
+import { turnNameToIcon } from "@/lib/utils";
 import {
   useForm,
   useFieldArray,
@@ -33,7 +34,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
   const experienceNames = user?.experiences?.map((experience) => ({
     name: experience,
   }));
-  const techStackNames = [] as any;
   // manage the search state
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
@@ -54,11 +54,12 @@ const EditProfile = ({ user }: EditProfileProps) => {
       portfolio: user?.portfolio || "",
       learningGoals: dbGoals || [],
       experiences: experienceNames || [],
-      technologies: techStackNames || [],
+      technologies: user?.technologies || [],
     },
   });
 
   const technologies = useWatch({ control, name: "technologies" });
+  console.log(technologies);
   useEffect(() => {
     console.log(errors);
   }, [errors]);
@@ -95,7 +96,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
       data;
     const dbExperiences = experiences?.map((experience) => experience.name);
     console.log(dbExperiences);
-    const dbTechnologies = technologies?.map((name) => name) || [];
 
     if (user?._id) {
       try {
@@ -105,7 +105,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             portfolio,
             learningGoals,
             experiences: dbExperiences,
-            technologies: dbTechnologies || [],
+            technologies,
           },
           path: pathname,
         });
@@ -226,12 +226,14 @@ const EditProfile = ({ user }: EditProfileProps) => {
         </label>
         <div className="flex  w-full shrink flex-col">
           {technologies?.map((tech: any, index) => {
+            const icon = techStackBadges.find((badge) => badge.name === tech);
             return (
               <div
                 key={index}
                 className="paragraph-3-bold order-2 flex h-7 w-1/2 flex-col items-center justify-start bg-black-600 p-3 text-white-100"
               >
                 {" "}
+                {icon.icon()}
                 {tech}
               </div>
             );
@@ -247,6 +249,9 @@ const EditProfile = ({ user }: EditProfileProps) => {
           {search &&
             results.length > 0 &&
             results.map((result: any, index) => {
+              if (technologies?.includes(result.name)) {
+                return null;
+              }
               return (
                 <div className="flex grow-0 flex-col bg-black-700" key={index}>
                   <Button

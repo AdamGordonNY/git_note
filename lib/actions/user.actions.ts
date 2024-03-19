@@ -40,6 +40,7 @@ export async function updateUser({ updateData, path }: UpdateUserParams) {
     if (!session?.user?.email) {
       throw new Error("You are not authorized to update this user");
     }
+    console.log(updateData);
     const user = await User.findOneAndUpdate(
       { email: session.user.email },
       updateData,
@@ -50,7 +51,6 @@ export async function updateUser({ updateData, path }: UpdateUserParams) {
 
     console.log(user);
     revalidatePath(path);
-    return user as IUser;
   } catch (error) {
     console.log(error);
     throw error;

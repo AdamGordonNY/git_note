@@ -58,12 +58,6 @@ const SocialsSchema = new Schema({
     required: false,
   },
 });
-const technologyStackSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-});
 
 const AvailabilitySchema = new Schema({
   dates: {
@@ -115,7 +109,7 @@ const UserSchema = new Schema(
       default: "user",
     },
     technologies: {
-      type: technologyStackSchema,
+      type: [String],
       required: false,
     },
 
