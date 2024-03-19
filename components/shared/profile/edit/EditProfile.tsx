@@ -16,11 +16,8 @@ import { Input } from "@/components/ui/input";
 import { CompleteProfileEditSchema } from "@/lib/profileValidations";
 import { Button } from "@/components/ui/button";
 
-import { Badge } from "@/components/ui/badge";
-
 import { techStackBadges } from "@/lib/constants";
-import ResourceTag from "../../ResourceTag";
-import VerticalLine from "./VerticalLine";
+
 interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
@@ -98,7 +95,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
       data;
     const dbExperiences = experiences?.map((experience) => experience.name);
     console.log(dbExperiences);
-    const dbTechnologies = technologies?.map((tech) => tech.name);
+    const dbTechnologies = technologies?.map((name) => name) || [];
 
     if (user?._id) {
       try {
@@ -108,7 +105,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             portfolio,
             learningGoals,
             experiences: dbExperiences,
-            technologies: dbTechnologies,
+            technologies: dbTechnologies || [],
           },
           path: pathname,
         });
@@ -232,16 +229,16 @@ const EditProfile = ({ user }: EditProfileProps) => {
             return (
               <div
                 key={index}
-                className="paragraph-3-bold order-2 flex h-7 w-1/2 flex-col items-center justify-start p-3"
+                className="paragraph-3-bold order-2 flex h-7 w-1/2 flex-col items-center justify-start bg-black-600 p-3 text-white-100"
               >
                 {" "}
-                {tech.name}
+                {tech}
               </div>
             );
           })}
 
           <Input
-            className="w-full justify-end bg-black-700 text-white-100"
+            className="w-full justify-end text-white-100"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -255,7 +252,9 @@ const EditProfile = ({ user }: EditProfileProps) => {
                   <Button
                     key={index}
                     className="overflow-auto overflow-y-hidden text-white-100"
-                    onClick={(e) => setValue(`technologies`, [result.name])}
+                    onClick={(e) =>
+                      setValue(`technologies`, [...technologies!, result.name])
+                    }
                   >
                     {result.icon()}
                     {result.name}
