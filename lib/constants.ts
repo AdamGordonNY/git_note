@@ -90,7 +90,7 @@ export const socialLinks: SocialLink[] = [
   },
 ];
 export interface TechStackBadges {
-  text: string;
+  name: string;
   icon: IconType;
   color?: string;
 }
@@ -109,61 +109,64 @@ export const TechIcons: IconType[] = [
   FaPhp,
   BiLogoTypescript,
 ];
+
 export const techStackBadges: TechStackBadges[] = [
   {
-    text: "react",
+    name: "react",
     icon: DiReact,
-    color: "text-blue-500",
+    color: "name-blue-500",
   },
   {
-    text: "node",
+    name: "node",
     icon: DiNodejs,
     color: "bg-green-500",
   },
   {
-    text: "html",
+    name: "html",
     icon: DiHtml5,
     color: "bg-red-500",
   },
   {
-    text: "css",
+    name: "css",
     icon: DiCss3,
   },
   {
-    text: "javascript",
+    name: "javascript",
     icon: DiJavascript,
   },
   {
-    text: "python",
+    name: "python",
     icon: DiPython,
   },
   {
-    text: "java",
+    name: "java",
     icon: DiJava,
   },
   {
-    text: "github",
+    name: "github",
     icon: DiGithub,
   },
   {
-    text: "tailwind",
+    name: "tailwind",
     icon: BiLogoTailwindCss,
   },
   {
-    text: "nextjs",
+    name: "nextjs",
     icon: TbBrandNextjs,
   },
   {
-    text: "laravel",
+    name: "laravel",
     icon: DiLaravel,
     color: "bg-red-500",
   },
   {
-    text: "php",
+    name: "php",
     icon: FaPhp,
   },
   {
-    text: "typescript",
+    name: "typescript",
     icon: BiLogoTypescript,
   },
 ];
+export const techArray = [...techStackBadges];
+export const technameArray = techStackBadges.map((tech) => tech.name);

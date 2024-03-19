@@ -21,7 +21,7 @@ const GoalSchema = z.object({
 const LearningGoalsSchema = z.array(GoalSchema);
 
 // Technologies Form Schema
-const TechnologiesSchema = z.array(z.object({ name: z.string() })); // Assuming technologies are strings
+const TechnologiesSchema = z.array(z.string().optional()); // Assuming technologies are strings
 
 // Experiences Form Schema
 const ExperiencesSchema = z.array(

@@ -1,35 +1,53 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
-import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  SubmitHandler,
+  useWatch,
+} from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomButton from "../../CustomButton";
 import { Input } from "@/components/ui/input";
 import { CompleteProfileEditSchema } from "@/lib/profileValidations";
 import { Button } from "@/components/ui/button";
+
+import { Badge } from "@/components/ui/badge";
+
+import { techStackBadges } from "@/lib/constants";
+import ResourceTag from "../../ResourceTag";
+import VerticalLine from "./VerticalLine";
 interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
 }
 const EditProfile = ({ user }: EditProfileProps) => {
   const pathname = usePathname();
+  // instantiates the form with the user's data
   const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
-
     completed: goal.completed,
   }));
+  // instantiates the form with the user's data
   const experienceNames = user?.experiences?.map((experience) => ({
     name: experience,
   }));
-  const techStackNames = user?.technologies?.map((tech) => ({ name: tech }));
+  const techStackNames = [] as any;
+  // manage the search state
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+  // form state
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
+    setValue,
+    getValues,
   } = useForm<z.infer<typeof CompleteProfileEditSchema>>({
     resolver: zodResolver(CompleteProfileEditSchema),
     defaultValues: {
@@ -42,9 +60,18 @@ const EditProfile = ({ user }: EditProfileProps) => {
       technologies: techStackNames || [],
     },
   });
+
+  const technologies = useWatch({ control, name: "technologies" });
   useEffect(() => {
     console.log(errors);
   }, [errors]);
+  useEffect(() => {
+    const results = techStackBadges.filter((choice) =>
+      choice.name.toLowerCase().includes(search.toLowerCase())
+    );
+    console.log(results);
+    setResults(results as any);
+  }, [search]);
   const {
     fields: goalFields,
     append: appendGoal,
@@ -67,8 +94,12 @@ const EditProfile = ({ user }: EditProfileProps) => {
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
   > = async (data) => {
-    const { fullname, portfolio, learningGoals, experiences } = data;
+    const { fullname, portfolio, learningGoals, experiences, technologies } =
+      data;
     const dbExperiences = experiences?.map((experience) => experience.name);
+    console.log(dbExperiences);
+    const dbTechnologies = technologies?.map((tech) => tech.name);
+
     if (user?._id) {
       try {
         await updateUser({
@@ -77,6 +108,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             portfolio,
             learningGoals,
             experiences: dbExperiences,
+            technologies: dbTechnologies,
           },
           path: pathname,
         });
@@ -86,7 +118,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     }
   };
 
-  // TODO: substitute FormFields with regular tags
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -181,7 +212,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
           </>
         );
       })}
-      <Input {...register(`technologies`)} />
       <CustomButton
         buttonType="profileButton"
         type="button"
@@ -189,11 +219,56 @@ const EditProfile = ({ user }: EditProfileProps) => {
       >
         Add Experience
       </CustomButton>
+      {/* Technologies Section with Search Box */}
+      <div className="profile-goals-wrapper bg-black-700  ">
+        <label
+          htmlFor="technologies"
+          className="block space-y-2 text-white-300"
+        >
+          Tech Stacks
+        </label>
+        <div className="flex  w-full shrink flex-col">
+          {technologies?.map((tech: any, index) => {
+            return (
+              <div
+                key={index}
+                className="paragraph-3-bold order-2 flex h-7 w-1/2 flex-col items-center justify-start p-3"
+              >
+                {" "}
+                {tech.name}
+              </div>
+            );
+          })}
+
+          <Input
+            className="w-full justify-end bg-black-700 text-white-100"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="flex h-6 grow-0 bg-black-700">
+          {search &&
+            results.length > 0 &&
+            results.map((result: any, index) => {
+              return (
+                <div className="flex grow-0 flex-col bg-black-700" key={index}>
+                  <Button
+                    key={index}
+                    className="overflow-auto overflow-y-hidden text-white-100"
+                    onClick={(e) => setValue(`technologies`, [result.name])}
+                  >
+                    {result.icon()}
+                    {result.name}
+                  </Button>
+                </div>
+              );
+            })}
+        </div>
+      </div>
       <CustomButton buttonType={`primary`} type="submit">
         Submit
       </CustomButton>
     </form>
   );
 };
-
 export default EditProfile;
