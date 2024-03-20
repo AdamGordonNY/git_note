@@ -17,7 +17,8 @@ export interface IUser extends Document {
   role?: "user" | "admin";
   technologies?: string[];
   experiences: string[];
-  availability?: Date[];
+  availability?: { dates: Date[]; times: string[] };
+  newProjects?: boolean;
   socials?: {
     twitter?: string;
     facebook?: string;
@@ -123,7 +124,10 @@ const UserSchema = new Schema(
         required: false,
       },
     ],
-
+    newProjects: {
+      type: Boolean,
+      required: false,
+    },
     socials: {
       type: SocialsSchema,
       required: false,

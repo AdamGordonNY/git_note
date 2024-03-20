@@ -3,7 +3,19 @@ import workflowBadge from "@/public/icons/monitor.svg";
 import knowledgeBadge from "@/public/icons/greenbubble.svg";
 import componentBadge from "@/public/icons/numberlist.svg";
 import Image from "next/image";
-import { IconType } from "react-icons";
+import {
+  DiJsBadge,
+  DiReact,
+  DiAndroid,
+  DiLaravel,
+  DiPhp,
+  DiVisualstudio,
+  DiJavascript,
+  DiHtml5,
+  DiApple,
+  DiCode,
+  DiNodejs,
+} from "react-icons/di";
 import { TechStackBadges } from "@/lib/constants";
 type ResourceTagType =
   | "knowledge"
@@ -15,6 +27,7 @@ interface ResourceTagProps extends React.PropsWithChildren {
   type: ResourceTagType;
   text?: string;
   tech?: TechStackBadges;
+  icon?: any;
 }
 
 const ResourceTag = ({
@@ -50,19 +63,35 @@ const ResourceTag = ({
     plain: null,
     tech: tech?.icon || null,
   };
+  const icon = {
+    react: <DiReact />,
+    android: <DiAndroid />,
+    laravel: <DiLaravel />,
+    php: <DiPhp />,
+    apple: <DiApple />,
+    visualstudio: <DiVisualstudio />,
+    javascript: <DiJavascript />,
+    html: <DiHtml5 />,
+    code: <DiCode />,
+    node: <DiNodejs />,
+  };
 
   return (
     <span
       className={`${baseClass} ${color[type || "plain"]} hover:${color[type || "plain"]}`}
       {...rest}
     >
-      {iconSrc[badgeType] && (
-        <Image
-          src={iconSrc[badgeType]}
-          alt={label[badgeType]}
-          className="size-4"
-        />
-      )}
+      {iconSrc[badgeType] &&
+        (text === "react" ? (
+          <DiJsBadge />
+        ) : (
+          <Image
+            src={iconSrc[badgeType]}
+            alt={label[badgeType]}
+            className="size-4"
+          />
+        ))}
+      {icon}
       {label[badgeType]}
       {children}
     </span>

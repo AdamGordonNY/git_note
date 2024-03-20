@@ -55,7 +55,12 @@ const CompleteProfileEditSchema = z.object({
   learningGoals: LearningGoalsSchema.optional(),
   technologies: TechnologiesSchema.optional(),
   experiences: ExperiencesSchema.optional(),
-  availability: z.array(z.date().optional()).optional(),
+  availability: z
+    .object({
+      dates: z.array(z.date()),
+      times: z.array(z.string()),
+    })
+    .optional(),
   socials: z.array(SocialsSchema).optional(),
 });
 

@@ -18,7 +18,7 @@ const ExperienceLevels = ({
           <>
             <div
               key={experience}
-              className="w-full px-[30px] bg-black-700 text-white-100"
+              className="w-full bg-black-700 px-[30px] text-white-100"
             >
               <Image src={userCheck} alt="userCheck" />
               <span>{experience}</span>
