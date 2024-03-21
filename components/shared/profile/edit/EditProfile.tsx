@@ -24,9 +24,8 @@ import {
 
 import { DayPicker, DayClickEventHandler } from "react-day-picker";
 import { techStackBadges } from "@/lib/constants";
-import { getMonth, toDate } from "date-fns";
-import "react-day-picker/dist/style.css";
 import { Calendar } from "lucide-react";
+import { getMonth, toDate } from "date-fns";
 
 interface EditProfileProps {
   user?: Partial<IUser>;
@@ -103,25 +102,55 @@ const EditProfile = ({ user }: EditProfileProps) => {
   // After useForm
 
   const today = Date.now();
-  const defaultMonth = getMonth(today);
-  const [timeValueFrom, setTimeValueFrom] = React.useState<string>("");
-  const [selectedFrom, setSelectedFrom] = React.useState<Date>();
-  const [timeValueTo, setTimeValueTo] = React.useState<string>("");
+  const defaultMonth = toDate(getMonth(today));
+  const [timeValueFrom, setTimeValueFrom] = React.useState("00:00");
+  const [selectedFrom, setSelectedFrom] = React.useState();
+  const [timeValueTo, setTimeValueTo] = React.useState("00:00");
   const [selectedTo, setSelectedTo] = React.useState<Date>();
-
-  const handleDayClick: DayClickEventHandler = (day) => {
-    if (!selectedFrom || (selectedFrom && selectedTo)) {
-      setSelectedFrom(day);
-      setSelectedTo(undefined);
-      return;
-    }
-    if (day < selectedFrom) {
-      setSelectedTo(selectedFrom);
-      setSelectedFrom(day);
-    } else {
-      setSelectedTo(day);
-    }
-  };
+  //
+  //  const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e:number | undefined) => {
+  //    const time = e.target.value;
+  //    if (!selectedFrom) {
+  //      setTimeValueTo(time);
+  //      return;
+  //    }
+  //    if (!selectedTo) {
+  //      setTimeValueFrom(time);
+  //      return;
+  //    }
+  //    const [hours, minutes] = time.split(":").map((str) => parseInt(str, 10));
+  //
+  //    const newSelectedDate = new Date(
+  //      selectedFrom?.getFullYear(),
+  //      selected.getMonth(),
+  //      selected.getDate(),
+  //      hours,
+  //      minutes
+  //    );
+  //    setSelected(newSelectedDate);
+  //    setTimeValue(time);
+  //  };
+  //
+  //  const handleDaySelect = (date: Date | undefined) => {
+  //    if (!timeValue || !date) {
+  //      setSelected(date);
+  //      return;
+  //    }
+  //    const [hours, minutes] = timeValue
+  //      .split(":")
+  //      .map((str) => parseInt(str, 10));
+  //    const newDate = new Date(
+  //      date.getFullYear(),
+  //      date.getMonth(),
+  //      date.getDate(),
+  //      hours,
+  //      minutes
+  //    );
+  //    setSelected(newDate);
+  //  };
+  //
+  //
+  //
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
   > = async (data) => {
@@ -138,7 +167,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
             learningGoals,
             experiences: dbExperiences,
             technologies,
-            availability,
           },
           path: pathname,
         });
@@ -357,14 +385,15 @@ const EditProfile = ({ user }: EditProfileProps) => {
                 name="availability.startTime"
                 render={({ field: { onChange, onBlur, value, ref } }) => (
                   <DayPicker
+                    key="from"
                     className="bg-black-700 text-white-100"
                     onSelect={(e) => console.log(e)}
                     showOutsideDays
                     weekStartsOn={0}
-                    defaultMonth={toDate(defaultMonth)}
+                    defaultMonth={defaultMonth}
                     onMonthChange={(e) => console.log(e)}
                     mode="single"
-                    onDayClick={handleDayClick}
+                    onDayClick={(e: any) => setSelectedFrom(e)}
                     footer={
                       <>
                         <p>
@@ -400,7 +429,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
                     showOutsideDays
                     weekStartsOn={0}
                     mode="single"
-                    defaultMonth={toDate(defaultMonth)}
+                    defaultMonth={defaultMonth}
                     month={new Date()}
                     footer={
                       <>
