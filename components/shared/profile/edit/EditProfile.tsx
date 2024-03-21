@@ -25,7 +25,7 @@ import {
 import { DayPicker } from "react-day-picker";
 import { techStackBadges } from "@/lib/constants";
 import { Calendar } from "lucide-react";
-import { getMonth, toDate, isValid, parse, format, formatDate } from "date-fns";
+import { getMonth, toDate, format } from "date-fns";
 
 interface EditProfileProps {
   user?: Partial<IUser>;
@@ -144,26 +144,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     setSelectedTo(newDate as any);
   };
 
-  //  const handleDaySelect = (date: Date | undefined) => {
-  //    if (!timeValue || !date) {
-  //      setSelected(date);
-  //      return;
-  //    }
-  //    const [hours, minutes] = timeValue
-  //      .split(":")
-  //      .map((str) => parseInt(str, 10));
-  //    const newDate = new Date(
-  //      date.getFullYear(),
-  //      date.getMonth(),
-  //      date.getDate(),
-  //      hours,
-  //      minutes
-  //    );
-  //    setSelected(newDate);
-  //  };
-  //
-  //
-  //
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
   > = async (data) => {
@@ -399,7 +379,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             </span>
           </label>
         </div>
-        <div className="flex flex-row justify-between">
+        <div className="flex w-full flex-row gap-x-4">
           <Popover>
             <PopoverTrigger asChild>
               <Button className=" bg-black-600 text-white-500">
@@ -414,14 +394,12 @@ const EditProfile = ({ user }: EditProfileProps) => {
                   <DayPicker
                     key="from"
                     onDayBlur={onBlur}
-                    className="bg-black-700 text-white-100"
+                    className="bg-black-700 text-primary-500"
                     onSelect={(selectedDate) => onChange(selectedDate)}
                     showOutsideDays
-                    onDayFocus={(e) => console.log(e)}
                     weekStartsOn={0}
                     selected={selectedFrom}
                     defaultMonth={defaultMonth}
-                    onMonthChange={(e) => console.log(e)}
                     month={new Date()}
                     mode="single"
                     onDayClick={(selectedFrom, modifiers, e) => {
@@ -464,28 +442,35 @@ const EditProfile = ({ user }: EditProfileProps) => {
                 name="availability.endTime"
                 render={({ field: { onChange, onBlur, value, ref } }) => (
                   <DayPicker
-                    key="from"
-                    className="bg-black-700 text-white-100"
-                    onSelect={(e) => console.log(e)}
+                    key="to"
+                    onDayBlur={onBlur}
+                    className="bg-black-700 text-primary-500"
+                    onSelect={(selectedDate) => onChange(selectedDate)}
                     showOutsideDays
                     weekStartsOn={0}
-                    mode="single"
+                    selected={selectedTo}
                     defaultMonth={defaultMonth}
                     month={new Date()}
-                    onDayClick={(e) => handleDaySelectTo(e)}
+                    mode="single"
+                    onDayClick={(selectedFrom, modifiers, e) => {
+                      handleDaySelectTo(selectedFrom);
+                    }}
                     footer={
                       <>
-                        <p className="w-full bg-black-700 text-white-100">
+                        <p>
                           Select a Time:
                           <Input
-                            ref={ref}
                             className="flex w-full grow bg-black-700 text-white-100"
                             type="time"
-                            value={timeValueFrom}
-                            onChange={(e) => setTimeValueTo(e.target.value)}
-                            onBlur={(e) => console.log(e)}
+                            value={timeValueTo}
+                            ref={ref}
+                            onChange={(e) =>
+                              setTimeValueTo(
+                                format(e.target.valueAsDate!, "HH:mm")
+                              )
+                            }
                           ></Input>
-                          <span>{timeValueFrom} </span>
+                          <span> {timeValueTo}</span>
                         </p>
                       </>
                     }

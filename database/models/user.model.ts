@@ -61,16 +61,6 @@ const SocialsSchema = new Schema({
   },
 });
 
-const AvailabilitySchema = new Schema({
-  startTime: {
-    type: Date,
-    required: true,
-  },
-  endTime: {
-    type: Date,
-    required: true,
-  },
-});
 // need to add enumeration for some fields but wanted to make sure signIn logic works first.
 const UserSchema = new Schema(
   {
@@ -119,9 +109,13 @@ const UserSchema = new Schema(
       type: [String],
       required: false,
     },
-    availability: {
-      type: AvailabilitySchema,
-      required: false,
+    startTime: {
+      type: Date,
+      required: true,
+    },
+    endTime: {
+      type: Date,
+      required: true,
     },
     newProjects: {
       type: Boolean,

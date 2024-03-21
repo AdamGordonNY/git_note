@@ -78,3 +78,9 @@ body {
 }
 @layer utilities {
 }
+/* Path: app/styles/day-picker.css */
+.rdp-day_selected {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: var(--radius);
+}
