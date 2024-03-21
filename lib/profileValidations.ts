@@ -32,8 +32,8 @@ const ExperiencesSchema = z.array(
 
 // Availability Form Schema
 const AvailabilitySchema = z.object({
-  dates: z.array(z.date()),
-  times: z.array(z.string()), // Assuming you have a specific format for times
+  startTime: z.date(),
+  endTime: z.date(),
 });
 
 // Socials Form Schema
@@ -55,13 +55,9 @@ const CompleteProfileEditSchema = z.object({
   learningGoals: LearningGoalsSchema.optional(),
   technologies: TechnologiesSchema.optional(),
   experiences: ExperiencesSchema.optional(),
-  availability: z
-    .object({
-      dates: z.array(z.date()),
-      times: z.array(z.string()),
-    })
-    .optional(),
+  availability: AvailabilitySchema.optional(),
   socials: z.array(SocialsSchema).optional(),
+  newProjects: z.boolean().default(false),
 });
 
 export {

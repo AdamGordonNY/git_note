@@ -3,12 +3,12 @@ import { IUser } from "@/database/models/user.model";
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
-import { turnNameToIcon } from "@/lib/utils";
 import {
   useForm,
   useFieldArray,
   SubmitHandler,
   useWatch,
+  Controller,
 } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,8 +16,17 @@ import CustomButton from "../../CustomButton";
 import { Input } from "@/components/ui/input";
 import { CompleteProfileEditSchema } from "@/lib/profileValidations";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
+import { DayPicker, DayClickEventHandler } from "react-day-picker";
 import { techStackBadges } from "@/lib/constants";
+import { getMonth, toDate } from "date-fns";
+import "react-day-picker/dist/style.css";
+import { Calendar } from "lucide-react";
 
 interface EditProfileProps {
   user?: Partial<IUser>;
@@ -37,14 +46,13 @@ const EditProfile = ({ user }: EditProfileProps) => {
   // manage the search state
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
-  // form state
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
     setValue,
-    getValues,
   } = useForm<z.infer<typeof CompleteProfileEditSchema>>({
     resolver: zodResolver(CompleteProfileEditSchema),
     defaultValues: {
@@ -55,19 +63,24 @@ const EditProfile = ({ user }: EditProfileProps) => {
       learningGoals: dbGoals || [],
       experiences: experienceNames || [],
       technologies: user?.technologies || [],
+      availability:
+        { startTime: user?.startTime, endTime: user?.endTime } || {},
+      newProjects: user?.newProjects || false,
     },
   });
 
   const technologies = useWatch({ control, name: "technologies" });
-  console.log(technologies);
+  const availability = useWatch({ control, name: "availability" });
+
   useEffect(() => {
     console.log(errors);
-  }, [errors]);
+    console.log(availability);
+  }, [errors, availability]);
   useEffect(() => {
     const results = techStackBadges.filter((choice) =>
       choice.name.toLowerCase().includes(search.toLowerCase())
     );
-    console.log(results);
+
     setResults(results as any);
   }, [search]);
   const {
@@ -87,15 +100,34 @@ const EditProfile = ({ user }: EditProfileProps) => {
     control,
     name: "experiences",
   });
+  // After useForm
 
-  // https://react-hook-form.com/docs/usefieldarray
+  const today = Date.now();
+  const defaultMonth = getMonth(today);
+  const [timeValueFrom, setTimeValueFrom] = React.useState<string>("");
+  const [selectedFrom, setSelectedFrom] = React.useState<Date>();
+  const [timeValueTo, setTimeValueTo] = React.useState<string>("");
+  const [selectedTo, setSelectedTo] = React.useState<Date>();
+
+  const handleDayClick: DayClickEventHandler = (day) => {
+    if (!selectedFrom || (selectedFrom && selectedTo)) {
+      setSelectedFrom(day);
+      setSelectedTo(undefined);
+      return;
+    }
+    if (day < selectedFrom) {
+      setSelectedTo(selectedFrom);
+      setSelectedFrom(day);
+    } else {
+      setSelectedTo(day);
+    }
+  };
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
   > = async (data) => {
     const { fullname, portfolio, learningGoals, experiences, technologies } =
       data;
     const dbExperiences = experiences?.map((experience) => experience.name);
-    console.log(dbExperiences);
 
     if (user?._id) {
       try {
@@ -106,6 +138,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             learningGoals,
             experiences: dbExperiences,
             technologies,
+            availability,
           },
           path: pathname,
         });
@@ -156,28 +189,30 @@ const EditProfile = ({ user }: EditProfileProps) => {
         />
       </div>
       {goalFields.map((field, index: number) => (
-        <div key={field.id} className="profile-goals-wrapper">
-          <Input
-            type="checkbox"
-            color="green"
-            className="order-1 size-9 bg-black-700 text-white-100"
-            id={`learningGoals[${index}]CB`}
-            {...register(`learningGoals[${index}].completed` as any)}
-          />
-          <Input
-            className="order-2"
-            id={`learningGoals[${index}]`}
-            placeholder="Enter your goal"
-            {...register(`learningGoals[${index}].name` as any)}
-          />
-          <Button
-            type="button"
-            className="text-white-100"
-            onClick={() => removeGoal(index)}
-          >
-            Remove
-          </Button>
-        </div>
+        <>
+          <div key={field.id} className="profile-goals-wrapper">
+            <Input
+              type="checkbox"
+              color="green"
+              className="order-1 size-9 bg-black-700 text-white-100"
+              id={`learningGoals[${index}]CB`}
+              {...register(`learningGoals[${index}].completed` as any)}
+            />
+            <Input
+              className="order-2"
+              id={`learningGoals[${index}]`}
+              placeholder="Enter your goal"
+              {...register(`learningGoals[${index}].name` as any)}
+            />
+            <Button
+              type="button"
+              className="text-white-100"
+              onClick={() => removeGoal(index)}
+            >
+              Remove
+            </Button>
+          </div>
+        </>
       ))}
       <CustomButton
         buttonType="profileButton"
@@ -217,56 +252,173 @@ const EditProfile = ({ user }: EditProfileProps) => {
         Add Experience
       </CustomButton>
       {/* Technologies Section with Search Box */}
-      <div className="profile-goals-wrapper bg-black-700  ">
+      <div className="flex flex-col justify-stretch gap-2 bg-black-700 px-3.5 py-3  ">
         <label
           htmlFor="technologies"
-          className="block space-y-2 text-white-300"
+          className="justify-start space-y-2 text-white-300"
         >
           Tech Stacks
         </label>
-        <div className="flex  w-full shrink flex-col">
+        <div className="inline-flex w-full  bg-black-700 ">
           {technologies?.map((tech: any, index) => {
             const icon = techStackBadges.find((badge) => badge.name === tech);
-            return (
-              <div
-                key={index}
-                className="paragraph-3-bold order-2 flex h-7 w-1/2 flex-col items-center justify-start bg-black-600 p-3 text-white-100"
-              >
-                {" "}
-                {icon.icon()}
-                {tech}
-              </div>
-            );
+            if (icon)
+              return (
+                <>
+                  <span
+                    key={index}
+                    className="tech-badges paragraph-3-medium shadow-custom w-1/2   flex-row justify-between bg-black-600 text-white-100"
+                  >
+                    {icon.icon}
+                    {tech}
+                  </span>
+                </>
+              );
           })}
 
           <Input
-            className="w-full justify-end text-white-100"
+            className=" w-1/2  bg-black-700 text-white-100"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="flex h-6 grow-0 bg-black-700">
+        <div className="flex h-9 w-full flex-row  bg-black-700">
           {search &&
             results.length > 0 &&
             results.map((result: any, index) => {
               if (technologies?.includes(result.name)) {
                 return null;
               }
-              return (
-                <div className="flex grow-0 flex-col bg-black-700" key={index}>
-                  <Button
-                    key={index}
-                    className="overflow-auto overflow-y-hidden text-white-100"
-                    onClick={(e) =>
-                      setValue(`technologies`, [...technologies!, result.name])
-                    }
-                  >
-                    {result.icon()}
-                    {result.name}
-                  </Button>
-                </div>
+              const icon = techStackBadges.find(
+                (badge) => badge.name === result.name
               );
+              if (icon)
+                return (
+                  <>
+                    <div className="flex  flex-col bg-black-700" key={index}>
+                      <Button
+                        key={index}
+                        className="text-white-100"
+                        onClick={(e) =>
+                          setValue(`technologies`, [
+                            ...technologies!,
+                            result.name,
+                          ])
+                        }
+                      >
+                        <div
+                          key={index}
+                          className="h-8 flex-row gap-x-[12px] rounded-[3px] bg-black-600 px-2  py-0.5"
+                        >
+                          <span className="tech-badges paragraph-3-medium grow">
+                            {icon.icon({ size: 16 })}
+                            {result.name}
+                          </span>
+                        </div>
+                      </Button>
+                    </div>
+                  </>
+                );
             })}
+        </div>
+      </div>
+      <div className="wrapper border-top">
+        <label
+          className="pl-[30px] pt-[30px] text-white-300"
+          htmlFor="availability"
+        >
+          Schedule and availability
+        </label>
+
+        <div className="box-border flex flex-row gap-2">
+          <input
+            height={16}
+            width={16}
+            color="green"
+            type="checkbox"
+            {...register("newProjects")}
+            value={"false"}
+          />
+          <span className="paragraph-3-medium text-white-100">
+            {" "}
+            Are You Available for new projects?
+          </span>
+        </div>
+        <div className="flex flex-row justify-between">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button className="order-1 bg-black-600 text-white-500">
+                <Calendar size={16} /> Select Start Time
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="z-20 w-1/2 flex-none grow-0 self-stretch rounded-[4px] bg-black-700">
+              <Controller
+                control={control}
+                name="availability.startTime"
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <DayPicker
+                    className="bg-black-700 text-white-100"
+                    onSelect={(e) => console.log(e)}
+                    showOutsideDays
+                    weekStartsOn={0}
+                    defaultMonth={toDate(defaultMonth)}
+                    onMonthChange={(e) => console.log(e)}
+                    mode="single"
+                    onDayClick={handleDayClick}
+                    footer={
+                      <>
+                        <p>
+                          Select a Time:
+                          <Input
+                            type="time"
+                            value={timeValueFrom}
+                            onChange={(e) => setTimeValueFrom(e.target.value)}
+                          ></Input>
+                        </p>
+                      </>
+                    }
+                  />
+                )}
+              />
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button className="bg-black-600 text-white-500">
+                <Calendar size={16} /> Select End Time
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="date-input">
+              <Controller
+                control={control}
+                name="availability.endTime"
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <DayPicker
+                    className="bg-black-700 text-white-100"
+                    onSelect={(e) => console.log(e)}
+                    showOutsideDays
+                    weekStartsOn={0}
+                    mode="single"
+                    defaultMonth={toDate(defaultMonth)}
+                    month={new Date()}
+                    footer={
+                      <>
+                        <p className="bg-black-700 text-white-100">
+                          Select a Time:
+                          <Input
+                            type="time"
+                            value={timeValueFrom}
+                            onChange={(e) => setTimeValueFrom(e.target.value)}
+                          ></Input>
+                        </p>
+                      </>
+                    }
+                  />
+                )}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
       <CustomButton buttonType={`primary`} type="submit">

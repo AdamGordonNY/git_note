@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import "../styles/day-picker.css";
 @import "../styles/theme.css";
 body {
   font-family: "Inter", sans-serif;

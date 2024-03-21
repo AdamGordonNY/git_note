@@ -17,7 +17,8 @@ export interface IUser extends Document {
   role?: "user" | "admin";
   technologies?: string[];
   experiences: string[];
-  availability?: { dates: Date[]; times: string[] };
+  startTime: Date;
+  endTime: Date;
   newProjects?: boolean;
   socials?: {
     twitter?: string;
@@ -31,7 +32,7 @@ export interface IUser extends Document {
 }
 const GoalSchema = new Schema({
   name: { type: String, required: true },
-  completed: { type: Boolean, required: true }, // Ensure this aligns with your form's handling
+  completed: { type: Boolean, required: true },
 });
 const SocialsSchema = new Schema({
   twitter: {
@@ -61,12 +62,12 @@ const SocialsSchema = new Schema({
 });
 
 const AvailabilitySchema = new Schema({
-  dates: {
-    type: [Date],
+  startTime: {
+    type: Date,
     required: true,
   },
-  times: {
-    type: [String],
+  endTime: {
+    type: Date,
     required: true,
   },
 });
@@ -118,12 +119,10 @@ const UserSchema = new Schema(
       type: [String],
       required: false,
     },
-    availability: [
-      {
-        type: AvailabilitySchema,
-        required: false,
-      },
-    ],
+    availability: {
+      type: AvailabilitySchema,
+      required: false,
+    },
     newProjects: {
       type: Boolean,
       required: false,

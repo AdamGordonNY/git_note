@@ -279,4 +279,6 @@
     align-self: stretch;
     flex-grow: 0;
   }
+  .auto-layout {
+  }
 }
