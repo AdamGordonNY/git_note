@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
@@ -22,10 +22,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { DayPicker, DayClickEventHandler } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 import { techStackBadges } from "@/lib/constants";
 import { Calendar } from "lucide-react";
-import { getMonth, toDate } from "date-fns";
+import { getMonth, toDate, isValid, parse, format, formatDate } from "date-fns";
 
 interface EditProfileProps {
   user?: Partial<IUser>;
@@ -107,30 +107,43 @@ const EditProfile = ({ user }: EditProfileProps) => {
   const [selectedFrom, setSelectedFrom] = React.useState();
   const [timeValueTo, setTimeValueTo] = React.useState("00:00");
   const [selectedTo, setSelectedTo] = React.useState<Date>();
-  //
-  //  const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e:number | undefined) => {
-  //    const time = e.target.value;
-  //    if (!selectedFrom) {
-  //      setTimeValueTo(time);
-  //      return;
-  //    }
-  //    if (!selectedTo) {
-  //      setTimeValueFrom(time);
-  //      return;
-  //    }
-  //    const [hours, minutes] = time.split(":").map((str) => parseInt(str, 10));
-  //
-  //    const newSelectedDate = new Date(
-  //      selectedFrom?.getFullYear(),
-  //      selected.getMonth(),
-  //      selected.getDate(),
-  //      hours,
-  //      minutes
-  //    );
-  //    setSelected(newSelectedDate);
-  //    setTimeValue(time);
-  //  };
-  //
+  // const [isPopperOpen, setIsPopperOpen] = useState(false);
+
+  const handleDaySelectFrom = (date: Date | undefined) => {
+    if (!timeValueFrom || !date) {
+      setSelectedFrom(date as any);
+      return;
+    }
+    const [hours, minutes] = timeValueFrom
+      .split(":")
+      .map((str) => parseInt(str, 10));
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hours,
+      minutes
+    );
+    setSelectedFrom(newDate as any);
+  };
+  const handleDaySelectTo = (date: Date | undefined) => {
+    if (!timeValueTo || !date) {
+      setSelectedTo(date as any);
+      return;
+    }
+    const [hours, minutes] = timeValueTo
+      .split(":")
+      .map((str) => parseInt(str, 10));
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      hours,
+      minutes
+    );
+    setSelectedTo(newDate as any);
+  };
+
   //  const handleDaySelect = (date: Date | undefined) => {
   //    if (!timeValue || !date) {
   //      setSelected(date);
@@ -154,10 +167,18 @@ const EditProfile = ({ user }: EditProfileProps) => {
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
   > = async (data) => {
-    const { fullname, portfolio, learningGoals, experiences, technologies } =
-      data;
+    const {
+      fullname,
+      portfolio,
+      learningGoals,
+      experiences,
+      technologies,
+      newProjects,
+      availability,
+    } = data;
     const dbExperiences = experiences?.map((experience) => experience.name);
-
+    const startTime = availability?.startTime;
+    const endTime = availability?.endTime;
     if (user?._id) {
       try {
         await updateUser({
@@ -167,6 +188,9 @@ const EditProfile = ({ user }: EditProfileProps) => {
             learningGoals,
             experiences: dbExperiences,
             technologies,
+            startTime,
+            endTime,
+            newProjects,
           },
           path: pathname,
         });
@@ -297,7 +321,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
                     key={index}
                     className="tech-badges paragraph-3-medium shadow-custom w-1/2   flex-row justify-between bg-black-600 text-white-100"
                   >
-                    {icon.icon}
+                    {icon.icon({ size: 16 })}
                     {tech}
                   </span>
                 </>
@@ -315,7 +339,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             results.length > 0 &&
             results.map((result: any, index) => {
               if (technologies?.includes(result.name)) {
-                return null;
+                return false;
               }
               const icon = techStackBadges.find(
                 (badge) => badge.name === result.name
@@ -359,50 +383,66 @@ const EditProfile = ({ user }: EditProfileProps) => {
         </label>
 
         <div className="box-border flex flex-row gap-2">
-          <input
-            height={16}
-            width={16}
-            color="green"
-            type="checkbox"
-            {...register("newProjects")}
-            value={"false"}
-          />
-          <span className="paragraph-3-medium text-white-100">
+          <label htmlFor="newProjects" className="pt-[30px]">
             {" "}
-            Are You Available for new projects?
-          </span>
+            <input
+              height={16}
+              width={16}
+              color="green"
+              type="checkbox"
+              {...register("newProjects")}
+              value={"false"}
+            />
+            <span className="paragraph-3-medium text-white-100">
+              {" "}
+              Are You Available for new projects?
+            </span>
+          </label>
         </div>
         <div className="flex flex-row justify-between">
           <Popover>
             <PopoverTrigger asChild>
-              <Button className="order-1 bg-black-600 text-white-500">
+              <Button className=" bg-black-600 text-white-500">
                 <Calendar size={16} /> Select Start Time
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="z-20 w-1/2 flex-none grow-0 self-stretch rounded-[4px] bg-black-700">
+            <PopoverContent className="z-20 w-full flex-none grow-0 self-stretch rounded-[4px] bg-black-700">
               <Controller
                 control={control}
                 name="availability.startTime"
                 render={({ field: { onChange, onBlur, value, ref } }) => (
                   <DayPicker
                     key="from"
+                    onDayBlur={onBlur}
                     className="bg-black-700 text-white-100"
-                    onSelect={(e) => console.log(e)}
+                    onSelect={(selectedDate) => onChange(selectedDate)}
                     showOutsideDays
+                    onDayFocus={(e) => console.log(e)}
                     weekStartsOn={0}
+                    selected={selectedFrom}
                     defaultMonth={defaultMonth}
                     onMonthChange={(e) => console.log(e)}
+                    month={new Date()}
                     mode="single"
-                    onDayClick={(e: any) => setSelectedFrom(e)}
+                    onDayClick={(selectedFrom, modifiers, e) => {
+                      handleDaySelectFrom(selectedFrom);
+                    }}
                     footer={
                       <>
                         <p>
                           Select a Time:
                           <Input
+                            className="flex w-full grow bg-black-700 text-white-100"
                             type="time"
                             value={timeValueFrom}
-                            onChange={(e) => setTimeValueFrom(e.target.value)}
+                            ref={ref}
+                            onChange={(e) =>
+                              setTimeValueFrom(
+                                format(e.target.valueAsDate!, "HH:mm")
+                              )
+                            }
                           ></Input>
+                          <span> {timeValueFrom}</span>
                         </p>
                       </>
                     }
@@ -418,12 +458,13 @@ const EditProfile = ({ user }: EditProfileProps) => {
                 <Calendar size={16} /> Select End Time
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="date-input">
+            <PopoverContent className="z-20  w-full flex-none grow-0 self-stretch rounded-[4px] bg-black-700">
               <Controller
                 control={control}
                 name="availability.endTime"
                 render={({ field: { onChange, onBlur, value, ref } }) => (
                   <DayPicker
+                    key="from"
                     className="bg-black-700 text-white-100"
                     onSelect={(e) => console.log(e)}
                     showOutsideDays
@@ -431,15 +472,20 @@ const EditProfile = ({ user }: EditProfileProps) => {
                     mode="single"
                     defaultMonth={defaultMonth}
                     month={new Date()}
+                    onDayClick={(e) => handleDaySelectTo(e)}
                     footer={
                       <>
-                        <p className="bg-black-700 text-white-100">
+                        <p className="w-full bg-black-700 text-white-100">
                           Select a Time:
                           <Input
+                            ref={ref}
+                            className="flex w-full grow bg-black-700 text-white-100"
                             type="time"
                             value={timeValueFrom}
-                            onChange={(e) => setTimeValueFrom(e.target.value)}
+                            onChange={(e) => setTimeValueTo(e.target.value)}
+                            onBlur={(e) => console.log(e)}
                           ></Input>
+                          <span>{timeValueFrom} </span>
                         </p>
                       </>
                     }
