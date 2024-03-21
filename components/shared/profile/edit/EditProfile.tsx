@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
@@ -25,7 +25,6 @@ import {
 import { DayPicker } from "react-day-picker";
 import { techStackBadges } from "@/lib/constants";
 import { Calendar } from "lucide-react";
-import { getMonth, toDate, format } from "date-fns";
 
 interface EditProfileProps {
   user?: Partial<IUser>;
@@ -101,45 +100,32 @@ const EditProfile = ({ user }: EditProfileProps) => {
   });
   // After useForm
 
-  const today = Date.now();
-  const defaultMonth = toDate(getMonth(today));
-  const [timeValueFrom, setTimeValueFrom] = React.useState("00:00");
   const [selectedFrom, setSelectedFrom] = React.useState();
-  const [timeValueTo, setTimeValueTo] = React.useState("00:00");
   const [selectedTo, setSelectedTo] = React.useState<Date>();
-  // const [isPopperOpen, setIsPopperOpen] = useState(false);
 
   const handleDaySelectFrom = (date: Date | undefined) => {
-    if (!timeValueFrom || !date) {
+    if (!date) {
       setSelectedFrom(date as any);
       return;
     }
-    const [hours, minutes] = timeValueFrom
-      .split(":")
-      .map((str) => parseInt(str, 10));
+
     const newDate = new Date(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate(),
-      hours,
-      minutes
+      date.getDate()
     );
     setSelectedFrom(newDate as any);
   };
   const handleDaySelectTo = (date: Date | undefined) => {
-    if (!timeValueTo || !date) {
+    if (!date) {
       setSelectedTo(date as any);
       return;
     }
-    const [hours, minutes] = timeValueTo
-      .split(":")
-      .map((str) => parseInt(str, 10));
+
     const newDate = new Date(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate(),
-      hours,
-      minutes
+      date.getDate()
     );
     setSelectedTo(newDate as any);
   };
@@ -225,7 +211,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           <div key={field.id} className="profile-goals-wrapper">
             <Input
               type="checkbox"
-              color="green"
+              color="green-500"
               className="order-1 size-9 bg-black-700 text-white-100"
               id={`learningGoals[${index}]CB`}
               {...register(`learningGoals[${index}].completed` as any)}
@@ -284,29 +270,30 @@ const EditProfile = ({ user }: EditProfileProps) => {
         Add Experience
       </CustomButton>
       {/* Technologies Section with Search Box */}
-      <div className="flex flex-col justify-stretch gap-2 bg-black-700 px-3.5 py-3  ">
+      <div className="flex flex-col justify-stretch gap-2 px-3.5 py-3  ">
         <label
           htmlFor="technologies"
           className="justify-start space-y-2 text-white-300"
         >
           Tech Stacks
         </label>
-        <div className="inline-flex w-full  bg-black-700 ">
-          {technologies?.map((tech: any, index) => {
-            const icon = techStackBadges.find((badge) => badge.name === tech);
-            if (icon)
-              return (
-                <>
-                  <span
-                    key={index}
-                    className="tech-badges paragraph-3-medium shadow-custom w-1/2   flex-row justify-between bg-black-600 text-white-100"
-                  >
-                    {icon.icon({ size: 16 })}
-                    {tech}
-                  </span>
-                </>
-              );
-          })}
+        <div className="flex w-full  bg-black-700 ">
+          {technologies && // eslint-disable-next-line array-callback-return
+            technologies?.map((tech: any, index) => {
+              const icon = techStackBadges.find((badge) => badge.name === tech);
+              if (icon)
+                return (
+                  <>
+                    <span
+                      key={index}
+                      className="tech-badges paragraph-3-medium shadow-custom w-1/2   flex-row justify-between bg-black-600 text-white-100"
+                    >
+                      {icon.icon({ size: 16 })}
+                      {tech}
+                    </span>
+                  </>
+                );
+            })}
 
           <Input
             className=" w-1/2  bg-black-700 text-white-100"
@@ -314,9 +301,10 @@ const EditProfile = ({ user }: EditProfileProps) => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="flex h-9 w-full flex-row  bg-black-700">
+        <div className="flex h-9 w-full flex-row">
           {search &&
             results.length > 0 &&
+            // eslint-disable-next-line array-callback-return
             results.map((result: any, index) => {
               if (technologies?.includes(result.name)) {
                 return false;
@@ -354,16 +342,13 @@ const EditProfile = ({ user }: EditProfileProps) => {
             })}
         </div>
       </div>
-      <div className="wrapper border-top">
-        <label
-          className="pl-[30px] pt-[30px] text-white-300"
-          htmlFor="availability"
-        >
-          Schedule and availability
+      <div className="border-top box-border flex flex-col items-start">
+        <label className="text-white-300" htmlFor="availability">
+          Schedule and Availability
         </label>
 
-        <div className="box-border flex flex-row gap-2">
-          <label htmlFor="newProjects" className="pt-[30px]">
+        <div className="flex flex-row gap-2">
+          <label htmlFor="newProjects" className="py-[30px]">
             {" "}
             <input
               height={16}
@@ -371,7 +356,8 @@ const EditProfile = ({ user }: EditProfileProps) => {
               color="green"
               type="checkbox"
               {...register("newProjects")}
-              value={"false"}
+              checked={user?.newProjects}
+              onChange={(e) => setValue("newProjects", e.target.checked)}
             />
             <span className="paragraph-3-medium text-white-100">
               {" "}
@@ -379,106 +365,81 @@ const EditProfile = ({ user }: EditProfileProps) => {
             </span>
           </label>
         </div>
-        <div className="flex w-full flex-row gap-x-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button className=" bg-black-600 text-white-500">
-                <Calendar size={16} /> Select Start Time
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="z-20 w-full flex-none grow-0 self-stretch rounded-[4px] bg-black-700">
-              <Controller
-                control={control}
-                name="availability.startTime"
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <DayPicker
-                    key="from"
-                    onDayBlur={onBlur}
-                    className="bg-black-700 text-primary-500"
-                    onSelect={(selectedDate) => onChange(selectedDate)}
-                    showOutsideDays
-                    weekStartsOn={0}
-                    selected={selectedFrom}
-                    defaultMonth={defaultMonth}
-                    month={new Date()}
-                    mode="single"
-                    onDayClick={(selectedFrom, modifiers, e) => {
-                      handleDaySelectFrom(selectedFrom);
-                    }}
-                    footer={
-                      <>
-                        <p>
-                          Select a Time:
-                          <Input
-                            className="flex w-full grow bg-black-700 text-white-100"
-                            type="time"
-                            value={timeValueFrom}
-                            ref={ref}
-                            onChange={(e) =>
-                              setTimeValueFrom(
-                                format(e.target.valueAsDate!, "HH:mm")
-                              )
-                            }
-                          ></Input>
-                          <span> {timeValueFrom}</span>
-                        </p>
-                      </>
-                    }
-                  />
-                )}
-              />
-            </PopoverContent>
-          </Popover>
+        <div className="flex w-full grow flex-row justify-around gap-x-2">
+          <div className="flex w-full flex-col">
+            {" "}
+            <label className="text-white-100" htmlFor="availability.startTime">
+              Start Date{" "}
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button className=" profile-shadow max-w-full grow bg-black-600 text-white-500">
+                  <Calendar size={16} /> Select Start Time
+                </Button>
+              </PopoverTrigger>
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button className="bg-black-600 text-white-500">
-                <Calendar size={16} /> Select End Time
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="z-20  w-full flex-none grow-0 self-stretch rounded-[4px] bg-black-700">
-              <Controller
-                control={control}
-                name="availability.endTime"
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <DayPicker
-                    key="to"
-                    onDayBlur={onBlur}
-                    className="bg-black-700 text-primary-500"
-                    onSelect={(selectedDate) => onChange(selectedDate)}
-                    showOutsideDays
-                    weekStartsOn={0}
-                    selected={selectedTo}
-                    defaultMonth={defaultMonth}
-                    month={new Date()}
-                    mode="single"
-                    onDayClick={(selectedFrom, modifiers, e) => {
-                      handleDaySelectTo(selectedFrom);
-                    }}
-                    footer={
-                      <>
-                        <p>
-                          Select a Time:
-                          <Input
-                            className="flex w-full grow bg-black-700 text-white-100"
-                            type="time"
-                            value={timeValueTo}
-                            ref={ref}
-                            onChange={(e) =>
-                              setTimeValueTo(
-                                format(e.target.valueAsDate!, "HH:mm")
-                              )
-                            }
-                          ></Input>
-                          <span> {timeValueTo}</span>
-                        </p>
-                      </>
-                    }
-                  />
-                )}
-              />
-            </PopoverContent>
-          </Popover>
+              <PopoverContent className="z-20 w-full flex-none grow self-stretch rounded-[4px] bg-black-700 text-white-100">
+                <Controller
+                  control={control}
+                  name="availability.startTime"
+                  render={({ field: { onChange } }) => (
+                    <DayPicker
+                      key="from"
+                      className="bg-black-700 text-white-500"
+                      onSelect={(selectedDate) => onChange(selectedDate)}
+                      showOutsideDays
+                      weekStartsOn={0}
+                      selected={selectedFrom}
+                      defaultMonth={new Date()}
+                      mode="single"
+                      onDayClick={(selectedFrom) => {
+                        handleDaySelectFrom(selectedFrom);
+                      }}
+                    />
+                  )}
+                />
+              </PopoverContent>
+            </Popover>
+            <span className="paragraph-4-medium space-y-2 text-white-500">
+              Set to Local Time
+            </span>
+          </div>
+          <div className="flex w-full flex-col">
+            <label className="text-white-100" htmlFor="availability.endTime">
+              End Date
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button className=" max-w-full grow bg-black-600 text-white-500">
+                  <Calendar size={16} /> Select End Time
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="z-20  w-full flex-none  self-stretch  rounded-[4px] bg-black-700 text-white-100">
+                <Controller
+                  control={control}
+                  name="availability.endTime"
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <DayPicker
+                      key="to"
+                      className="bg-black-700 text-white-500"
+                      onSelect={(selectedDate) => onChange(selectedDate)}
+                      showOutsideDays
+                      weekStartsOn={0}
+                      selected={selectedTo}
+                      defaultMonth={new Date()}
+                      mode="single"
+                      onDayClick={(selectedFrom) => {
+                        handleDaySelectTo(selectedFrom);
+                      }}
+                    />
+                  )}
+                />
+              </PopoverContent>
+            </Popover>
+            <span className="paragraph-4-medium space-y-2 text-white-300">
+              Set to Local Time
+            </span>
+          </div>
         </div>
       </div>
       <CustomButton buttonType={`primary`} type="submit">
