@@ -219,7 +219,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           <React.Fragment key={field.id}>
             <div
               key={field.id}
-              className="paragraph-3-regular flex w-full flex-row items-center justify-between gap-[14px] space-y-4 bg-black-700 "
+              className="paragraph-3-regular flex w-full flex-row content-center items-center justify-between gap-[14px]  bg-black-700 "
             >
               <Input
                 type="checkbox"
@@ -278,7 +278,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
                 <Input
                   id={`experiences[${index}].name`}
                   type="text"
-                  className="paragraph-3-regular order-1 bg-black-700 text-white-100 ring-transparent  focus:ring-transparent"
+                  className="paragraph-3-regular order-1 border-0 bg-black-700 text-white-100 ring-transparent focus:outline-transparent focus:ring-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
                   {...register(`experiences[${index}].name` as any)}
                 />
                 <Image src={blueCheck} alt="knowledge" width={16} height={16} />
@@ -296,83 +296,87 @@ const EditProfile = ({ user }: EditProfileProps) => {
         </CustomButton>
       </div>
       {/* Technologies Section with Search Box */}
-      <div className="flex flex-col justify-stretch gap-2 px-3.5 py-3  ">
+      <div className="flex flex-col justify-stretch gap-2   px-3.5 py-3  ">
         <label
           htmlFor="technologies"
           className="justify-start space-y-2 text-white-300"
         >
           Tech Stacks
         </label>
-        <div className="box-border flex  w-full bg-black-700">
-          {technologies && // eslint-disable-next-line array-callback-return
-            technologies?.map((tech: any, index) => {
-              const icon = techStackBadges.find((badge) => badge.name === tech);
-              const capitalized = tech.charAt(0).toUpperCase() + tech.slice(1);
-              if (icon)
-                return (
-                  <React.Fragment key={tech}>
-                    <div className="box-border flex max-w-full flex-1 flex-row bg-black-600">
-                      <span
-                        key={index}
-                        className=" paragraph-3-medium shadow-custom flex flex-row  justify-between bg-black-600 p-2 text-white-100"
-                      >
-                        {icon.icon}
-                        {capitalized}
-                      </span>
-                    </div>
-                  </React.Fragment>
-                );
-            })}
-
-          <Input
-            className=" w-1/2  bg-black-700 text-white-100"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="flex h-9 w-full flex-row">
-          {search &&
-            results.length > 0 &&
-            // eslint-disable-next-line array-callback-return
-            results.map((result: any, index) => {
-              if (technologies?.includes(result.name)) {
-                return false;
-              }
-              const icon = techStackBadges.find(
-                (badge) => badge.name === result.name
-              );
-              const capitalized =
-                result.name.charAt(0).toUpperCase() + result.name.slice(1);
-              if (icon)
-                return (
-                  <React.Fragment key={result.name}>
-                    <div className="flex  flex-col bg-black-700" key={index}>
-                      <Button
-                        key={index}
-                        className="w-full text-white-100"
-                        onClick={(e) =>
-                          setValue(`technologies`, [
-                            ...technologies!,
-                            result.name,
-                          ])
-                        }
-                      >
-                        <div
-                          key={result.name}
-                          className="flex h-8 flex-row items-center gap-x-[12px] rounded-[3px] bg-black-600 px-2  py-0.5"
+        <section className="bg-black-700">
+          <div className="box-border flex  w-full border border-white-100 bg-black-700">
+            <div className="flex flex-row content-center items-center justify-center gap-x-2">
+              {technologies && // eslint-disable-next-line array-callback-return
+                technologies?.map((tech: any, index) => {
+                  const icon = techStackBadges.find(
+                    (badge) => badge.name === tech
+                  );
+                  const capitalized =
+                    tech.charAt(0).toUpperCase() + tech.slice(1);
+                  if (icon)
+                    return (
+                      <React.Fragment key={tech}>
+                        <span
+                          key={index}
+                          className=" paragraph-3-medium shadow-custom flex h-4 content-center items-center justify-between rounded bg-black-600 p-2 text-white-100"
                         >
-                          <span className="paragraph-3-medium">
-                            {icon?.icon}
-                            {capitalized}
-                          </span>
-                        </div>
-                      </Button>
-                    </div>
-                  </React.Fragment>
+                          {icon.icon}
+                          {capitalized}
+                        </span>
+                      </React.Fragment>
+                    );
+                })}
+            </div>
+            <Input
+              className=" w-1/2  bg-black-700 text-white-100"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="flex h-9 w-full flex-row ">
+            {search &&
+              results.length > 0 &&
+              // eslint-disable-next-line array-callback-return
+              results.map((result: any, index) => {
+                if (technologies?.includes(result.name)) {
+                  return false;
+                }
+                const icon = techStackBadges.find(
+                  (badge) => badge.name === result.name
                 );
-            })}
-        </div>
+
+                if (icon)
+                  return (
+                    <React.Fragment key={result.name}>
+                      <div className="flex  flex-col bg-black-600" key={index}>
+                        <Button
+                          key={index}
+                          className="w-full text-white-100"
+                          onClick={(e) =>
+                            setValue(`technologies`, [
+                              ...technologies!,
+                              result.name,
+                            ])
+                          }
+                        >
+                          <div
+                            key={result.name}
+                            className="flex h-8 flex-row items-center gap-x-[12px]  rounded-[3px] px-2  py-0.5"
+                          >
+                            <span className="paragraph-3-medium capitalize">
+                              {icon?.icon}
+                              {result.name}
+                            </span>
+                          </div>
+                        </Button>
+                      </div>
+                    </React.Fragment>
+                  );
+              })}
+          </div>
+        </section>
       </div>
+
       <div className="border-top box-border flex flex-col items-start">
         <label className="text-white-300" htmlFor="availability">
           Schedule and Availability
