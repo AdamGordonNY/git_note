@@ -4,16 +4,6 @@
 @import "react-day-picker/dist/style.css";
 
 @layer utilities {
-  .auto {
-    @apply flex flex-row items-center px-3.5 py-3 gap-2;
-  }
-
-  .available-section {
-    @apply box-border;
-  }
-  .wrapper {
-    @apply flex flex-col items-start px-[30px];
-  }
   .date-input {
     @apply bg-black-700 border-r-4 grow-0 self-stretch flex-none z-20 w-1/2;
   }

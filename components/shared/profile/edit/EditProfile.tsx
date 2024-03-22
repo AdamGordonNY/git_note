@@ -24,8 +24,9 @@ import {
 
 import { DayPicker } from "react-day-picker";
 import { techStackBadges } from "@/lib/constants";
-import { Calendar } from "lucide-react";
-
+import { Calendar, X } from "lucide-react";
+import blueCheck from "@/public/icons/checksquare.svg";
+import Image from "next/image";
 interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
@@ -100,7 +101,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
   });
   // After useForm
 
-  const [selectedFrom, setSelectedFrom] = React.useState();
+  const [selectedFrom, setSelectedFrom] = React.useState<Date>();
   const [selectedTo, setSelectedTo] = React.useState<Date>();
 
   const handleDaySelectFrom = (date: Date | undefined) => {
@@ -206,69 +207,94 @@ const EditProfile = ({ user }: EditProfileProps) => {
           placeholder="portfolio"
         />
       </div>
-      {goalFields.map((field, index: number) => (
-        <>
-          <div key={field.id} className="profile-goals-wrapper">
-            <Input
-              type="checkbox"
-              color="green-500"
-              className="order-1 size-9 bg-black-700 text-white-100"
-              id={`learningGoals[${index}]CB`}
-              {...register(`learningGoals[${index}].completed` as any)}
-            />
-            <Input
-              className="order-2"
-              id={`learningGoals[${index}]`}
-              placeholder="Enter your goal"
-              {...register(`learningGoals[${index}].name` as any)}
-            />
-            <Button
-              type="button"
-              className="text-white-100"
-              onClick={() => removeGoal(index)}
+      <div className="my-10 space-y-4 py-10">
+        <label
+          htmlFor="learningGoals"
+          className="paragraph-3-regular text-white-300"
+        >
+          {" "}
+          Learning Goals
+        </label>
+        {goalFields.map((field, index: number) => (
+          <React.Fragment key={field.id}>
+            <div
+              key={field.id}
+              className="paragraph-3-regular flex w-full flex-row items-center justify-between gap-[14px] space-y-4 bg-black-700 "
             >
-              Remove
-            </Button>
-          </div>
-        </>
-      ))}
-      <CustomButton
-        buttonType="profileButton"
-        type="button"
-        // @ts-ignore
-        onClick={() => appendGoal({ name: "", completed: false })}
-      >
-        Add Goal
-      </CustomButton>
-
-      {experienceFields.map((field, index) => {
-        return (
-          <>
-            <div className="profile-goals-wrapper" key={field.id}>
-              <Button
-                className="text-white-100"
-                type="button"
-                onClick={() => removeExperience(index)}
-              >
-                {" "}
-                Remove
-              </Button>
               <Input
-                id={`experiences[${index}].name`}
-                type="text"
-                {...register(`experiences[${index}].name` as any)}
+                type="checkbox"
+                color="green-500"
+                className="order-1 size-6 bg-black-700 text-white-100"
+                id={`learningGoals[${index}]CB`}
+                {...register(`learningGoals[${index}].completed` as any)}
               />
+              <Input
+                className=" order-2 bg-black-700 text-white-100 ring-black-700"
+                id={`learningGoals[${index}]`}
+                placeholder="Enter your goal"
+                {...register(`learningGoals[${index}].name` as any)}
+              />
+              <Button
+                type="button"
+                className="order-3 text-white-100"
+                onClick={() => removeGoal(index)}
+              >
+                <X size={20} />
+              </Button>
             </div>
-          </>
-        );
-      })}
-      <CustomButton
-        buttonType="profileButton"
-        type="button"
-        onClick={() => appendExperience({ name: "" })}
-      >
-        Add Experience
-      </CustomButton>
+          </React.Fragment>
+        ))}
+        <CustomButton
+          buttonType="profileButton"
+          type="button"
+          // @ts-ignore
+          onClick={() => appendGoal({ name: "", completed: false })}
+        >
+          Add Goal
+        </CustomButton>
+      </div>
+      <div className="my-10 py-10">
+        <label
+          className="paragraph-3-bold text-white-300"
+          htmlFor="experiences"
+        >
+          Knowledge{" "}
+        </label>
+        {experienceFields.map((field, index) => {
+          return (
+            <React.Fragment key={field.id}>
+              <div
+                className="paragraph-3-regular flex h-[48px] w-full flex-row items-center justify-between gap-[14px] space-y-4"
+                key={field.id}
+              >
+                <Button
+                  className="paragraph-3-regular order-2 bg-black-800 text-white-100"
+                  type="button"
+                  onClick={() => removeExperience(index)}
+                >
+                  {" "}
+                  <X size={20} />
+                </Button>
+                <Input
+                  id={`experiences[${index}].name`}
+                  type="text"
+                  className="paragraph-3-regular order-1 bg-black-700 text-white-100 ring-transparent  focus:ring-transparent"
+                  {...register(`experiences[${index}].name` as any)}
+                />
+                <Image src={blueCheck} alt="knowledge" width={16} height={16} />
+              </div>
+            </React.Fragment>
+          );
+        })}
+        <CustomButton
+          className="mt-[16px]"
+          buttonType="profileButton"
+          type="button"
+          onClick={() => appendExperience({ name: "" })}
+        >
+          Add Knowledge
+        </CustomButton>
+      </div>
       {/* Technologies Section with Search Box */}
       <div className="flex flex-col justify-stretch gap-2 px-3.5 py-3  ">
         <label
@@ -277,21 +303,24 @@ const EditProfile = ({ user }: EditProfileProps) => {
         >
           Tech Stacks
         </label>
-        <div className="flex w-full  bg-black-700 ">
+        <div className="box-border flex  w-full bg-black-700">
           {technologies && // eslint-disable-next-line array-callback-return
             technologies?.map((tech: any, index) => {
               const icon = techStackBadges.find((badge) => badge.name === tech);
+              const capitalized = tech.charAt(0).toUpperCase() + tech.slice(1);
               if (icon)
                 return (
-                  <>
-                    <span
-                      key={index}
-                      className="tech-badges paragraph-3-medium shadow-custom w-1/2   flex-row justify-between bg-black-600 text-white-100"
-                    >
-                      {icon.icon({ size: 16 })}
-                      {tech}
-                    </span>
-                  </>
+                  <React.Fragment key={tech}>
+                    <div className="box-border flex max-w-full flex-1 flex-row bg-black-600">
+                      <span
+                        key={index}
+                        className=" paragraph-3-medium shadow-custom flex flex-row  justify-between bg-black-600 p-2 text-white-100"
+                      >
+                        {icon.icon}
+                        {capitalized}
+                      </span>
+                    </div>
+                  </React.Fragment>
                 );
             })}
 
@@ -312,13 +341,15 @@ const EditProfile = ({ user }: EditProfileProps) => {
               const icon = techStackBadges.find(
                 (badge) => badge.name === result.name
               );
+              const capitalized =
+                result.name.charAt(0).toUpperCase() + result.name.slice(1);
               if (icon)
                 return (
-                  <>
+                  <React.Fragment key={result.name}>
                     <div className="flex  flex-col bg-black-700" key={index}>
                       <Button
                         key={index}
-                        className="text-white-100"
+                        className="w-full text-white-100"
                         onClick={(e) =>
                           setValue(`technologies`, [
                             ...technologies!,
@@ -327,17 +358,17 @@ const EditProfile = ({ user }: EditProfileProps) => {
                         }
                       >
                         <div
-                          key={index}
-                          className="h-8 flex-row gap-x-[12px] rounded-[3px] bg-black-600 px-2  py-0.5"
+                          key={result.name}
+                          className="flex h-8 flex-row items-center gap-x-[12px] rounded-[3px] bg-black-600 px-2  py-0.5"
                         >
-                          <span className="tech-badges paragraph-3-medium grow">
-                            {icon.icon({ size: 16 })}
-                            {result.name}
+                          <span className="paragraph-3-medium">
+                            {icon?.icon}
+                            {capitalized}
                           </span>
                         </div>
                       </Button>
                     </div>
-                  </>
+                  </React.Fragment>
                 );
             })}
         </div>
@@ -353,11 +384,8 @@ const EditProfile = ({ user }: EditProfileProps) => {
             <input
               height={16}
               width={16}
-              color="green"
               type="checkbox"
               {...register("newProjects")}
-              checked={user?.newProjects}
-              onChange={(e) => setValue("newProjects", e.target.checked)}
             />
             <span className="paragraph-3-medium text-white-100">
               {" "}
@@ -403,7 +431,13 @@ const EditProfile = ({ user }: EditProfileProps) => {
             <span className="paragraph-4-medium space-y-2 text-white-500">
               Set to Local Time
             </span>
+            <div>
+              <span className="mt-[20px] text-white-100">
+                {selectedFrom?.toDateString()}
+              </span>
+            </div>
           </div>
+
           <div className="flex w-full flex-col">
             <label className="text-white-100" htmlFor="availability.endTime">
               End Date
@@ -418,7 +452,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
                 <Controller
                   control={control}
                   name="availability.endTime"
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                  render={({ field: { onChange } }) => (
                     <DayPicker
                       key="to"
                       className="bg-black-700 text-white-500"
@@ -439,6 +473,11 @@ const EditProfile = ({ user }: EditProfileProps) => {
             <span className="paragraph-4-medium space-y-2 text-white-300">
               Set to Local Time
             </span>
+            <div>
+              <span className="mt-[20px] text-white-100">
+                {selectedTo?.toDateString()}
+              </span>
+            </div>
           </div>
         </div>
       </div>

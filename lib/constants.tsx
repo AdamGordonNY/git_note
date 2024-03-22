@@ -1,4 +1,5 @@
 import { SidebarLink, SocialLink } from "@/types/global";
+import React from "react";
 import {
   FaCss3,
   FaDribbble,
@@ -91,7 +92,7 @@ export const socialLinks: SocialLink[] = [
 ];
 export interface TechStackBadges {
   name: string;
-  icon: IconType;
+  icon: React.JSX.Element;
   color?: string;
 }
 export const TechIcons: IconType[] = [
@@ -113,60 +114,57 @@ export const TechIcons: IconType[] = [
 export const techStackBadges: TechStackBadges[] = [
   {
     name: "react",
-    icon: DiReact,
+    icon: <DiReact fill="rgb(0, 255, 255)" />,
     color: "name-blue-500",
   },
   {
     name: "node",
-    icon: DiNodejs,
+    icon: <DiNodejs fill="rgb(0, 255, 255)" />,
     color: "bg-green-500",
   },
   {
     name: "html",
-    icon: DiHtml5,
+    icon: <DiHtml5 fill="red" />,
     color: "bg-red-500",
   },
   {
     name: "css",
-    icon: DiCss3,
+    icon: <DiCss3 fill="blue" />,
   },
   {
     name: "javascript",
-    icon: DiJavascript,
+    icon: <DiJavascript fill="yellow" />,
   },
   {
     name: "python",
-    icon: DiPython,
+    icon: <DiPython fill="yellow" />,
   },
   {
     name: "java",
-    icon: DiJava,
+    icon: <DiJava fill="red" />,
   },
   {
     name: "github",
-    icon: DiGithub,
+    icon: <DiGithub fill="gray" />,
   },
   {
     name: "tailwind",
-    icon: BiLogoTailwindCss,
+    icon: <BiLogoTailwindCss fill="rgb(0, 255, 255)" />,
   },
   {
     name: "nextjs",
-    icon: TbBrandNextjs,
+    icon: <TbBrandNextjs fill="white" />,
   },
   {
     name: "laravel",
-    icon: DiLaravel,
-    color: "bg-red-500",
+    icon: <DiLaravel fill="red" />,
   },
   {
     name: "php",
-    icon: FaPhp,
+    icon: <FaPhp fill="blue" />,
   },
   {
     name: "typescript",
-    icon: BiLogoTypescript,
+    icon: <BiLogoTypescript fill="blue" />,
   },
 ];
-export const techArray = [...techStackBadges];
-export const technameArray = techStackBadges.map((tech) => tech.name);
