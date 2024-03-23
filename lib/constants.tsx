@@ -153,7 +153,7 @@ export const techStackBadges: TechStackBadges[] = [
   },
   {
     name: "nextjs",
-    icon: <TbBrandNextjs fill="white" />,
+    icon: <TbBrandNextjs fill="white" stroke="black" />,
   },
   {
     name: "laravel",

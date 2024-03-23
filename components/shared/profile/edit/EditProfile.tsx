@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
@@ -27,22 +27,23 @@ import { techStackBadges } from "@/lib/constants";
 import { Calendar, X } from "lucide-react";
 import blueCheck from "@/public/icons/checksquare.svg";
 import Image from "next/image";
+import { format } from "date-fns";
 interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
 }
 const EditProfile = ({ user }: EditProfileProps) => {
   const pathname = usePathname();
-  // instantiates the form with the user's data
+
   const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
     completed: goal.completed,
   }));
-  // instantiates the form with the user's data
+
   const experienceNames = user?.experiences?.map((experience) => ({
     name: experience,
   }));
-  // manage the search state
+
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
 
@@ -69,12 +70,32 @@ const EditProfile = ({ user }: EditProfileProps) => {
   });
 
   const technologies = useWatch({ control, name: "technologies" });
-  const availability = useWatch({ control, name: "availability" });
+  const handleRemoveTech = useCallback(
+    (techToRemove: any) => {
+      setValue(
+        "technologies",
+        technologies
+          ? technologies?.filter((tech) => tech !== techToRemove)
+          : []
+      );
+    },
+    [setValue, technologies]
+  );
 
   useEffect(() => {
-    console.log(errors);
-    console.log(availability);
-  }, [errors, availability]);
+    if (user?.startTime) {
+      const startDate = new Date(user.startTime);
+      setValue("availability.startTime", startDate);
+
+      setSelectedFrom(startDate);
+    }
+    if (user?.endTime) {
+      const endDate = new Date(user.endTime);
+      setValue("availability.endTime", endDate);
+
+      setSelectedTo(endDate);
+    }
+  }, [user?.startTime, user?.endTime, setValue]);
   useEffect(() => {
     const results = techStackBadges.filter((choice) =>
       choice.name.toLowerCase().includes(search.toLowerCase())
@@ -99,7 +120,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     control,
     name: "experiences",
   });
-  // After useForm
 
   const [selectedFrom, setSelectedFrom] = React.useState<Date>();
   const [selectedTo, setSelectedTo] = React.useState<Date>();
@@ -196,7 +216,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           readOnly
         />
       </div>
-      {/* Portfolio URL */}
+
       <div className="space-y-2">
         <label htmlFor="portfolio" className="block  text-white-300">
           Portfolio URL
@@ -207,7 +227,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           placeholder="portfolio"
         />
       </div>
-      <div className="my-10 space-y-4 py-10">
+      <div className="my-10 gap-x-2 space-y-4 py-10">
         <label
           htmlFor="learningGoals"
           className="paragraph-3-regular text-white-300"
@@ -223,8 +243,9 @@ const EditProfile = ({ user }: EditProfileProps) => {
             >
               <Input
                 type="checkbox"
-                color="green-500"
-                className="order-1 size-6 bg-black-700 text-white-100"
+                color="green"
+                role="checkbox"
+                className="order-1 size-6 px-2 data-[state=unchecked]:bg-black-700 data-[state=checked]:text-green-500  data-[state=unchecked]:text-white-100 data-[state=checked]:ring-green-500 data-[state=unchecked]:ring-black-700"
                 id={`learningGoals[${index}]CB`}
                 {...register(`learningGoals[${index}].completed` as any)}
               />
@@ -253,22 +274,22 @@ const EditProfile = ({ user }: EditProfileProps) => {
           Add Goal
         </CustomButton>
       </div>
-      <div className="my-10 py-10">
+      <section className=" gap-x-2 space-y-4 py-10">
         <label
           className="paragraph-3-bold text-white-300"
           htmlFor="experiences"
         >
-          Knowledge{" "}
+          Knowledge and Experiences
         </label>
         {experienceFields.map((field, index) => {
           return (
             <React.Fragment key={field.id}>
               <div
-                className="paragraph-3-regular flex h-[48px] w-full flex-row items-center justify-between gap-[14px] space-y-4"
+                className="paragraph-3-regular mx-auto flex w-full content-center items-center justify-center justify-items-center gap-[14px] bg-black-700 align-middle"
                 key={field.id}
               >
                 <Button
-                  className="paragraph-3-regular order-2 bg-black-800 text-white-100"
+                  className="paragraph-3-regular order-2 bg-black-700  text-white-100"
                   type="button"
                   onClick={() => removeExperience(index)}
                 >
@@ -278,10 +299,10 @@ const EditProfile = ({ user }: EditProfileProps) => {
                 <Input
                   id={`experiences[${index}].name`}
                   type="text"
-                  className="paragraph-3-regular order-1 border-0 bg-black-700 text-white-100 ring-transparent focus:outline-transparent focus:ring-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="paragraph-3-regular order-1 border-0  bg-black-700 text-white-100 ring-transparent focus:outline-transparent focus:ring-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
                   {...register(`experiences[${index}].name` as any)}
                 />
-                <Image src={blueCheck} alt="knowledge" width={16} height={16} />
+                <Image src={blueCheck} alt="knowledge" width={20} height={20} />
               </div>
             </React.Fragment>
           );
@@ -294,90 +315,93 @@ const EditProfile = ({ user }: EditProfileProps) => {
         >
           Add Knowledge
         </CustomButton>
-      </div>
-      {/* Technologies Section with Search Box */}
-      <div className="flex flex-col justify-stretch gap-2   px-3.5 py-3  ">
+      </section>
+
+      <section className="flex flex-col justify-stretch  gap-2  ">
         <label
           htmlFor="technologies"
           className="justify-start space-y-2 text-white-300"
         >
           Tech Stacks
         </label>
-        <section className="bg-black-700">
-          <div className="box-border flex  w-full border border-white-100 bg-black-700">
-            <div className="flex flex-row content-center items-center justify-center gap-x-2">
-              {technologies && // eslint-disable-next-line array-callback-return
-                technologies?.map((tech: any, index) => {
-                  const icon = techStackBadges.find(
-                    (badge) => badge.name === tech
-                  );
-                  const capitalized =
-                    tech.charAt(0).toUpperCase() + tech.slice(1);
-                  if (icon)
-                    return (
-                      <React.Fragment key={tech}>
-                        <span
-                          key={index}
-                          className=" paragraph-3-medium shadow-custom flex h-4 content-center items-center justify-between rounded bg-black-600 p-2 text-white-100"
-                        >
-                          {icon.icon}
-                          {capitalized}
-                        </span>
-                      </React.Fragment>
-                    );
-                })}
-            </div>
-            <Input
-              className=" w-1/2  bg-black-700 text-white-100"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <div className="flex h-9 w-full flex-row ">
-            {search &&
-              results.length > 0 &&
-              // eslint-disable-next-line array-callback-return
-              results.map((result: any, index) => {
-                if (technologies?.includes(result.name)) {
-                  return false;
-                }
+
+        <div className="mt-10 box-border  flex w-full bg-black-700">
+          <div className="max-w-1/2 flex flex-row content-center items-center justify-center  gap-x-2 text-clip">
+            {technologies && // eslint-disable-next-line array-callback-return
+              technologies?.map((tech: any, index) => {
                 const icon = techStackBadges.find(
-                  (badge) => badge.name === result.name
+                  (badge) => badge.name === tech
                 );
 
                 if (icon)
                   return (
-                    <React.Fragment key={result.name}>
-                      <div className="flex  flex-col bg-black-600" key={index}>
-                        <Button
-                          key={index}
-                          className="w-full text-white-100"
-                          onClick={(e) =>
-                            setValue(`technologies`, [
-                              ...technologies!,
-                              result.name,
-                            ])
-                          }
-                        >
-                          <div
-                            key={result.name}
-                            className="flex h-8 flex-row items-center gap-x-[12px]  rounded-[3px] px-2  py-0.5"
+                    <React.Fragment key={tech}>
+                      <div className="flex flex-wrap content-center justify-stretch">
+                        <button onClick={() => handleRemoveTech(tech)}>
+                          <span
+                            key={index}
+                            className=" paragraph-3-medium shadow-custom flex h-5 content-center items-center justify-around rounded bg-black-600 p-2 capitalize text-white-100"
                           >
-                            <span className="paragraph-3-medium capitalize">
-                              {icon?.icon}
-                              {result.name}
-                            </span>
-                          </div>
-                        </Button>
+                            {icon.icon}
+                            {tech}
+                          </span>
+                        </button>
                       </div>
                     </React.Fragment>
                   );
               })}
           </div>
-        </section>
-      </div>
+          <Input
+            className="min-w-1/2  bg-black-700 text-white-100"
+            value={search}
+            placeholder="Search Tech..."
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="flex h-9 w-full flex-col content-stretch  justify-items-start ">
+          {search &&
+            results.length > 0 &&
+            // eslint-disable-next-line array-callback-return
+            results.map((result: any, index) => {
+              if (technologies?.includes(result.name)) {
+                return false;
+              }
+              const icon = techStackBadges.find(
+                (badge) => badge.name === result.name
+              );
 
-      <div className="border-top box-border flex flex-col items-start">
+              if (icon)
+                return (
+                  <React.Fragment key={result.name}>
+                    <div className="flex  flex-col" key={index}>
+                      <Button
+                        key={index}
+                        className="w-full text-white-100"
+                        onClick={(e) =>
+                          setValue(`technologies`, [
+                            ...technologies!,
+                            result.name,
+                          ])
+                        }
+                      >
+                        <div
+                          key={result.name}
+                          className="flex h-9 flex-row items-center gap-x-[12px] rounded-[3px]  bg-black-700 p-1"
+                        >
+                          <span className="paragraph-3-medium flex h-5 content-center items-center justify-between rounded bg-black-600 p-2 capitalize text-white-100 shadow">
+                            {icon?.icon}
+                            {result.name}
+                          </span>
+                        </div>
+                      </Button>
+                    </div>
+                  </React.Fragment>
+                );
+            })}
+        </div>
+      </section>
+
+      <section className="border-top box-border flex flex-col items-start">
         <label className="text-white-300" htmlFor="availability">
           Schedule and Availability
         </label>
@@ -437,7 +461,9 @@ const EditProfile = ({ user }: EditProfileProps) => {
             </span>
             <div>
               <span className="mt-[20px] text-white-100">
-                {selectedFrom?.toDateString()}
+                {selectedFrom
+                  ? format(selectedFrom, "MM/dd/yyyy")
+                  : "Select start date"}
               </span>
             </div>
           </div>
@@ -474,17 +500,19 @@ const EditProfile = ({ user }: EditProfileProps) => {
                 />
               </PopoverContent>
             </Popover>
-            <span className="paragraph-4-medium space-y-2 text-white-300">
+            <span className="paragraph-4-medium space-y-2 text-white-500">
               Set to Local Time
             </span>
             <div>
               <span className="mt-[20px] text-white-100">
-                {selectedTo?.toDateString()}
+                {selectedTo
+                  ? format(selectedTo, "MM/dd/yyyy")
+                  : "Select end date"}
               </span>
             </div>
           </div>
         </div>
-      </div>
+      </section>
       <CustomButton buttonType={`primary`} type="submit">
         Submit
       </CustomButton>
