@@ -33,6 +33,30 @@ interface EditProfileProps {
   _id?: string;
 }
 
+const css = `
+  .my-selected:not([disabled]) { 
+    font-weight: bold; 
+    border: 2px solid currentColor;
+    color:#42BBFF;
+    font-size: 140%;
+  }
+  .my-selected:hover:not([disabled]) { 
+    border-color: #42BBFF;
+    color: bg-black-700;
+    background-color:transparent;
+  }
+  .my-today { 
+    font-weight: bold;
+    font-size: 140%; 
+    color:#42BBFF;
+  }
+  .my-today:hover {
+    color: black;
+    font-weight: bold;
+    border-color:#42BBFF;
+
+  }
+`;
 const EditProfile = ({ user }: EditProfileProps) => {
   const pathname = usePathname();
 
@@ -446,19 +470,26 @@ const EditProfile = ({ user }: EditProfileProps) => {
                   control={control}
                   name="availability.startTime"
                   render={({ field: { onChange } }) => (
-                    <DayPicker
-                      key="from"
-                      className="bg-black-700 text-white-500"
-                      onSelect={(selectedDate) => onChange(selectedDate)}
-                      showOutsideDays
-                      weekStartsOn={0}
-                      selected={selectedFrom}
-                      defaultMonth={new Date()}
-                      mode="single"
-                      onDayClick={(selectedFrom) => {
-                        handleDaySelectFrom(selectedFrom);
-                      }}
-                    />
+                    <>
+                      <style>{css}</style>
+                      <DayPicker
+                        key="from"
+                        className="bg-black-700 text-white-500"
+                        onSelect={(selectedDate) => onChange(selectedDate)}
+                        showOutsideDays
+                        weekStartsOn={0}
+                        modifiersClassNames={{
+                          selected: "my-selected",
+                          today: "my-today",
+                        }}
+                        selected={selectedFrom}
+                        defaultMonth={new Date()}
+                        mode="single"
+                        onDayClick={(selectedFrom) => {
+                          handleDaySelectFrom(selectedFrom);
+                        }}
+                      />
+                    </>
                   )}
                 />
               </PopoverContent>
@@ -490,20 +521,26 @@ const EditProfile = ({ user }: EditProfileProps) => {
                   control={control}
                   name="availability.endTime"
                   render={({ field: { onChange } }) => (
-                    <DayPicker
-                      key="to"
-                      className="bg-black-700 text-white-500"
-                      onSelect={(selectedDate) => onChange(selectedDate)}
-                      showOutsideDays
-                      weekStartsOn={0}
-                      modifiersStyles={{}}
-                      selected={selectedTo}
-                      defaultMonth={new Date()}
-                      mode="single"
-                      onDayClick={(selectedFrom) => {
-                        handleDaySelectTo(selectedFrom);
-                      }}
-                    />
+                    <>
+                      <style>{css}</style>{" "}
+                      <DayPicker
+                        key="to"
+                        className="bg-black-700 text-white-500"
+                        onSelect={(selectedDate) => onChange(selectedDate)}
+                        showOutsideDays
+                        weekStartsOn={0}
+                        modifiersClassNames={{
+                          selected: "my-selected",
+                          today: "my-today",
+                        }}
+                        selected={selectedTo}
+                        defaultMonth={new Date()}
+                        mode="single"
+                        onDayClick={(selectedFrom) => {
+                          handleDaySelectTo(selectedFrom);
+                        }}
+                      />
+                    </>
                   )}
                 />
               </PopoverContent>
@@ -521,13 +558,15 @@ const EditProfile = ({ user }: EditProfileProps) => {
           </div>
         </div>
       </section>
-      <CustomButton
-        buttonType={`primary`}
-        className="profile-shadow pb-5"
-        type="submit"
-      >
-        Submit
-      </CustomButton>
+      <div className="py-10">
+        <CustomButton
+          buttonType={`primary`}
+          className="profile-shadow "
+          type="submit"
+        >
+          Submit
+        </CustomButton>
+      </div>
     </form>
   );
 };
