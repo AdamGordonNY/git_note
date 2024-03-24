@@ -159,28 +159,7 @@
   .profile-goals {
     @apply px-3 py-3.5;
   }
-  /* .profile {
-    align-items: center;
-    padding: 14px 12px;
-    gap: 8px;
 
-    width: 800px;
-    height: 48px;
-
-   
-    background: #1d2032;
-    
-    box-shadow:
-      0px 1px 1px rgba(18, 18, 18, 0.1),
-      0px 0px 0px 1px rgba(18, 18, 18, 0.1);
-    border-radius: 4px;
-
-
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-  } */
   .profile-sidebar-wrapper {
     @apply w-full flex flex-col justify-start gap-[6px] mt[50px] ml-[28px] absolute;
   }
@@ -213,36 +192,11 @@
     /* White/300 */
     border: 1px solid #adb3cc;
     transform: rotate(90deg);
-
-    /* Inside auto layout */
-    flex: none;
-    order: 3;
-    flex-grow: 0;
-    /* field */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 14px 12px;
-    gap: 8px;
-
-    width: 800px;
-    height: 52px;
-
-    /* Black/700 */
     background: #1d2032;
     box-shadow:
       0px 4px 4px rgba(0, 0, 0, 0.25),
       0px 1px 1px rgba(18, 18, 18, 0.1);
-    border-radius: 4px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
     align-self: stretch;
-    flex-grow: 0;
-
     @apply w-[1px] h-[36px] bg-black-800;
   }
   .profile-shadow {
@@ -252,31 +206,5 @@
   }
   .tech-badges {
     @apply px-0.5 py-1 gap-1 rounded-[3px] bg-black-600 text-white-100 h-[24px] border-[1px] w-full;
-  }
-  .tech-field {
-    /* field */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 14px 12px;
-    gap: 8px;
-
-    width: 800px;
-    height: 52px;
-
-    /* Black/700 */
-    background: #1d2032;
-    box-shadow:
-      0px 4px 4px rgba(0, 0, 0, 0.25),
-      0px 1px 1px rgba(18, 18, 18, 0.1);
-    border-radius: 4px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
   }
 }

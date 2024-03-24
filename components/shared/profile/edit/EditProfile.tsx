@@ -32,6 +32,7 @@ interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
 }
+
 const EditProfile = ({ user }: EditProfileProps) => {
   const pathname = usePathname();
 
@@ -216,7 +217,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
           readOnly
         />
       </div>
-
       <div className="space-y-2">
         <label htmlFor="portfolio" className="block  text-white-300">
           Portfolio URL
@@ -244,8 +244,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
               <Input
                 type="checkbox"
                 color="green"
-                role="checkbox"
-                className="order-1 size-6 px-2 data-[state=unchecked]:bg-black-700 data-[state=checked]:text-green-500  data-[state=unchecked]:text-white-100 data-[state=checked]:ring-green-500 data-[state=unchecked]:ring-black-700"
+                className="order-1 ml-2 size-6 px-2 data-[state=unchecked]:bg-black-700 data-[state=checked]:text-green-500  data-[state=unchecked]:text-white-100 data-[state=checked]:ring-green-500 data-[state=unchecked]:ring-black-700"
                 id={`learningGoals[${index}]CB`}
                 {...register(`learningGoals[${index}].completed` as any)}
               />
@@ -302,7 +301,13 @@ const EditProfile = ({ user }: EditProfileProps) => {
                   className="paragraph-3-regular order-1 border-0  bg-black-700 text-white-100 ring-transparent focus:outline-transparent focus:ring-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
                   {...register(`experiences[${index}].name` as any)}
                 />
-                <Image src={blueCheck} alt="knowledge" width={20} height={20} />
+                <Image
+                  src={blueCheck}
+                  alt="knowledge"
+                  className="ml-2"
+                  width={20}
+                  height={20}
+                />
               </div>
             </React.Fragment>
           );
@@ -316,49 +321,51 @@ const EditProfile = ({ user }: EditProfileProps) => {
           Add Knowledge
         </CustomButton>
       </section>
-
-      <section className="flex flex-col justify-stretch  gap-2  ">
+      <section className="flex min-w-full  flex-col justify-stretch gap-2">
         <label
           htmlFor="technologies"
           className="justify-start space-y-2 text-white-300"
         >
           Tech Stacks
         </label>
-
-        <div className="mt-10 box-border  flex w-full bg-black-700">
-          <div className="max-w-1/2 flex flex-row content-center items-center justify-center  gap-x-2 text-clip">
-            {technologies && // eslint-disable-next-line array-callback-return
-              technologies?.map((tech: any, index) => {
-                const icon = techStackBadges.find(
-                  (badge) => badge.name === tech
-                );
-
-                if (icon)
-                  return (
-                    <React.Fragment key={tech}>
-                      <div className="flex flex-wrap content-center justify-stretch">
-                        <button onClick={() => handleRemoveTech(tech)}>
-                          <span
-                            key={index}
-                            className=" paragraph-3-medium shadow-custom flex h-5 content-center items-center justify-around rounded bg-black-600 p-2 capitalize text-white-100"
-                          >
-                            {icon.icon}
-                            {tech}
-                          </span>
-                        </button>
-                      </div>
-                    </React.Fragment>
+        <div className="flex w-full">
+          <div className="min-w-1/2 mt-10  box-border flex bg-black-700 px-2">
+            <div className="flex flex-row  content-center items-center justify-center  gap-x-3 ">
+              {technologies && // eslint-disable-next-line array-callback-return
+                technologies?.map((tech: any, index) => {
+                  const icon = techStackBadges.find(
+                    (badge) => badge.name === tech
                   );
-              })}
+
+                  if (icon)
+                    return (
+                      <React.Fragment key={tech}>
+                        <div className="flex flex-wrap content-center items-center justify-stretch">
+                          <button onClick={() => handleRemoveTech(tech)}>
+                            <span
+                              key={index}
+                              className="paragraph-3-medium profile-shadow flex h-5 content-center items-center justify-center rounded bg-black-600 p-2 capitalize text-white-100"
+                            >
+                              {icon.icon}
+                              {tech}
+                            </span>
+                          </button>
+                        </div>
+                      </React.Fragment>
+                    );
+                })}
+            </div>{" "}
+            <div className="min-w-1/2   justify-self-stretch bg-black-700">
+              <Input
+                className=" bg-black-700 text-white-100"
+                value={search}
+                placeholder="Search Tech..."
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
-          <Input
-            className="min-w-1/2  bg-black-700 text-white-100"
-            value={search}
-            placeholder="Search Tech..."
-            onChange={(e) => setSearch(e.target.value)}
-          />
         </div>
-        <div className="flex h-9 w-full flex-col content-stretch  justify-items-start ">
+        <div className="flex h-9 w-full flex-col content-stretch  justify-items-center ">
           {search &&
             results.length > 0 &&
             // eslint-disable-next-line array-callback-return
@@ -373,7 +380,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
               if (icon)
                 return (
                   <React.Fragment key={result.name}>
-                    <div className="flex  flex-col" key={index}>
+                    <div className="flex flex-col gap-x-2" key={index}>
                       <Button
                         key={index}
                         className="w-full text-white-100"
@@ -384,15 +391,15 @@ const EditProfile = ({ user }: EditProfileProps) => {
                           ])
                         }
                       >
-                        <div
+                        <li
                           key={result.name}
-                          className="flex h-9 flex-row items-center gap-x-[12px] rounded-[3px]  bg-black-700 p-1"
+                          className="z-20 flex h-9 w-full flex-row content-center  items-center overflow-y-hidden rounded-[3px]  bg-black-700 p-1"
                         >
-                          <span className="paragraph-3-medium flex h-5 content-center items-center justify-between rounded bg-black-600 p-2 capitalize text-white-100 shadow">
+                          <span className="paragraph-3-medium profile-shadow flex h-5 content-center items-center space-y-2 rounded bg-black-600 capitalize text-white-100">
                             {icon?.icon}
                             {result.name}
                           </span>
-                        </div>
+                        </li>
                       </Button>
                     </div>
                   </React.Fragment>
@@ -401,8 +408,8 @@ const EditProfile = ({ user }: EditProfileProps) => {
         </div>
       </section>
 
-      <section className="border-top box-border flex flex-col items-start">
-        <label className="text-white-300" htmlFor="availability">
+      <section className="border-top  box-border flex flex-col items-start">
+        <label className="py-12 text-white-300" htmlFor="availability">
           Schedule and Availability
         </label>
 
@@ -429,7 +436,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             </label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button className=" profile-shadow max-w-full grow bg-black-600 text-white-500">
+                <Button className="profile-shadow max-w-full grow bg-black-600 text-white-500">
                   <Calendar size={16} /> Select Start Time
                 </Button>
               </PopoverTrigger>
@@ -489,6 +496,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
                       onSelect={(selectedDate) => onChange(selectedDate)}
                       showOutsideDays
                       weekStartsOn={0}
+                      modifiersStyles={{}}
                       selected={selectedTo}
                       defaultMonth={new Date()}
                       mode="single"
@@ -513,7 +521,11 @@ const EditProfile = ({ user }: EditProfileProps) => {
           </div>
         </div>
       </section>
-      <CustomButton buttonType={`primary`} type="submit">
+      <CustomButton
+        buttonType={`primary`}
+        className="profile-shadow pb-5"
+        type="submit"
+      >
         Submit
       </CustomButton>
     </form>

@@ -4,15 +4,13 @@
 @import "react-day-picker/dist/style.css";
 
 @layer utilities {
-  .date-input {
-    @apply bg-black-700 border-r-4 grow-0 self-stretch flex-none z-20 w-1/2;
-  }
-  /* Auto layout */
-
-  /* Secondary/Border */
-
   .border-top {
     @apply border-t-white-500;
   }
-  /* Inside auto layout */
+  .rdp-button {
+    @apply bg-primary-500 text-primary-foreground;
+  }
+  .rdy-day-selected:-moz-focusring {
+    @apply bg-primary-500 text-white-100;
+  }
 }
