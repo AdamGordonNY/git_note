@@ -46,7 +46,7 @@ const ResourceTag = ({
     workflow: "WorkFlow",
     knowledge: "Knowledge",
     plain: text || " ",
-    tech: tech?.text || " ",
+    tech: tech?.name || " ",
   };
 
   const color = {

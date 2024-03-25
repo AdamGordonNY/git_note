@@ -27,6 +27,9 @@ const config = {
         regular: "400",
         medium: "500",
       },
+      accentColor: {
+        check: "#42FF77",
+      },
       colors: {
         "gradient-start": "#43B7FE",
         "gradient-end": "#4F48E6",

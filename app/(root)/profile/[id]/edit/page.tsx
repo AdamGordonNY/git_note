@@ -1,5 +1,4 @@
 import EditProfile from "@/components/shared/profile/edit/EditProfile";
-import UploadPhoto from "@/components/shared/profile/edit/UploadPhoto";
 
 import { getOneUser } from "@/lib/actions/user.actions";
 import { getSession } from "@/lib/authOptions";
@@ -21,10 +20,8 @@ const EditProfilePage = async () => {
       <span className="display-1-bold pl-[30px] pt-[30px] text-white-100">
         Edit Profile
       </span>
-      <div className="px-[30]">
-        <UploadPhoto image={user?.image} />
-        <EditProfile user={cleanUser} _id={JSON.stringify(user?.id)} />
-      </div>
+
+      <EditProfile user={cleanUser} _id={JSON.stringify(user?.id)} />
     </div>
   );
 };

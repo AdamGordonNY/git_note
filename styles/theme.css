@@ -151,7 +151,7 @@
     flex-grow: 0;
   }
   .profile-input {
-    @apply w-[256px] h-[38px] rounded-md bg-black-700 text-white-100;
+    @apply w-full rounded-[4px] h-[38px]  bg-black-700 text-white-100;
   }
   .profile-goals-wrapper {
     @apply paragraph-3-regular flex flex-row justify-between gap-[14px] w-full;

@@ -3,7 +3,7 @@ import { Button, ButtonProps } from "../ui/button";
 import plusCircle from "@/public/icons/pluscircle.svg";
 import blueCheck from "@/public/icons/checksquare.svg";
 import Image from "next/image";
-
+import bluePlus from "@/public/icons/bluePlus.svg";
 type ReusableButtonType =
   | "primary"
   | "gradient"
@@ -25,7 +25,7 @@ const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
     const { buttonType, className, children, ...rest } = props;
     const buttonTypes = {
       primary: {
-        className: `${baseClass} bg-primary-500 text-black-900 w-full paragraph-3-bold self-start py-3  `,
+        className: `${baseClass} bg-primary-500 text-black-900 w-full paragraph-3-bold font-bold self-start py-3  `,
         icon: null,
       },
       formSubmit: {
@@ -46,7 +46,7 @@ const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
       },
       profileButton: {
         className: `${baseClass} bg-black-600 text-white-100 rounded-[4px] w-full paragraph-3-bold self-start`,
-        icon: plusCircle,
+        icon: bluePlus,
       },
     };
     const button = buttonTypes[buttonType];

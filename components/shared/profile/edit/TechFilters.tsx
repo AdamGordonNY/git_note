@@ -1,9 +1,8 @@
 import { formUrlQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import TechStacks from "../TechStacks";
+
 import { techStackBadges } from "@/lib/constants";
-import Image from "next/image";
 const TechFilters = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -40,9 +39,9 @@ const TechFilters = () => {
         {techStackBadges.map((item) => (
           <button
             type="button"
-            key={item.text}
+            key={item.name}
             className={`light-border-2 small-medium :text-light-800 rounded-2xl px-5 py-2 capitalize dark:hover:text-primary-500`}
-            onClick={() => handleTypeClick(item.text)}
+            onClick={() => handleTypeClick(item.name)}
           ></button>
         ))}
       </div>
