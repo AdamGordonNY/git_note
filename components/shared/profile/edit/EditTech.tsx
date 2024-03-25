@@ -1,25 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { techStackBadges } from "@/lib/constants";
 
 interface EditTechProps {
-  technologies: any;
-  techStackBadges: any;
-  handleRemoveTech: any;
-  search: any;
-  results: any;
-  setValue: any;
-  setSearch: any;
+  technologies: string[] | undefined;
+  setValue: (name: string, value: any) => void;
 }
-const EditTech = ({
-  techStackBadges,
-  technologies,
-  handleRemoveTech,
-  search,
-  setValue,
-  results,
-  setSearch,
-}: EditTechProps) => {
+const EditTech = ({ technologies, setValue }: EditTechProps) => {
   return (
     <section className="flex min-w-full  flex-col justify-stretch gap-2">
       <label
