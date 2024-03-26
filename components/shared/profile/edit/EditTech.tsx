@@ -1,13 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { techStackBadges } from "@/lib/constants";
 
 interface EditTechProps {
-  technologies: string[] | undefined;
-  setValue: (name: string, value: any) => void;
+  technologies: string[];
+  setTechnologies: (newTech: string[]) => void;
 }
-const EditTech = ({ technologies, setValue }: EditTechProps) => {
+const EditTech = ({ technologies, setTechnologies }: EditTechProps) => {
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+
+  const addTechnology = (tech: string) => {
+    const newTech = [...technologies, tech];
+    setTechnologies(newTech);
+  };
+
+  const removeTechnology = (tech: string) => {
+    const newTech = technologies.filter((t) => t !== tech);
+    setTechnologies(newTech);
+  };
+  useEffect(() => {
+    const results = techStackBadges.filter((choice) =>
+      choice.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setResults(results as any);
+  }, [search]);
   return (
     <section className="flex min-w-full  flex-col justify-stretch gap-2">
       <label
@@ -29,7 +48,7 @@ const EditTech = ({ technologies, setValue }: EditTechProps) => {
                   return (
                     <React.Fragment key={tech}>
                       <div className="flex flex-wrap content-center items-center justify-stretch">
-                        <button onClick={() => handleRemoveTech(tech)}>
+                        <button onClick={() => removeTechnology(tech)}>
                           <span
                             key={index}
                             className="paragraph-3-medium profile-shadow flex h-5 content-center items-center justify-center rounded bg-black-600 p-2 capitalize text-white-100"
@@ -72,12 +91,7 @@ const EditTech = ({ technologies, setValue }: EditTechProps) => {
                     <Button
                       key={index}
                       className="w-full text-white-100"
-                      onClick={(e) =>
-                        setValue(`technologies`, [
-                          ...technologies!,
-                          result.name,
-                        ])
-                      }
+                      onClick={() => addTechnology(result.name)}
                     >
                       <li
                         key={result.name}

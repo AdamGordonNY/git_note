@@ -103,6 +103,7 @@ const UserSchema = new Schema(
     technologies: {
       type: [String],
       required: false,
+      unique: true,
     },
 
     experiences: {

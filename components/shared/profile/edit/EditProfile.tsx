@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
@@ -12,10 +12,7 @@ import {
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomButton from "../../CustomButton";
-
 import { CompleteProfileEditSchema } from "@/lib/profileValidations";
-
-import { techStackBadges } from "@/lib/constants";
 import UploadPhoto from "./UploadPhoto";
 import EditExperience from "./EditExperience";
 import EditGoals from "./EditGoals";
@@ -40,9 +37,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     name: experience,
   }));
 
-  const [search, setSearch] = useState("");
-  const [results, setResults] = useState([]);
-
   const {
     register,
     handleSubmit,
@@ -65,19 +59,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     },
   });
 
-  const technologies = useWatch({ control, name: "technologies" });
-  const handleRemoveTech = useCallback(
-    (techToRemove: any) => {
-      setValue(
-        "technologies",
-        technologies
-          ? technologies?.filter((tech) => tech !== techToRemove)
-          : []
-      );
-    },
-    [setValue, technologies]
-  );
-
   useEffect(() => {
     if (user?.startTime) {
       const startDate = new Date(user.startTime);
@@ -92,13 +73,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
       setSelectedTo(endDate);
     }
   }, [user?.startTime, user?.endTime, setValue]);
-  useEffect(() => {
-    const results = techStackBadges.filter((choice) =>
-      choice.name.toLowerCase().includes(search.toLowerCase())
-    );
 
-    setResults(results as any);
-  }, [search]);
   const {
     fields: goalFields,
     append: appendGoal,
@@ -182,6 +157,10 @@ const EditProfile = ({ user }: EditProfileProps) => {
       }
     }
   };
+  const technologies = useWatch({ control, name: "technologies" });
+  const handleTechChange = (newTech: any) => {
+    setValue("technologies", newTech);
+  };
 
   return (
     <>
@@ -215,13 +194,8 @@ const EditProfile = ({ user }: EditProfileProps) => {
         />
 
         <EditTech
-          handleRemoveTech={handleRemoveTech}
-          techStackBadges={techStackBadges}
-          technologies={technologies}
-          search={search}
-          setSearch={setSearch}
-          setValue={setValue}
-          results={results}
+          technologies={technologies!}
+          setTechnologies={handleTechChange}
         />
         <Divider />
         <EditAvailability

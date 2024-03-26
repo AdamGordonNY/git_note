@@ -20,7 +20,10 @@ const EditExperience = ({
   return (
     <section className=" gap-x-2 space-y-4 py-10">
       <div className="flex flex-col">
-        <label className="h2-medium text-white-500" htmlFor="experiences">
+        <label
+          className="paragraph-3-regular align-top text-white-500"
+          htmlFor="experiences"
+        >
           KNOWLEDGE
         </label>
         <span className="paragraph-3-medium justify-left mt-10 text-white-300">

@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import CustomButton from "../../CustomButton";
-
+import Divider from "../../Divider";
 interface EditGoalProps {
   goalFields: any;
   removeGoal: (index: number) => void;
@@ -17,7 +17,8 @@ const EditGoals = ({
   register,
 }: EditGoalProps) => {
   return (
-    <section className=" my-10 flex flex-col gap-x-2 space-y-4   py-10 ">
+    <section className=" my-10 flex flex-col gap-x-2 space-y-4  border-b-white-500  py-10 ">
+      <Divider />
       <div className="align-top">
         <span className="paragraph-3-regular  pb-10 text-white-500">
           LEARNING GOALS
