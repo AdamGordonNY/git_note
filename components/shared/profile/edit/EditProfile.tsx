@@ -207,11 +207,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           handleDaySelectFrom={handleDaySelectFrom}
         />
         <div className="py-10">
-          <CustomButton
-            buttonType={`primary`}
-            className="profile-shadow "
-            type="submit"
-          >
+          <CustomButton buttonType={`primary`} type="submit">
             Submit
           </CustomButton>
         </div>
