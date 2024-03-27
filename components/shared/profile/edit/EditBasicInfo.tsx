@@ -8,7 +8,10 @@ interface EditBasicInfoProps {
 const EditBasicInfo = ({ register, errors }: EditBasicInfoProps) => {
   return (
     <section className="space-y-2">
-      <label htmlFor="fullname" className="paragraph-3-medium text-white-300">
+      <label
+        htmlFor="fullname"
+        className="paragraph-3-medium profile-input text-white-300"
+      >
         Name
       </label>
       <Input
