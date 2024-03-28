@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useTransition } from "react";
+import React, { useTransition } from "react";
 import OnboardingOne from "./OnboardingOne";
 import { IUser } from "@/database/models/user.model";
 import OnboardingTwo from "./OnboardingTwo";
@@ -67,17 +67,10 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
   });
   const changeStep = async () => {
     const nextStep = parseInt(currentStep) + 1;
-    const {
-      fullname,
-      portfolio,
-      availability,
-      learningGoals,
-      email,
-      experiences,
-      newProjects,
-    } = getValues();
+    const { fullname, portfolio, learningGoals, email, experiences } =
+      getValues();
     try {
-      if (nextStep === 2) {
+      if (currentStep === "1") {
         await updateUser({
           updateData: {
             fullname,
@@ -86,29 +79,18 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
           },
         });
       }
-      if (nextStep === 3) {
+      if (currentStep === "2") {
         await updateUser({
           updateData: {
             learningGoals,
           },
         });
       }
-      if (nextStep === 4) {
+      if (currentStep === "3") {
         await updateUser({
           updateData: {
             experiences: experiences?.map((experience) => experience.name),
           },
-        });
-      }
-      if (nextStep === 5) {
-        startTransition(() => {
-          updateUser({
-            updateData: {
-              newProjects,
-              startTime: availability?.startTime,
-              endTime: availability?.endTime,
-            },
-          });
         });
       }
     } catch (error) {
@@ -117,73 +99,13 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
 
     setCurrentStep(nextStep.toString());
   };
-  const [selectedFrom, setSelectedFrom] = React.useState<Date>();
-  const [selectedTo, setSelectedTo] = React.useState<Date>();
 
-  const handleDaySelectFrom = (date: Date | undefined) => {
-    if (!date) {
-      setSelectedFrom(date as any);
-      return;
-    }
-
-    const newDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    setSelectedFrom(newDate as any);
-  };
-  const handleDaySelectTo = (date: Date | undefined) => {
-    if (!date) {
-      setSelectedTo(date as any);
-      return;
-    }
-
-    const newDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    setSelectedTo(newDate as any);
-  };
   const onSubmit = async () => {
-    console.log(getValues());
     try {
-      const {
-        portfolio,
-        availability,
-        learningGoals,
-        email,
-        experiences,
-        newProjects,
-        fullname,
-      } = getValues();
-      const dbExperiences = experiences?.map((experience) => experience.name);
+      const { availability, newProjects } = getValues();
       const startTime = availability?.startTime;
       const endTime = availability?.endTime;
-      if (currentStep === "1") {
-        await updateUser({
-          updateData: {
-            portfolio,
-            email,
-            fullname,
-          },
-        });
-      } else if (currentStep === "2") {
-        await updateUser({
-          updateData: {
-            learningGoals,
-          },
-        });
-        changeStep();
-      } else if (currentStep === "3") {
-        await updateUser({
-          updateData: {
-            experiences: dbExperiences,
-          },
-        });
-        changeStep();
-      } else if (currentStep === "4") {
+      startTransition(async () => {
         await updateUser({
           updateData: {
             newProjects,
@@ -192,87 +114,66 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
           },
         });
         router.push("/");
-      }
+      });
     } catch (e) {
       console.log(e);
     }
   };
 
-  const renderForm = () => {
-    switch (currentStep) {
-      case "1":
-        return (
-          <OnboardingOne
-            user={user}
-            step={step}
-            register={register}
-            errors={errors}
-          />
-        );
-      case "2":
-        return (
-          <OnboardingTwo
-            step={step}
-            goalFields={goalFields}
-            register={register}
-            appendGoal={appendGoal}
-            removeGoal={removeGoal}
-          />
-        );
-      case "3":
-        return (
-          <OnboardingThree
-            register={register}
-            step={step}
-            experiences={experienceFields}
-            errors={errors}
-            appendExperience={appendExperience}
-            removeExperience={removeExperience}
-          />
-        );
-      case "4":
-        return (
-          <OnboardingFour
-            register={register}
-            control={control}
-            selectedFrom={selectedFrom!}
-            selectedTo={selectedTo!}
-            handleDaySelectFrom={handleDaySelectFrom}
-            handleDaySelectTo={handleDaySelectTo}
-            errors={errors}
-            step={step}
-          />
-        );
-      default:
-        return (
-          <OnboardingOne
-            user={user}
-            step={step}
-            register={register}
-            errors={errors}
-          />
-        );
-    }
+  const stepMap: {
+    [key: string]: {
+      component: React.ReactNode;
+      fields: string[];
+    };
+  } = {
+    1: {
+      fields: ["fullname", "portfolio", "email"],
+      component: (
+        <OnboardingOne
+          user={user}
+          step={step}
+          register={register}
+          errors={errors}
+        />
+      ),
+    },
+    2: {
+      fields: ["learningGoals"],
+      component: (
+        <OnboardingTwo
+          step={step}
+          goalFields={goalFields}
+          register={register}
+          appendGoal={appendGoal}
+          removeGoal={removeGoal}
+        />
+      ),
+    },
+    3: {
+      fields: ["experiences"],
+      component: (
+        <OnboardingThree
+          register={register}
+          step={step}
+          experiences={experienceFields}
+          errors={errors}
+          appendExperience={appendExperience}
+          removeExperience={removeExperience}
+        />
+      ),
+    },
+    4: {
+      fields: ["newProjects", "availability"],
+      component: (
+        <OnboardingFour
+          register={register}
+          control={control}
+          errors={errors}
+          step={step}
+        />
+      ),
+    },
   };
-  useEffect(() => {
-    switch (step) {
-      case "1":
-        setCurrentStep("1");
-        break;
-      case "2":
-        setCurrentStep("2");
-        break;
-      case "3":
-        setCurrentStep("3");
-        break;
-      case "4":
-        setCurrentStep("4");
-        break;
-      default:
-        setCurrentStep("1");
-        break;
-    }
-  }, [step]);
 
   return (
     <>
@@ -296,11 +197,12 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
         className="flex-0 w-full overflow-y-hidden"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {currentStep && renderForm()}
+        {stepMap[currentStep].component}
 
         {currentStep !== "4" ? (
           <CustomButton
             className="pb-4"
+            type="button"
             buttonType="primary"
             type="button"
             onClick={changeStep}
