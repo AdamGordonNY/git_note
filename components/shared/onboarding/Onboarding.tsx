@@ -302,6 +302,7 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
           <CustomButton
             className="pb-4"
             buttonType="primary"
+            type="button"
             onClick={changeStep}
           >
             Next
