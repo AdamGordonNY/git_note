@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useEffect } from "react";
+import React from "react";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
   useForm,
@@ -56,21 +56,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     },
   });
 
-  useEffect(() => {
-    if (user?.startTime) {
-      const startDate = new Date(user.startTime);
-      setValue("availability.startTime", startDate);
-
-      setSelectedFrom(startDate);
-    }
-    if (user?.endTime) {
-      const endDate = new Date(user.endTime);
-      setValue("availability.endTime", endDate);
-
-      setSelectedTo(endDate);
-    }
-  }, [user?.startTime, user?.endTime, setValue]);
-
   const {
     fields: goalFields,
     append: appendGoal,
@@ -88,36 +73,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     control,
     name: "experiences",
   });
-
-  const [selectedFrom, setSelectedFrom] = React.useState<Date>();
-  const [selectedTo, setSelectedTo] = React.useState<Date>();
-
-  const handleDaySelectFrom = (date: Date | undefined) => {
-    if (!date) {
-      setSelectedFrom(date as any);
-      return;
-    }
-
-    const newDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    setSelectedFrom(newDate as any);
-  };
-  const handleDaySelectTo = (date: Date | undefined) => {
-    if (!date) {
-      setSelectedTo(date as any);
-      return;
-    }
-
-    const newDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    setSelectedTo(newDate as any);
-  };
 
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
@@ -154,10 +109,17 @@ const EditProfile = ({ user }: EditProfileProps) => {
     }
   };
   const technologies = useWatch({ control, name: "technologies" });
+  const availability = useWatch({ control, name: "availability" });
   const handleTechChange = (newTech: any) => {
     setValue("technologies", newTech);
   };
+  const handleStartTimeChange = (newAvailability: any) => {
+    setValue(`availability.startTime`, newAvailability);
+  };
 
+  const handleEndTimeChange = (newAvailability: any) => {
+    setValue(`availability.endTime`, newAvailability);
+  };
   return (
     <>
       <section className="flex w-full flex-col px-[30px] py-6">
@@ -195,12 +157,11 @@ const EditProfile = ({ user }: EditProfileProps) => {
         />
         <Divider />
         <EditAvailability
-          handleDaySelectTo={handleDaySelectTo}
           register={register}
           control={control}
-          selectedFrom={selectedFrom}
-          selectedTo={selectedTo}
-          handleDaySelectFrom={handleDaySelectFrom}
+          availability={availability}
+          setEndTime={handleEndTimeChange}
+          setStartTime={handleStartTimeChange}
         />
         <div className="py-10">
           <CustomButton buttonType={`primary`} type="submit">

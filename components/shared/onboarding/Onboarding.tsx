@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React from "react";
 import OnboardingOne from "./OnboardingOne";
 import { IUser } from "@/database/models/user.model";
-import OnboardingTwo from "./OnboardingTwo";
-import { useFieldArray, useForm } from "react-hook-form";
+
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { CompleteProfileEditSchema } from "@/lib/profileValidations";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import OnboardingThree from "./OnboardingThree";
 import { updateUser } from "@/lib/actions/user.actions";
-import OnboardingFour from "./OnboardingFour";
 import CustomButton from "../CustomButton";
 import { Progress } from "@/components/ui/progress";
 import OnboardingTick from "./OnboardingTick";
 import UploadPhoto from "../profile/edit/UploadPhoto";
 import { useRouter } from "next/navigation";
-
+import EditExperience from "../profile/edit/EditExperience";
+import EditGoals from "../profile/edit/EditGoals";
+import EditAvailability from "../profile/edit/EditAvailability";
 interface OnboardingProps {
   children?: React.ReactNode;
   step: string;
@@ -26,12 +26,13 @@ interface OnboardingProps {
 const Onboarding = ({ step, user }: OnboardingProps) => {
   const [currentStep, setCurrentStep] = React.useState(step);
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+
   const {
     handleSubmit,
     control,
     register,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<z.infer<typeof CompleteProfileEditSchema>>({
     resolver: zodResolver(CompleteProfileEditSchema),
@@ -39,8 +40,8 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
       learningGoals: user.learningGoals || [],
       experiences: user.experiences?.map((exp) => ({ name: exp })) || [],
       availability: {
-        startTime: user?.startTime || new Date(),
-        endTime: user?.endTime || new Date(),
+        startTime: new Date(user?.startTime as Date) || new Date(),
+        endTime: new Date(user?.endTime as Date) || new Date(),
       },
       newProjects: user?.newProjects || false,
       technologies: user?.technologies || [],
@@ -65,56 +66,69 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     control,
     name: "experiences",
   });
+  const availability = useWatch({
+    control,
+    name: "availability",
+    defaultValue: {
+      startTime: new Date(user?.startTime as Date),
+      endTime: new Date(user?.endTime as Date),
+    },
+  });
+  const handleStartTimeChange = (newAvailability: any) => {
+    setValue(`availability.startTime`, newAvailability);
+  };
+
+  const handleEndTimeChange = (newAvailability: any) => {
+    setValue(`availability.endTime`, newAvailability);
+  };
   const changeStep = async () => {
     const nextStep = parseInt(currentStep) + 1;
-    const { fullname, portfolio, learningGoals, email, experiences } =
-      getValues();
+
+    const fields = stepMap[currentStep].fields;
+
+    const filteredObject = Object.keys(getValues()).reduce((acc, key) => {
+      if (fields.includes(key)) {
+        // @ts-ignore
+        acc[key] = getValues()[key];
+      }
+      return acc;
+    }, {} as any);
+
+    if (filteredObject.experiences) {
+      filteredObject.experiences = filteredObject.experiences.map(
+        (experience: any) => experience.name
+      );
+    }
+    if (filteredObject.availability) {
+      filteredObject.availability.startTime =
+        filteredObject.availability.startTime.toISOString();
+      filteredObject.availability.endTime =
+        filteredObject.availability.endTime.toISOString();
+    }
     try {
-      if (currentStep === "1") {
-        await updateUser({
-          updateData: {
-            fullname,
-            portfolio,
-            email,
-          },
-        });
-      }
-      if (currentStep === "2") {
-        await updateUser({
-          updateData: {
-            learningGoals,
-          },
-        });
-      }
-      if (currentStep === "3") {
-        await updateUser({
-          updateData: {
-            experiences: experiences?.map((experience) => experience.name),
-          },
-        });
-      }
+      await updateUser({
+        updateData: filteredObject,
+      });
     } catch (error) {
       console.log(error);
     }
 
     setCurrentStep(nextStep.toString());
   };
-
   const onSubmit = async () => {
     try {
       const { availability, newProjects } = getValues();
       const startTime = availability?.startTime;
       const endTime = availability?.endTime;
-      startTransition(async () => {
-        await updateUser({
-          updateData: {
-            newProjects,
-            startTime,
-            endTime,
-          },
-        });
-        router.push("/");
+
+      updateUser({
+        updateData: {
+          newProjects,
+          startTime,
+          endTime,
+        },
       });
+      router.push("/");
     } catch (e) {
       console.log(e);
     }
@@ -140,7 +154,7 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     2: {
       fields: ["learningGoals"],
       component: (
-        <OnboardingTwo
+        <EditGoals
           step={step}
           goalFields={goalFields}
           register={register}
@@ -152,23 +166,23 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     3: {
       fields: ["experiences"],
       component: (
-        <OnboardingThree
+        <EditExperience
+          experienceFields={experienceFields}
           register={register}
-          step={step}
-          experiences={experienceFields}
-          errors={errors}
-          appendExperience={appendExperience}
           removeExperience={removeExperience}
+          appendExperience={appendExperience}
         />
       ),
     },
     4: {
       fields: ["newProjects", "availability"],
       component: (
-        <OnboardingFour
+        <EditAvailability
           register={register}
           control={control}
-          errors={errors}
+          availability={availability}
+          setEndTime={handleEndTimeChange}
+          setStartTime={handleStartTimeChange}
           step={step}
         />
       ),
@@ -188,10 +202,10 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
         <OnboardingTick step={parseInt(currentStep)} />
       </section>
       {currentStep === "1" && (
-        <div className="box-border justify-between border-white-500 p-4">
+        <section className="box-border justify-between border-white-500 p-4">
           {" "}
           <UploadPhoto image={user.image} />
-        </div>
+        </section>
       )}
       <form
         className="flex-0 w-full overflow-y-hidden"
@@ -204,13 +218,12 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
             className="pb-4"
             type="button"
             buttonType="primary"
-            type="button"
             onClick={changeStep}
           >
             Next
           </CustomButton>
         ) : (
-          <CustomButton disabled={pending} buttonType="primary" type="submit">
+          <CustomButton buttonType="primary" type="submit">
             {" "}
             Finish
           </CustomButton>

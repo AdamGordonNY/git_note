@@ -5,19 +5,23 @@ import {
 } from "@radix-ui/react-popover";
 import { format } from "date-fns";
 import { Calendar } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { DayPicker } from "react-day-picker";
 import { Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 
 interface EditAvailabilityProps {
-  selectedFrom: any;
-  handleDaySelectFrom: any;
-  selectedTo: any;
-  handleDaySelectTo: any;
+  setStartTime: (date: Date) => void;
+  setEndTime: (date: Date) => void;
   control: any;
   register: any;
   className?: string;
+  availability?: {
+    startTime: Date;
+    endTime: Date;
+  };
+
+  step?: string;
 }
 const css = `
   .my-selected:not([disabled]) { 
@@ -45,19 +49,66 @@ const css = `
 `;
 const EditAvailability = ({
   register,
-  selectedFrom,
-  selectedTo,
+  availability,
   control,
-  handleDaySelectFrom,
-  handleDaySelectTo,
   className,
+  setStartTime,
+  setEndTime,
+  step,
 }: EditAvailabilityProps) => {
+  const [selectedFrom, setSelectedFrom] = React.useState<Date | undefined>();
+  const [selectedTo, setSelectedTo] = React.useState<Date | undefined>();
+
+  setEndTime = (date: Date | undefined) => {
+    if (!date) {
+      setSelectedFrom(new Date() as any);
+      return;
+    }
+
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    setSelectedFrom(newDate as any);
+  };
+  setStartTime = (date: Date | undefined) => {
+    if (!date) {
+      setSelectedTo(new Date() as any);
+      return;
+    }
+
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    setSelectedTo(newDate as any);
+  };
+  useEffect(() => {
+    if (availability?.startTime) {
+      const startDate = new Date(availability.startTime);
+
+      setSelectedFrom(startDate);
+    }
+    if (availability?.endTime) {
+      const endDate = new Date(availability.endTime);
+
+      setSelectedTo(endDate);
+    }
+  }, [
+    availability?.startTime,
+    availability?.endTime,
+    setSelectedFrom,
+    setSelectedTo,
+  ]);
   return (
     <section className="border-top  box-border flex flex-col items-start">
-      <label className="py-12 text-white-300" htmlFor="availability">
-        Schedule and Availability
-      </label>
-
+      {!step ?? (
+        <label className="py-12 text-white-300" htmlFor="availability">
+          Schedule and Availability
+        </label>
+      )}
       <div className="flex flex-row gap-2">
         <label htmlFor="newProjects" className="py-[30px]">
           {" "}
@@ -107,7 +158,7 @@ const EditAvailability = ({
                       defaultMonth={new Date()}
                       mode="single"
                       onDayClick={(selectedFrom) => {
-                        handleDaySelectFrom(selectedFrom);
+                        setSelectedFrom(selectedFrom);
                       }}
                     />
                   </>
@@ -120,7 +171,7 @@ const EditAvailability = ({
           </span>
           <div>
             <span className="mt-[20px] text-white-100">
-              {selectedFrom
+              {selectedFrom && !isNaN(Number(selectedFrom))
                 ? format(selectedFrom, "MM/dd/yyyy")
                 : "Select start date"}
             </span>
@@ -158,7 +209,7 @@ const EditAvailability = ({
                       defaultMonth={new Date()}
                       mode="single"
                       onDayClick={(selectedFrom) => {
-                        handleDaySelectTo(selectedFrom);
+                        setSelectedFrom(selectedFrom);
                       }}
                     />
                   </>
@@ -171,7 +222,7 @@ const EditAvailability = ({
           </span>
           <div>
             <span className="mt-[20px] text-white-100">
-              {selectedTo
+              {selectedTo && !isNaN(Number(selectedTo))
                 ? format(selectedTo, "MM/dd/yyyy")
                 : "Select end date"}
             </span>

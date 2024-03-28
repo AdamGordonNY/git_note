@@ -10,6 +10,7 @@ interface EditGoalProps {
   appendGoal: (goal: { name: string; completed: false }) => void;
   register: any;
   className?: string;
+  step?: string;
 }
 const EditGoals = ({
   goalFields,
@@ -17,6 +18,7 @@ const EditGoals = ({
   removeGoal,
   register,
   className,
+  step,
 }: EditGoalProps) => {
   return (
     <section className=" my-10 flex flex-col gap-x-2 space-y-4  border-b-white-500  py-10 ">
