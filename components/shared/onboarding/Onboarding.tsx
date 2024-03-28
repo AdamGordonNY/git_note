@@ -4,7 +4,7 @@ import React from "react";
 import OnboardingOne from "./OnboardingOne";
 import { IUser } from "@/database/models/user.model";
 
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { CompleteProfileEditSchema } from "@/lib/profileValidations";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +32,6 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     control,
     register,
     getValues,
-    setValue,
     formState: { errors },
   } = useForm<z.infer<typeof CompleteProfileEditSchema>>({
     resolver: zodResolver(CompleteProfileEditSchema),
@@ -66,21 +65,7 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     control,
     name: "experiences",
   });
-  const availability = useWatch({
-    control,
-    name: "availability",
-    defaultValue: {
-      startTime: new Date(user?.startTime as Date),
-      endTime: new Date(user?.endTime as Date),
-    },
-  });
-  const handleStartTimeChange = (newAvailability: any) => {
-    setValue(`availability.startTime`, newAvailability);
-  };
 
-  const handleEndTimeChange = (newAvailability: any) => {
-    setValue(`availability.endTime`, newAvailability);
-  };
   const changeStep = async () => {
     const nextStep = parseInt(currentStep) + 1;
 
@@ -177,14 +162,7 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     4: {
       fields: ["newProjects", "availability"],
       component: (
-        <EditAvailability
-          register={register}
-          control={control}
-          availability={availability}
-          setEndTime={handleEndTimeChange}
-          setStartTime={handleStartTimeChange}
-          step={step}
-        />
+        <EditAvailability register={register} control={control} step={step} />
       ),
     },
   };
