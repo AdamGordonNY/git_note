@@ -10,14 +10,13 @@ const OnboardingPage = async ({ params }: { params: { step: string } }) => {
   let user;
   if (session) {
     user = await getOneUser(session?.user?.email!);
-    console.log(user);
   } else {
     redirect("/sign-in");
   }
   const cleanUser = JSON.parse(JSON.stringify(user));
 
   return (
-    <section className="flex h-screen  w-[600px] flex-col content-center items-center justify-start bg-black-800 p-8 pt-[72px]  align-middle max-sm:w-[380px] ">
+    <section className="flex  w-[600px] flex-col content-center items-center justify-start bg-black-800 p-8 pt-[72px]  align-middle max-sm:w-[380px] ">
       <Onboarding user={cleanUser} step={params.step}></Onboarding>
     </section>
   );

@@ -7,11 +7,15 @@ const OnboardingTwo = ({
   goalFields,
   appendGoal,
   removeGoal,
+  step,
+  className,
 }: {
   register: any;
   goalFields: any;
   appendGoal: any;
   removeGoal: any;
+  step: string;
+  className?: string;
 }) => {
   return (
     <EditGoals

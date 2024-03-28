@@ -4,10 +4,11 @@ import React from "react";
 interface EditBasicInfoProps {
   register: any;
   errors: any;
+  className?: string;
 }
-const EditBasicInfo = ({ register, errors }: EditBasicInfoProps) => {
+const EditBasicInfo = ({ register, errors, className }: EditBasicInfoProps) => {
   return (
-    <section className="space-y-2">
+    <section className="space-y-2 group-focus:bg-black-700">
       <label
         htmlFor="fullname"
         className="paragraph-3-medium profile-input text-white-300"

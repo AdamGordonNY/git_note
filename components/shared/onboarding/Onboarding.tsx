@@ -1,23 +1,21 @@
 "use client";
 
-import React, { useCallback, useEffect } from "react";
-
+import React, { useEffect, useTransition } from "react";
 import OnboardingOne from "./OnboardingOne";
 import { IUser } from "@/database/models/user.model";
 import OnboardingTwo from "./OnboardingTwo";
-
 import { useFieldArray, useForm } from "react-hook-form";
 import { CompleteProfileEditSchema } from "@/lib/profileValidations";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import OnboardingThree from "./OnboardingThree";
 import { updateUser } from "@/lib/actions/user.actions";
-import { usePathname } from "next/navigation";
 import OnboardingFour from "./OnboardingFour";
 import CustomButton from "../CustomButton";
 import { Progress } from "@/components/ui/progress";
 import OnboardingTick from "./OnboardingTick";
 import UploadPhoto from "../profile/edit/UploadPhoto";
+import { useRouter } from "next/navigation";
 
 interface OnboardingProps {
   children?: React.ReactNode;
@@ -27,9 +25,8 @@ interface OnboardingProps {
 
 const Onboarding = ({ step, user }: OnboardingProps) => {
   const [currentStep, setCurrentStep] = React.useState(step);
-  const [progress, setProgress] = React.useState(0);
-  const path = usePathname();
-
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
   const {
     handleSubmit,
     control,
@@ -72,7 +69,6 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     const nextStep = parseInt(currentStep) + 1;
     const {
       fullname,
-
       portfolio,
       availability,
       learningGoals,
@@ -88,7 +84,6 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
             portfolio,
             email,
           },
-          path,
         });
       }
       if (nextStep === 3) {
@@ -96,7 +91,6 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
           updateData: {
             learningGoals,
           },
-          path,
         });
       }
       if (nextStep === 4) {
@@ -104,30 +98,53 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
           updateData: {
             experiences: experiences?.map((experience) => experience.name),
           },
-          path,
         });
       }
       if (nextStep === 5) {
-        await updateUser({
-          updateData: {
-            newProjects,
-
-            startTime: availability?.startTime,
-            endTime: availability?.endTime,
-          },
-          path,
+        startTransition(() => {
+          updateUser({
+            updateData: {
+              newProjects,
+              startTime: availability?.startTime,
+              endTime: availability?.endTime,
+            },
+          });
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     setCurrentStep(nextStep.toString());
+  };
+  const [selectedFrom, setSelectedFrom] = React.useState<Date>();
+  const [selectedTo, setSelectedTo] = React.useState<Date>();
 
-    if (nextStep === 3) {
-      setProgress(66);
+  const handleDaySelectFrom = (date: Date | undefined) => {
+    if (!date) {
+      setSelectedFrom(date as any);
+      return;
     }
-    if (nextStep === 4) {
-      setProgress(100);
+
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    setSelectedFrom(newDate as any);
+  };
+  const handleDaySelectTo = (date: Date | undefined) => {
+    if (!date) {
+      setSelectedTo(date as any);
+      return;
     }
+
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    setSelectedTo(newDate as any);
   };
   const onSubmit = async () => {
     console.log(getValues());
@@ -139,6 +156,7 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
         email,
         experiences,
         newProjects,
+        fullname,
       } = getValues();
       const dbExperiences = experiences?.map((experience) => experience.name);
       const startTime = availability?.startTime;
@@ -147,28 +165,22 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
         await updateUser({
           updateData: {
             portfolio,
-
             email,
-            startTime,
-            endTime,
-            experiences: dbExperiences,
+            fullname,
           },
-          path,
         });
       } else if (currentStep === "2") {
         await updateUser({
           updateData: {
             learningGoals,
           },
-          path,
         });
         changeStep();
       } else if (currentStep === "3") {
         await updateUser({
           updateData: {
-            learningGoals,
+            experiences: dbExperiences,
           },
-          path,
         });
         changeStep();
       } else if (currentStep === "4") {
@@ -178,30 +190,29 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
             startTime,
             endTime,
           },
-          path,
         });
+        router.push("/");
       }
     } catch (e) {
       console.log(e);
     }
   };
-  console.log(path);
-  const renderForm = useCallback(() => {
+
+  const renderForm = () => {
     switch (currentStep) {
       case "1":
         return (
-          <>
-            <OnboardingOne
-              user={user}
-              step={step}
-              register={register}
-              errors={errors}
-            />
-          </>
+          <OnboardingOne
+            user={user}
+            step={step}
+            register={register}
+            errors={errors}
+          />
         );
       case "2":
         return (
           <OnboardingTwo
+            step={step}
             goalFields={goalFields}
             register={register}
             appendGoal={appendGoal}
@@ -222,9 +233,14 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
       case "4":
         return (
           <OnboardingFour
-            startTime={user.startTime}
-            endTime={user.endTime}
-            newProjects={user.newProjects}
+            register={register}
+            control={control}
+            selectedFrom={selectedFrom!}
+            selectedTo={selectedTo!}
+            handleDaySelectFrom={handleDaySelectFrom}
+            handleDaySelectTo={handleDaySelectTo}
+            errors={errors}
+            step={step}
           />
         );
       default:
@@ -237,75 +253,65 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
           />
         );
     }
-  }, [
-    appendExperience,
-    appendGoal,
-    currentStep,
-    errors,
-    experienceFields,
-    goalFields,
-    register,
-    removeExperience,
-    removeGoal,
-    step,
-    user,
-  ]);
+  };
   useEffect(() => {
     switch (step) {
       case "1":
         setCurrentStep("1");
-        setProgress(33);
-        renderForm();
         break;
       case "2":
         setCurrentStep("2");
-        setProgress(33);
-        renderForm();
         break;
       case "3":
         setCurrentStep("3");
-        setProgress(66);
-        renderForm();
         break;
       case "4":
         setCurrentStep("4");
-        setProgress(100);
-        renderForm();
         break;
       default:
         setCurrentStep("1");
         break;
     }
-  }, [renderForm, step]);
+  }, [step]);
 
   return (
     <>
-      {" "}
-      <div className="p-1 align-top">
+      <section className="relative w-full">
+        <div className="absolute top-[50%] h-1 w-full bg-gray-400/30"></div>
         <Progress
-          value={progress}
-          onChange={() => setProgress(progress)}
-          onProgress={() => setProgress}
+          className="absolute top-[25%]"
+          value={(Number(currentStep) - 1) * 33}
+          max={4}
         />
+
         <OnboardingTick step={parseInt(currentStep)} />
-      </div>
+      </section>
       {currentStep === "1" && (
-        <div className="box-border justify-around border-white-500">
+        <div className="box-border justify-between border-white-500 p-4">
           {" "}
           <UploadPhoto image={user.image} />
         </div>
       )}
-      <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex-0 w-full overflow-y-hidden"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {currentStep && renderForm()}
 
-        <CustomButton
-          buttonType="primary"
-          className="w-full "
-          type="submit"
-          onClick={changeStep}
-        >
-          {currentStep !== "4" ? "Next" : "Finish"}
-        </CustomButton>
+        {currentStep !== "4" ? (
+          <CustomButton
+            className="pb-4"
+            buttonType="primary"
+            onClick={changeStep}
+          >
+            Next
+          </CustomButton>
+        ) : (
+          <CustomButton disabled={pending} buttonType="primary" type="submit">
+            {" "}
+            Finish
+          </CustomButton>
+        )}
       </form>
     </>
   );
