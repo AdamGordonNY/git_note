@@ -49,6 +49,9 @@ const EditBasicInfo = ({ register, errors, step }: EditBasicInfoProps) => {
           className="profile-input bg-black-700 text-white-100"
           placeholder="portfolio"
         />
+        {errors.portfolio && (
+          <p className="text-red-500">{errors.portfolio.message}</p>
+        )}
       </div>
     </section>
   );
