@@ -24,6 +24,7 @@ interface OnboardingProps {
 
 const Onboarding = ({ step, user }: OnboardingProps) => {
   const [currentStep, setCurrentStep] = React.useState(step);
+
   const router = useRouter();
 
   const {
@@ -31,7 +32,8 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
     control,
     register,
     getValues,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    trigger,
   } = useForm<z.infer<typeof CompleteProfileEditSchema>>({
     resolver: zodResolver(CompleteProfileEditSchema),
     defaultValues: {
@@ -77,7 +79,18 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
       }
       return acc;
     }, {} as any);
+    const isValid = await Promise.all(
+      fields.map(
+        async (field) =>
+          await trigger(
+            field as keyof z.infer<typeof CompleteProfileEditSchema>
+          )
+      )
+    );
 
+    if (!isValid.every((v) => v)) {
+      return;
+    }
     if (filteredObject.experiences) {
       filteredObject.experiences = filteredObject.experiences.map(
         (experience: any) => experience.name
@@ -89,13 +102,12 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
       filteredObject.availability.endTime =
         filteredObject.availability.endTime.toISOString();
     }
+
     try {
       await updateUser({
         updateData: filteredObject,
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
 
     setCurrentStep(nextStep.toString());
   };
@@ -204,7 +216,11 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
             Next
           </CustomButton>
         ) : (
-          <CustomButton buttonType="primary" type="submit">
+          <CustomButton
+            disabled={isSubmitting}
+            buttonType="primary"
+            type="submit"
+          >
             {" "}
             Finish
           </CustomButton>
