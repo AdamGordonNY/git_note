@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { LuUploadCloud } from "react-icons/lu";
+import { LuUploadCloud, LuImage } from "react-icons/lu";
 
 import { Input } from "@/components/ui/input";
 import { uploadImage } from "@/lib/actions/cloudinary.actions";
@@ -39,7 +39,7 @@ const UploadPhoto = ({ image, className, step }: UploadPhotoProps) => {
       <div
         className={
           step
-            ? `flex w-full flex-1 flex-row items-center justify-between gap-x-[14px] space-y-2 align-middle`
+            ? `flex w-full  flex-row items-center justify-between  gap-x-[14px] space-y-2 rounded-md  border-white-500 align-middle`
             : "inline-flex flex-row items-center gap-x-[14px] space-y-2 align-middle"
         }
       >
@@ -49,12 +49,12 @@ const UploadPhoto = ({ image, className, step }: UploadPhotoProps) => {
             alt="profile picture"
             width={90}
             height={90}
-            className="inset-inline-start "
+            className="inset-inline-start rounded-[5px] "
           />
         )}
         {!image && (
-          <div className="bg-black-500 flex size-[90px] items-center justify-center rounded-[5px]">
-            <LuUploadCloud size={32} />
+          <div className="bg-black-500  flex size-[90px] items-center justify-center rounded-[5px] border-white-500 text-white-500">
+            <LuImage size={32} />
           </div>
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
