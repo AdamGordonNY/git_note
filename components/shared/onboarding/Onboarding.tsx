@@ -22,7 +22,7 @@ interface OnboardingProps {
   user: Partial<IUser>;
 }
 
-const Onboarding = ({ step, user }: OnboardingProps) => {
+const Onboarding = ({ step = "1", user }: OnboardingProps) => {
   const [currentStep, setCurrentStep] = React.useState(step);
 
   const router = useRouter();

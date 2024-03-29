@@ -42,7 +42,7 @@ const SignUpForm = () => {
             redirect: true,
             email,
             password,
-            callbackUrl: `/onboarding/1`,
+            callbackUrl: `/onboarding`,
           });
       });
     } catch (err: any) {

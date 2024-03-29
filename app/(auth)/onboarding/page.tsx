@@ -5,7 +5,7 @@ import { getOneUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import Onboarding from "@/components/shared/onboarding/Onboarding";
 
-const OnboardingPage = async ({ params }: { params: { step: string } }) => {
+const OnboardingPage = async () => {
   const session = await getSession();
   let user;
   if (session) {
@@ -17,7 +17,7 @@ const OnboardingPage = async ({ params }: { params: { step: string } }) => {
 
   return (
     <section className="flex w-[600px] flex-col content-center items-center bg-black-800 p-4 align-middle max-sm:w-[380px] ">
-      <Onboarding user={cleanUser} step={params.step}></Onboarding>
+      <Onboarding user={cleanUser} step="1"></Onboarding>
     </section>
   );
 };
