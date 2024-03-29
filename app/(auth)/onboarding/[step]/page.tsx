@@ -16,7 +16,7 @@ const OnboardingPage = async ({ params }: { params: { step: string } }) => {
   const cleanUser = JSON.parse(JSON.stringify(user));
 
   return (
-    <section className="flex  w-[600px] flex-col content-center items-center justify-start bg-black-800 p-8 pt-[72px]  align-middle max-sm:w-[380px] ">
+    <section className="flex w-[600px] flex-col content-center items-center bg-black-800 p-4 align-middle max-sm:w-[380px] ">
       <Onboarding user={cleanUser} step={params.step}></Onboarding>
     </section>
   );

@@ -10,27 +10,37 @@ interface EditExperienceProps {
   removeExperience: (index: number) => void;
   appendExperience: (experience: { name: string }) => void;
   register: any;
-  className?: string;
+  step?: string;
 }
 const EditExperience = ({
   experienceFields,
   removeExperience,
   appendExperience,
   register,
+  step,
 }: EditExperienceProps) => {
   return (
     <section className=" gap-x-2 space-y-4 py-10">
       <div className="flex flex-col">
-        <label
-          className="paragraph-3-regular align-top text-white-500"
-          htmlFor="experiences"
-        >
-          KNOWLEDGE
-        </label>
-        <span className="paragraph-3-medium justify-left mt-10 text-white-300">
-          {" "}
-          Knowledge Level
-        </span>
+        {!step ? (
+          <label
+            className="paragraph-3-regular align-top text-white-500"
+            htmlFor="experiences"
+          >
+            KNOWLEDGE
+          </label>
+        ) : (
+          <span className="display-2-bold justify-left mb-3  text-white-100">
+            {" "}
+            Add Knowledge
+          </span>
+        )}
+        {!step && (
+          <span className="paragraph-3-medium justify-left mt-10 text-white-300">
+            {" "}
+            Knowledge Level
+          </span>
+        )}
       </div>
       {experienceFields.map((field: any, index: number) => {
         return (
@@ -64,14 +74,25 @@ const EditExperience = ({
           </React.Fragment>
         );
       })}
-      <CustomButton
-        className="mt-[16px]"
-        buttonType="profileButton"
-        type="button"
-        onClick={() => appendExperience({ name: "" })}
-      >
-        Add Knowledge
-      </CustomButton>
+      {step && experienceFields.length >= 3 ? (
+        <CustomButton
+          className="mt-[16px]"
+          buttonType="profileButton"
+          type="button"
+          disabled={true}
+          onClick={() => appendExperience({ name: "" })}
+        >
+          Add Knowledge
+        </CustomButton>
+      ) : (
+        <CustomButton
+          buttonType="profileButton"
+          type="button"
+          onClick={() => appendExperience({ name: "" })}
+        >
+          Add Knowledge
+        </CustomButton>
+      )}
     </section>
   );
 };

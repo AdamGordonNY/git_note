@@ -4,17 +4,11 @@ import React from "react";
 interface EditBasicInfoProps {
   register: any;
   errors: any;
-  className?: string;
-  onboarding?: boolean;
+  step?: string;
 }
-const EditBasicInfo = ({
-  register,
-  errors,
-  className,
-  onboarding,
-}: EditBasicInfoProps) => {
+const EditBasicInfo = ({ register, errors, step }: EditBasicInfoProps) => {
   return (
-    <section className="space-y-2 bg-black-800">
+    <section className="space-y-2">
       <label
         htmlFor="fullname"
         className="paragraph-3-medium profile-input bg-black-700 text-white-300"
@@ -23,7 +17,7 @@ const EditBasicInfo = ({
       </label>
       <Input
         {...register("fullname")}
-        className="profile-input bg-black-700 text-white-100"
+        className="profile-input bg-black-700 text-white-100 focus:bg-black-700"
         placeholder="fullname"
       />
       {errors.fullname && (
@@ -34,13 +28,18 @@ const EditBasicInfo = ({
         <label htmlFor="email" className="paragraph-3-medium text-white-300">
           Username
         </label>
-        <Input
-          {...register("email")}
-          className="profile-input bg-black-700 text-white-100"
-          placeholder="email"
-          readOnly
-        />
+        {!step ? (
+          <>
+            <Input
+              {...register("email")}
+              className="profile-input bg-black-700 text-white-100"
+              placeholder="email"
+              readOnly
+            />
+          </>
+        ) : null}
       </div>
+
       <div className="space-y-2">
         <label htmlFor="portfolio" className="text-white-300">
           Portfolio URL

@@ -8,11 +8,12 @@ interface OnboardingOneProps {
   step: string;
   register: any;
   errors: any;
+  className?: string;
 }
-const OnboardingOne = ({ register, errors }: OnboardingOneProps) => {
+const OnboardingOne = ({ register, errors, step }: OnboardingOneProps) => {
   return (
     <>
-      <EditBasicInfo register={register} errors={errors} />
+      <EditBasicInfo step={step} register={register} errors={errors} />
     </>
   );
 };

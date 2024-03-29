@@ -18,7 +18,6 @@ import EditExperience from "../profile/edit/EditExperience";
 import EditGoals from "../profile/edit/EditGoals";
 import EditAvailability from "../profile/edit/EditAvailability";
 interface OnboardingProps {
-  children?: React.ReactNode;
   step: string;
   user: Partial<IUser>;
 }
@@ -152,6 +151,7 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
       fields: ["experiences"],
       component: (
         <EditExperience
+          step={step}
           experienceFields={experienceFields}
           register={register}
           removeExperience={removeExperience}
@@ -169,7 +169,7 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
 
   return (
     <>
-      <section className="relative w-full">
+      <section className="relative w-full align-top ">
         <div className="absolute top-[50%] h-1 w-full bg-gray-400/30"></div>
         <Progress
           className="absolute top-[25%]"
@@ -180,20 +180,23 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
         <OnboardingTick step={parseInt(currentStep)} />
       </section>
       {currentStep === "1" && (
-        <section className="box-border justify-between border-white-500 p-4">
+        <section className="box-border flex w-full flex-col  justify-between space-y-2 border-white-500 p-2">
           {" "}
-          <UploadPhoto image={user.image} />
+          <span className="display-2-bold align-top text-white-100">
+            Basic Information
+          </span>
+          <UploadPhoto className="justify-betweeh" image={user.image} />
         </section>
       )}
       <form
-        className="flex-0 w-full overflow-y-hidden"
+        className="flex-0 w-full overflow-y-hidden py-4"
         onSubmit={handleSubmit(onSubmit)}
       >
         {stepMap[currentStep].component}
 
         {currentStep !== "4" ? (
           <CustomButton
-            className="pb-4"
+            className="mt-4"
             type="button"
             buttonType="primary"
             onClick={changeStep}

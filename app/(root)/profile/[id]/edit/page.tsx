@@ -10,7 +10,6 @@ const EditProfilePage = async () => {
   let user;
   if (session) {
     user = await getOneUser(session?.user?.email!);
-    console.log(user);
   } else {
     redirect("/sign-in");
   }

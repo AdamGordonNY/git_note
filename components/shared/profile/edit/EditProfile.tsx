@@ -109,17 +109,10 @@ const EditProfile = ({ user }: EditProfileProps) => {
     }
   };
   const technologies = useWatch({ control, name: "technologies" });
-  const availability = useWatch({ control, name: "availability" });
   const handleTechChange = (newTech: any) => {
     setValue("technologies", newTech);
   };
-  const handleStartTimeChange = (newAvailability: any) => {
-    setValue(`availability.startTime`, newAvailability);
-  };
 
-  const handleEndTimeChange = (newAvailability: any) => {
-    setValue(`availability.endTime`, newAvailability);
-  };
   return (
     <>
       <section className="flex w-full flex-col px-[30px] py-6">
@@ -156,13 +149,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           setTechnologies={handleTechChange}
         />
         <Divider />
-        <EditAvailability
-          register={register}
-          control={control}
-          availability={availability}
-          setEndTime={handleEndTimeChange}
-          setStartTime={handleStartTimeChange}
-        />
+        <EditAvailability register={register} control={control} />
         <div className="py-10">
           <CustomButton buttonType={`primary`} type="submit">
             Submit

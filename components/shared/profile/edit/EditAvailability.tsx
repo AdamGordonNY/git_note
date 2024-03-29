@@ -47,11 +47,17 @@ const EditAvailability = ({
 }: EditAvailabilityProps) => {
   return (
     <section className="border-top  box-border flex flex-col items-start">
-      {!step ?? (
+      {!step ? (
         <label className="py-12 text-white-300" htmlFor="availability">
           Schedule and Availability
         </label>
-      )}
+      ) : null}
+
+      {step ? (
+        <span className="display-2-bold py-12 text-white-100">
+          Add your availability
+        </span>
+      ) : null}
       <div className="flex flex-row gap-2">
         <label htmlFor="newProjects" className="py-[30px]">
           {" "}

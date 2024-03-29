@@ -10,8 +10,9 @@ import { uploadImage } from "@/lib/actions/cloudinary.actions";
 interface UploadPhotoProps {
   image?: string;
   className?: string;
+  step?: string;
 }
-const UploadPhoto = ({ image, className }: UploadPhotoProps) => {
+const UploadPhoto = ({ image, className, step }: UploadPhotoProps) => {
   const { register, handleSubmit, getValues, watch } = useForm();
   const watchInput = watch("file");
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -19,6 +20,9 @@ const UploadPhoto = ({ image, className }: UploadPhotoProps) => {
   const onSubmit = async () => {
     inputRef.current?.click();
   };
+  if (step) {
+    className = "justify-betweeh gap-6";
+  }
   useEffect(() => {
     const file = getValues("file")[0];
     if (!file) return;
@@ -32,7 +36,13 @@ const UploadPhoto = ({ image, className }: UploadPhotoProps) => {
   }, [getValues, watchInput]);
   return (
     <>
-      <div className="inline-flex flex-row items-center gap-x-[14px] space-y-2 align-middle">
+      <div
+        className={
+          step
+            ? `flex w-full flex-1 flex-row items-center justify-between gap-x-[14px] space-y-2 align-middle`
+            : "inline-flex flex-row items-center gap-x-[14px] space-y-2 align-middle"
+        }
+      >
         {image && (
           <Image
             src={image!}
@@ -59,7 +69,7 @@ const UploadPhoto = ({ image, className }: UploadPhotoProps) => {
           />
           <button
             type="submit"
-            className="inset-inline-end paragraph-3-medium r flex h-[40px] w-[200px] flex-row items-center gap-2 rounded-[5px] bg-black-700 px-3.5 py-2 align-middle text-white-300  shadow shadow-gray-800/10 "
+            className="paragraph-3-medium r flex h-[40px] w-[200px] flex-row items-center justify-between gap-2 rounded-[5px] bg-black-700 px-3.5 py-2 align-middle text-white-300  shadow shadow-gray-800/10 "
           >
             {" "}
             <LuUploadCloud size={32} />
