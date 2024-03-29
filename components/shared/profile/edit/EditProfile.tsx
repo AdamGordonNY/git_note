@@ -1,7 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import React from "react";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
   useForm,
@@ -26,8 +25,6 @@ interface EditProfileProps {
 }
 
 const EditProfile = ({ user }: EditProfileProps) => {
-  const pathname = usePathname();
-
   const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
     completed: goal.completed,
@@ -59,21 +56,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     },
   });
 
-  useEffect(() => {
-    if (user?.startTime) {
-      const startDate = new Date(user.startTime);
-      setValue("availability.startTime", startDate);
-
-      setSelectedFrom(startDate);
-    }
-    if (user?.endTime) {
-      const endDate = new Date(user.endTime);
-      setValue("availability.endTime", endDate);
-
-      setSelectedTo(endDate);
-    }
-  }, [user?.startTime, user?.endTime, setValue]);
-
   const {
     fields: goalFields,
     append: appendGoal,
@@ -91,36 +73,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
     control,
     name: "experiences",
   });
-
-  const [selectedFrom, setSelectedFrom] = React.useState<Date>();
-  const [selectedTo, setSelectedTo] = React.useState<Date>();
-
-  const handleDaySelectFrom = (date: Date | undefined) => {
-    if (!date) {
-      setSelectedFrom(date as any);
-      return;
-    }
-
-    const newDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    setSelectedFrom(newDate as any);
-  };
-  const handleDaySelectTo = (date: Date | undefined) => {
-    if (!date) {
-      setSelectedTo(date as any);
-      return;
-    }
-
-    const newDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    setSelectedTo(newDate as any);
-  };
 
   const onSubmit: SubmitHandler<
     z.infer<typeof CompleteProfileEditSchema>
@@ -150,7 +102,6 @@ const EditProfile = ({ user }: EditProfileProps) => {
             endTime,
             newProjects,
           },
-          path: pathname,
         });
       } catch (error) {
         console.log(error);
@@ -198,14 +149,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
           setTechnologies={handleTechChange}
         />
         <Divider />
-        <EditAvailability
-          handleDaySelectTo={handleDaySelectTo}
-          register={register}
-          control={control}
-          selectedFrom={selectedFrom}
-          selectedTo={selectedTo}
-          handleDaySelectFrom={handleDaySelectFrom}
-        />
+        <EditAvailability register={register} control={control} />
         <div className="py-10">
           <CustomButton buttonType={`primary`} type="submit">
             Submit

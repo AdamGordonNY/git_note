@@ -1,4 +1,4 @@
-import { IconType } from "react-icons/lib";
+import React from "react";
 
 export interface ParamsProps {
   params: { id: string };
@@ -28,9 +28,9 @@ export interface SocialLink {
     | "facebook";
   route: string;
   label: string;
-  icon?: IconType;
+  icon?: React.JSX.Element;
 }
 export interface TechnologyStack {
   name: string;
-  icon: IconType;
+  icon: React.JSX.Element;
 }

@@ -1,18 +1,25 @@
 import React from "react";
-
 import { getSession } from "@/lib/authOptions";
+import { getOneUser } from "@/lib/actions/user.actions";
 
-interface PageProps {
-  step: "1" | "2" | "3" | "4";
-}
-// TODO : look at each 4 onboarding step design files and determine the props to pass to the Onboarding component
-// could use each step as a key to determine the props to pass to the Onboarding component
-const OnboardingPage = async ({ step }: PageProps) => {
+import { redirect } from "next/navigation";
+import Onboarding from "@/components/shared/onboarding/Onboarding";
+
+const OnboardingPage = async () => {
   const session = await getSession();
-  if (session?.user) {
-    step = "1";
+  let user;
+  if (session) {
+    user = await getOneUser(session?.user?.email!);
+  } else {
+    redirect("/sign-in");
   }
-  return <div>OnboardingPage</div>;
+  const cleanUser = JSON.parse(JSON.stringify(user));
+
+  return (
+    <section className="flex w-[600px] flex-col content-center items-center bg-black-800 p-4 align-middle max-sm:w-[380px] ">
+      <Onboarding user={cleanUser} step="1"></Onboarding>
+    </section>
+  );
 };
 
 export default OnboardingPage;

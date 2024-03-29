@@ -9,28 +9,38 @@ interface EditGoalProps {
   removeGoal: (index: number) => void;
   appendGoal: (goal: { name: string; completed: false }) => void;
   register: any;
+  step?: string;
 }
 const EditGoals = ({
   goalFields,
   appendGoal,
   removeGoal,
   register,
+  step,
 }: EditGoalProps) => {
   return (
-    <section className=" my-10 flex flex-col gap-x-2 space-y-4  border-b-white-500  py-10 ">
+    <section className="flex flex-col gap-x-2 space-y-4  border-b-white-500  py-5 ">
       <Divider />
       <div className="align-top">
-        <span className="paragraph-3-regular  pb-10 text-white-500">
-          LEARNING GOALS
-        </span>
+        {step ? (
+          <span className="display-2-bold  pt-10 text-white-100">
+            Learning Goals
+          </span>
+        ) : (
+          <span className="paragraph-3-regular  pb-10 text-white-500">
+            LEARNING GOALS
+          </span>
+        )}
       </div>
-      <label
-        htmlFor="learningGoals"
-        className="paragraph-3-regular pt-10 text-white-300"
-      >
-        {" "}
-        Learning Goals
-      </label>
+      {!step && (
+        <label
+          htmlFor="learningGoals"
+          className="paragraph-3-regular pt-10 text-white-300"
+        >
+          {" "}
+          Learning Goals
+        </label>
+      )}
       {goalFields.map((field: any, index: number) => (
         <React.Fragment key={field.id}>
           <div
@@ -59,16 +69,27 @@ const EditGoals = ({
           </div>
         </React.Fragment>
       ))}
-      <CustomButton
-        buttonType="profileButton"
-        type="button"
-        // @ts-ignore
-        onClick={() => appendGoal({ name: "", completed: false })}
-      >
-        Add Goal
-      </CustomButton>
+      {step && goalFields.length >= 3 ? (
+        <CustomButton
+          buttonType="profileButton"
+          type="button"
+          // @ts-ignore
+          onClick={() => appendGoal({ name: "", completed: false })}
+          disabled={true}
+        >
+          Add Goal
+        </CustomButton>
+      ) : (
+        <CustomButton
+          buttonType="profileButton"
+          type="button"
+          // @ts-ignore
+          onClick={() => appendGoal({ name: "", completed: false })}
+        >
+          Add Goal
+        </CustomButton>
+      )}
     </section>
   );
 };
-
 export default EditGoals;

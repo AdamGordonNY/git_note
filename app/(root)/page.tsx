@@ -10,7 +10,6 @@ export default async function Home() {
   let mongoUser;
 
   if (session) {
-    console.log(session);
     mongoUser = await getOneUser(session.user?.email ?? "");
   }
 
