@@ -38,8 +38,8 @@ const Onboarding = ({ step, user }: OnboardingProps) => {
       learningGoals: user.learningGoals || [],
       experiences: user.experiences?.map((exp) => ({ name: exp })) || [],
       availability: {
-        startTime: new Date(user?.startTime as Date) || new Date(),
-        endTime: new Date(user?.endTime as Date) || new Date(),
+        startTime: user?.startTime ? new Date(user.startTime) : new Date(), // changes requested on this part for the date crashing
+        endTime: user?.endTime ? new Date(user.endTime) : new Date(),
       },
       newProjects: user?.newProjects || false,
       technologies: user?.technologies || [],
