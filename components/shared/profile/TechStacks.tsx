@@ -10,7 +10,9 @@ const TechStacks = ({ user }: TechStacksProps) => {
   const tech = user.technologies;
   return (
     <section className="flex flex-col">
-      <span className="profile-page_section-header">Technology Stacks</span>
+      <span className="profile-page_section-header paragraph-3-bold text-white-100">
+        Technology Stacks
+      </span>
       {/* Wrap in a div to apply same font styling - can control sizing as well */}
       {tech &&
         tech?.map((technology) => {

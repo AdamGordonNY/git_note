@@ -14,9 +14,9 @@ export const LearningGoals = async ({
   learningGoals,
 }: LearningGoalsProps) => {
   return (
-    <section className="border-profile-top flex w-full flex-col space-y-6">
+    <section className="border-profile-top flex w-full flex-col gap-7 ">
       <div>
-        <span className="paragraph-1-bold text-white-100">
+        <span className="paragraph-1-bold text-white-100/90">
           {" "}
           Learning Goals{" "}
         </span>

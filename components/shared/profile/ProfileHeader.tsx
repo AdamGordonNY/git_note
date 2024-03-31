@@ -8,6 +8,9 @@ import { CiCalendar } from "react-icons/ci";
 import { redirect } from "next/navigation";
 import { IUser } from "@/database/models/user.model";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import icnEdit from "@/public/icons/icn-edit.svg";
 interface ProfileHeaderProps {
   user: Partial<IUser>;
 }
@@ -32,30 +35,36 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
         <span className="display-2-bold text-left align-top text-white-100">
           {user?.fullname!}
         </span>
-        <div className="flex flex-row items-start justify-between">
+        <div className="flex w-1/2  flex-row items-start justify-between gap-2">
           <div>
-            <a href={user.portfolio} className="flex items-center">
+            <a href={user.portfolio} className="items-cente flex gap-1">
               <FaLink size={16} className="text-white-500" />
-              <span className="paragraph-3-regular order-2 text-left  text-primary-500">
+              <span className="paragraph-3-regular order-2 text-nowrap text-left text-primary-500">
                 {user?.portfolio!}
               </span>
             </a>
           </div>
           <div className="flex items-center">
             <FiMapPin size={16} className="text-white-500" />
-            <span className="paragraph-3-regular order-2 text-left text-white-300">
-              {user?.location!}
+            <span className="paragraph-3-regular order-2 text-nowrap text-left text-white-300">
+              {user?.location! || "New York, NY"}
             </span>
           </div>
           <div className="flex items-center">
             <CiCalendar size={16} className="text-white-500" />
-            <span className="text-white-300">
+            <span className="text-nowrap text-white-300">
               {" "}
               Joined {format(user?.updatedAt!, "MMMM,yyyy")}
             </span>
           </div>
         </div>
       </div>
+      <Link href="/profile/edit">
+        <Button className="social-login-shadow paragraph-3-bold h-[40px] w-[140px] items-center justify-center gap-1 bg-black-700 align-middle text-primary-500">
+          <Image src={icnEdit} alt="userCheck" height={16} width={16} />
+          Edit Profile
+        </Button>
+      </Link>
     </section>
   );
 };
