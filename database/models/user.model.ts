@@ -7,8 +7,8 @@ export interface IUser extends Document {
   password: string;
   image: string;
   location?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   portfolio?: string;
   learningGoals?: {
     name: string;

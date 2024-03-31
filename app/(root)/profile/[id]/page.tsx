@@ -6,6 +6,7 @@ import ExperienceLevels from "@/components/shared/profile/ExperienceLevels";
 import React from "react";
 import LearningGoals from "@/components/shared/profile/LearningGoals";
 import { IUser } from "@/database/models/user.model";
+import { Separator } from "@/components/ui/separator";
 
 const ProfilePage = async () => {
   const session = await getSession();
@@ -15,22 +16,27 @@ const ProfilePage = async () => {
     user = await getOneUser(session?.user?.email!);
   }
   const cleanUser: IUser = JSON.parse(JSON.stringify(user));
+  console.log(cleanUser);
   return (
-    <div className="box-border flex min-h-[screen] w-full flex-col ">
-      {user && <ProfileHeader />}
+    <section className="pb-7.5 spac box-border flex min-h-[screen] w-full flex-col gap-8 px-[30px] pt-[40px] ">
+      {user && <ProfileHeader user={cleanUser} />}
+      <Separator className="text-white-500" />
       {user && (
         <LearningGoals user={user} learningGoals={cleanUser.learningGoals} />
       )}
+      <Separator className="text-white-500" />
       {user && (
         <ExperienceLevels
           user={user}
           experienceLevels={user.experiences ?? []}
         />
       )}
+      <Separator className="text-white-500" />
       {user && (
         <TechStacks user={user} technologies={user.technologies ?? []} />
       )}
-    </div>
+      <Separator className="text-white-500" />
+    </section>
   );
 };
 

@@ -12,7 +12,8 @@ const ExperienceLevels = ({
   experienceLevels,
 }: ExperienceLevelsProps) => {
   return (
-    <div>
+    <section className="flex w-full">
+      <span></span>
       {experienceLevels.map((experience) => {
         return (
           <>
@@ -26,7 +27,7 @@ const ExperienceLevels = ({
           </>
         );
       })}
-    </div>
+    </section>
   );
 };
 

@@ -62,7 +62,7 @@ const config = {
           "900": "rgba(66, 255, 119, 0.1)",
         },
 
-        border: "hsl(var(--border))",
+        border: "#4448691a",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
 

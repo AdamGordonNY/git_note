@@ -7,16 +7,16 @@ interface TechStacksProps {
   technologies: string[];
 }
 const TechStacks = ({ user }: TechStacksProps) => {
-  const tech = user.technologyStack;
+  const tech = user.technologies;
   return (
-    <div className="flex flex-col">
+    <section className="flex flex-col">
       <span className="profile-page_section-header">Technology Stacks</span>
       {/* Wrap in a div to apply same font styling - can control sizing as well */}
       {tech &&
         tech?.map((technology) => {
           return <Badge key={technology} slot="slot" />;
         })}
-    </div>
+    </section>
   );
 };
 

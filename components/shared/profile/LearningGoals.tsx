@@ -14,17 +14,27 @@ export const LearningGoals = async ({
   learningGoals,
 }: LearningGoalsProps) => {
   return (
-    <div className="w-full px-[30px]">
-      {learningGoals?.map((goal, idx) => {
-        return (
-          <LearningGoal
-            key={goal.name}
-            name={goal.name}
-            completed={goal.completed}
-          />
-        );
-      })}
-    </div>
+    <section className="border-profile-top flex w-full flex-col space-y-6">
+      <div>
+        <span className="paragraph-1-bold text-white-100">
+          {" "}
+          Learning Goals{" "}
+        </span>
+      </div>
+      <div className="space-y-1.5">
+        {learningGoals?.map((goal, idx) => {
+          return (
+            <React.Fragment key={goal.name}>
+              <LearningGoal
+                key={goal.name}
+                name={goal.name}
+                completed={goal.completed}
+              />
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </section>
   );
 };
 
