@@ -1,24 +1,24 @@
 import { SidebarLink, SocialLink } from "@/types/global";
 import React from "react";
 import {
-  FaCss3,
   FaDribbble,
   FaGithub,
-  FaHtml5,
   FaInstagram,
-  FaJava,
-  FaJs,
-  FaLaravel,
   FaLinkedin,
-  FaNodeJs,
   FaPhp,
-  FaPython,
-  FaReact,
   FaTwitter,
 } from "react-icons/fa";
-import { TbBrandNextjs } from "react-icons/tb";
-import { BiLogoTailwindCss, BiLogoTypescript } from "react-icons/bi";
-import { IconType } from "react-icons/lib";
+import {
+  TbBrandNextjs,
+  TbBrandPrisma,
+  TbBrandVisualStudio,
+} from "react-icons/tb";
+import {
+  BiLogoMongodb,
+  BiLogoTailwindCss,
+  BiLogoTypescript,
+} from "react-icons/bi";
+
 import {
   DiCss3,
   DiGithub,
@@ -63,108 +63,102 @@ export const socialLinks: SocialLink[] = [
     linkType: "github",
     route: "https://github.com/agordon123",
     label: "agordon123",
-    icon: FaGithub,
+    icon: <FaGithub />,
   },
   {
     linkType: "linkedin",
     route: "https://www.linkedin.com/in/aaron-gordon-1a1a0a1b7/",
     label: "adamgordon-119",
-    icon: FaLinkedin,
+    icon: <FaLinkedin />,
   },
   {
     linkType: "twitter",
     route: "https://twitter.com/AGordon123",
     label: "@agordon123",
-    icon: FaTwitter,
+    icon: <FaTwitter />,
   },
   {
     linkType: "dribbble",
     route: "https://dribbble.com/agordon123",
     label: "Email",
-    icon: FaDribbble,
+    icon: <FaDribbble />,
   },
   {
     linkType: "instagram",
     route: "https://instagram.com",
     label: "InstaGram",
-    icon: FaInstagram,
+    icon: <FaInstagram />,
   },
 ];
 export interface TechStackBadges {
   name: string;
-  icon: React.JSX.Element;
+  icon: (size?: number) => React.JSX.Element;
   color?: string;
 }
-export const TechIcons: IconType[] = [
-  FaReact,
-  FaNodeJs,
-  FaHtml5,
-  FaCss3,
-  FaJs,
-  FaPython,
-  FaJava,
-  FaGithub,
-  BiLogoTailwindCss,
-  TbBrandNextjs,
-  FaLaravel,
-  FaPhp,
-  BiLogoTypescript,
-];
 
 export const techStackBadges: TechStackBadges[] = [
   {
     name: "react",
-    icon: <DiReact fill="rgb(0, 255, 255)" />,
-    color: "name-blue-500",
+    icon: (size) => <DiReact fill="rgb(0, 255, 255)" size={size} />,
   },
   {
     name: "node",
-    icon: <DiNodejs fill="rgb(0, 255, 255)" />,
-    color: "bg-green-500",
+    icon: (size) => <DiNodejs fill="rgb(0, 255, 255)" size={size} />,
   },
   {
     name: "html",
-    icon: <DiHtml5 fill="red" />,
-    color: "bg-red-500",
+    icon: (size) => <DiHtml5 fill="red" size={size} />,
   },
   {
     name: "css",
-    icon: <DiCss3 fill="blue" />,
+    icon: (size) => <DiCss3 fill="blue" size={size} />,
   },
   {
     name: "javascript",
-    icon: <DiJavascript fill="yellow" />,
+    icon: (size) => <DiJavascript fill="yellow" size={size} />,
   },
   {
     name: "python",
-    icon: <DiPython fill="yellow" />,
+    icon: (size) => <DiPython fill="yellow" size={size} />,
   },
   {
     name: "java",
-    icon: <DiJava fill="red" />,
+    icon: (size) => <DiJava fill="red" size={size} />,
   },
   {
     name: "github",
-    icon: <DiGithub fill="gray" />,
+    icon: (size) => <DiGithub fill="gray" size={size} />,
   },
   {
     name: "tailwind",
-    icon: <BiLogoTailwindCss fill="rgb(0, 255, 255)" />,
+    icon: (size) => <BiLogoTailwindCss fill="rgb(0, 255, 255)" size={size} />,
   },
   {
     name: "nextjs",
-    icon: <TbBrandNextjs fill="white" stroke="black" />,
+    icon: (size) => <TbBrandNextjs fill="white" stroke="black" size={size} />,
   },
   {
     name: "laravel",
-    icon: <DiLaravel fill="red" />,
+    icon: (size) => <DiLaravel fill="red" stroke="black" size={size} />,
   },
   {
     name: "php",
-    icon: <FaPhp fill="blue" />,
+    icon: (size) => <FaPhp fill="blue" size={size} />,
   },
   {
     name: "typescript",
-    icon: <BiLogoTypescript fill="blue" />,
+    icon: (size) => <BiLogoTypescript fill="blue" size={size} />,
+  },
+  {
+    name: "mongodb",
+    icon: (size) => <BiLogoMongodb fill="green" size={size} />,
+  },
+  {
+    name: "prisma",
+    icon: (size) => <TbBrandPrisma fill="green" size={size} />,
+  },
+  {
+    name: "visualstudiocode",
+    icon: (size) => <TbBrandVisualStudio fill="blue" size={size} />,
   },
 ];
