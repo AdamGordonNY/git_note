@@ -87,7 +87,7 @@ const EditAvailability = ({
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button className=" max-w-full grow bg-black-600 text-white-300">
-                      <Calendar size={16} /> Select End Time
+                      <Calendar size={16} /> Select Start Time
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="z-20  w-full flex-none  self-stretch  rounded-[4px] bg-black-700 text-white-100">

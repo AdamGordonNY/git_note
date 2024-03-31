@@ -10,7 +10,7 @@ const TechStacks = async ({ user }: TechStacksProps) => {
   const tech = user.technologies;
   console.log(tech);
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col gap-7">
       <span className=" paragraph-1-bold text-white-100">
         Technology Stacks
       </span>
@@ -23,14 +23,7 @@ const TechStacks = async ({ user }: TechStacksProps) => {
               (badge: any) => badge.name === technology
             );
             console.log(icon);
-            if (icon)
-              return (
-                <div className="size-16 gap-2">
-                  <span key={technology.name} className="size-8  bg-black-600">
-                    {icon.icon(32)}
-                  </span>
-                </div>
-              );
+            if (icon) return <div className="gap-x-4">{icon.icon(32)}</div>;
             else return null; // Add a return statement here
           })}
       </div>

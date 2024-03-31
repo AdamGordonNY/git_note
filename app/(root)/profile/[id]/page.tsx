@@ -19,7 +19,7 @@ const ProfilePage = async () => {
   const cleanUser: IUser = JSON.parse(JSON.stringify(user));
   console.log(cleanUser);
   return (
-    <section className="pb-7.5 spac box-border flex min-h-[screen] w-full flex-col gap-8 px-[30px] pt-[40px] ">
+    <section className="mb-10 box-border flex min-h-[screen] w-full flex-col gap-8 px-[30px] pt-[40px] ">
       {user && <ProfileHeader user={cleanUser} />}
       <Separator className="text-white-500" />
       {user && (
