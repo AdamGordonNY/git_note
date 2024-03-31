@@ -59,8 +59,11 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
           </div>
         </div>
       </div>
-      <Link href="/profile/edit">
-        <Button className="social-login-shadow paragraph-3-bold h-[40px] w-[140px] items-center justify-center gap-1 bg-black-700 align-middle text-primary-500">
+      <Link href={`/profile/${user._id}/edit`}>
+        <Button
+          className="social-login-shadow paragraph-3-bold h-[40px] w-[140px] items-center justify-center gap-1 bg-black-700 align-middle text-primary-500"
+          type="button"
+        >
           <Image src={icnEdit} alt="userCheck" height={16} width={16} />
           Edit Profile
         </Button>

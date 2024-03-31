@@ -7,6 +7,7 @@ import React from "react";
 import LearningGoals from "@/components/shared/profile/LearningGoals";
 import { IUser } from "@/database/models/user.model";
 import { Separator } from "@/components/ui/separator";
+import Schedule from "@/components/shared/profile/Schedule";
 
 const ProfilePage = async () => {
   const session = await getSession();
@@ -36,6 +37,7 @@ const ProfilePage = async () => {
         <TechStacks user={user} technologies={user.technologies ?? []} />
       )}
       <Separator className="text-white-500" />
+      <Schedule user={cleanUser} />
     </section>
   );
 };

@@ -53,7 +53,7 @@ const EditTech = ({ technologies, setTechnologies }: EditTechProps) => {
                             key={index}
                             className="paragraph-3-medium profile-shadow flex h-5 content-center items-center justify-center rounded bg-black-600 p-2 capitalize text-white-100"
                           >
-                            {icon.icon}
+                            {icon.icon(16)}
                             {tech}
                           </span>
                         </button>
