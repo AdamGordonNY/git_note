@@ -98,7 +98,7 @@ const EditTech = ({ technologies, setTechnologies }: EditTechProps) => {
                         className="z-20 flex h-9 w-full flex-row content-center  items-center overflow-y-hidden rounded-[3px]  bg-black-700 p-1"
                       >
                         <span className="paragraph-3-medium profile-shadow flex h-5 content-center items-center justify-center rounded bg-black-600 p-2 capitalize text-white-100">
-                          {icon?.icon}
+                          {icon?.icon(16)}
                           {result.name}
                         </span>
                       </li>

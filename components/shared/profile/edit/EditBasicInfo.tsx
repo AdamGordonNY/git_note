@@ -23,22 +23,20 @@ const EditBasicInfo = ({ register, errors, step }: EditBasicInfoProps) => {
       {errors.fullname && (
         <p className="text-red-500">{errors.fullname.message}</p>
       )}
+      {!step ? (
+        <div className="space-y-2">
+          <label htmlFor="email" className="paragraph-3-medium text-white-300">
+            Username
+          </label>
 
-      <div className="space-y-2">
-        <label htmlFor="email" className="paragraph-3-medium text-white-300">
-          Username
-        </label>
-        {!step ? (
-          <>
-            <Input
-              {...register("email")}
-              className="profile-input bg-black-700 text-white-100"
-              placeholder="email"
-              readOnly
-            />
-          </>
-        ) : null}
-      </div>
+          <Input
+            {...register("email")}
+            className="profile-input bg-black-700 text-white-100"
+            placeholder="email"
+            readOnly
+          />
+        </div>
+      ) : null}
 
       <div className="space-y-2">
         <label htmlFor="portfolio" className="text-white-300">

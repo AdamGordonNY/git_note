@@ -103,7 +103,7 @@ const EditAvailability = ({
                           selected: "my-selected",
                           today: "my-today",
                         }}
-                        selected={value}
+                        selected={new Date(value)}
                         defaultMonth={new Date()}
                         mode="single"
                       />
@@ -152,7 +152,7 @@ const EditAvailability = ({
                           selected: "my-selected",
                           today: "my-today",
                         }}
-                        selected={value}
+                        selected={new Date(value)}
                         defaultMonth={new Date()}
                         mode="single"
                       />

@@ -91,7 +91,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
     const dbExperiences = experiences?.map((experience) => experience.name);
     const startTime = availability?.startTime;
     const endTime = availability?.endTime;
-    console.log(data);
+
     if (user?._id) {
       try {
         await updateUser({
@@ -105,7 +105,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             endTime,
             newProjects,
           },
-        });
+        }).then((res) => console.log(res));
         router.push(`/profile/${user._id}`);
       } catch (error) {
         console.log(error);
