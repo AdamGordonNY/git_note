@@ -22,7 +22,7 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
     <section
       className={`mt-[40px] flex h-[90px] items-center justify-between gap-5`}
     >
-      <div className={` flex-0 justify-start gap-5`}>
+      <div className="flex-0 justify-start gap-5 shrink-0">
         <Image
           alt="pic"
           height={90}
