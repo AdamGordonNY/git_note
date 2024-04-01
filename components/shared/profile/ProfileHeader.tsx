@@ -35,7 +35,7 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
         <span className="display-2-bold text-left align-top text-white-100">
           {user?.fullname!}
         </span>
-        <div className="flex w-1/2  flex-row items-start justify-between gap-2">
+        <div className="flex w-1/2  flex-row items-center justify-between gap-2">
           <div>
             <a href={user.portfolio} className="items-cente flex gap-1">
               <FaLink size={16} className="text-white-500" />
