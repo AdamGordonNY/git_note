@@ -1,30 +1,27 @@
+"use client";
 import React from "react";
-
-import { getSession } from "@/lib/authOptions";
-
-import { getOneUser } from "@/lib/actions/user.actions";
-import Image from "next/image";
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { IUser } from "@/database/models/user.model";
 interface ProfileSidebarContentProps {
+  user: Partial<IUser>;
   socialLinks: {
     label: string;
     route: string;
     icon: React.JSX.Element;
   }[];
 }
-const ProfileSidebarContent = async ({
+const ProfileSidebarContent = ({
   socialLinks,
+  user,
 }: ProfileSidebarContentProps) => {
-  let user;
-  const session = await getSession();
-  if (session) {
-    user = await getOneUser(session.user?.email!);
-  }
-  const freshUser = JSON.parse(JSON.stringify(user));
   return (
     <div className="right-sidebar-profile_wrapper">
       <div className="profile-sidebar-avatar_wrapper">
-        <Image src={freshUser?.image!} alt="user avatar" />
+        <Avatar className="rounded-[2px]">
+          <AvatarImage src={user.image!} alt="user avatar" />
+          <AvatarFallback>{user.fullname?.slice(0)}</AvatarFallback>
+        </Avatar>
+        <span className="">{user.fullname}</span>
       </div>
       <div></div>
     </div>
