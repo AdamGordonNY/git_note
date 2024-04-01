@@ -17,7 +17,7 @@ const ProfilePage = async () => {
     user = await getOneUser(session?.user?.email!);
   }
   const cleanUser: IUser = JSON.parse(JSON.stringify(user));
-  console.log(cleanUser);
+
   return (
     <section className="mb-10 box-border flex min-h-[screen] w-full flex-col gap-8 px-[30px] pt-[40px] ">
       {user && <ProfileHeader user={cleanUser} />}
