@@ -1,6 +1,6 @@
 import { IUser } from "@/database/models/user.model";
 import React from "react";
-import userCheck from "@/public/icons/userCheck.svg";
+import userCheck from "@/public/icons/usercheck.svg";
 import Image from "next/image";
 import iconClock from "@/public/icons/icn-clock.svg";
 import { format } from "date-fns";
