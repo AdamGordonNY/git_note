@@ -105,7 +105,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             endTime,
             newProjects,
           },
-        }).then((res) => console.log(res));
+        });
         router.push(`/profile/${user._id}`);
       } catch (error) {
         console.log(error);
