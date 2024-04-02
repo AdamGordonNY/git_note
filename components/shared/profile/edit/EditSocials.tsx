@@ -61,10 +61,10 @@ const EditSocials = ({ user }: EditSocialsProps) => {
       },
     },
   });
-  const onSubmit: SubmitHandler<z.infer<typeof SocialsSchema>> = async () => {
+  const onSubmit: SubmitHandler<z.infer<typeof SocialsSchema>> = async (values) => {
     try {
       const { twitter, instagram, linkedin, github, dribbble, facebook } =
-        getValues();
+        values
       await updateUserSocials({
         twitter: {
           username: twitter?.username ?? "",
