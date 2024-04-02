@@ -1,8 +1,9 @@
-"use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IUser } from "@/database/models/user.model";
-import CustomButton from "../CustomButton";
+
+import EditSocials from "./edit/EditSocials";
+import { Separator } from "@/components/ui/separator";
 interface ProfileSidebarContentProps {
   user: Partial<IUser>;
 }
@@ -23,10 +24,9 @@ const ProfileSidebarContent = ({ user }: ProfileSidebarContentProps) => {
           </span>
         </div>
       </div>
+      <Separator />
       <div className="gap-2 px-2 py-3.5">
-        <CustomButton className="gap-2 px-2 py-3.5" buttonType="profileButton">
-          Add Social Links
-        </CustomButton>
+        <EditSocials user={user} />
       </div>
     </div>
   );

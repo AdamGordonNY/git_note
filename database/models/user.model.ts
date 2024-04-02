@@ -21,42 +21,65 @@ export interface IUser extends Document {
   endTime: Date;
   newProjects?: boolean;
   socials?: {
-    twitter?: string;
-    facebook?: string;
-    linkedin?: string;
-    github?: string;
-    instagram?: string;
-    dribbble?: string;
-  }[];
+    twitter?: {
+      username: string;
+      url: string;
+    };
+    facebook?: {
+      username: string;
+      url: string;
+    };
+    linkedin?: {
+      username: string;
+      url: string;
+    };
+    github?: {
+      username: string;
+      url: string;
+    };
+    instagram?: {
+      username: string;
+      url: string;
+    };
+    dribbble?: {
+      username: string;
+      url: string;
+    };
+  };
   posts?: Schema.Types.ObjectId[];
 }
 const GoalSchema = new Schema({
   name: { type: String, required: true },
   completed: { type: Boolean, required: true },
 });
+const SocialNetworkSchema = new Schema({
+  username: { type: String, required: false },
+  url: { type: String, required: false },
+});
+
 const SocialsSchema = new Schema({
   twitter: {
-    type: String,
+    type: SocialNetworkSchema,
     required: false,
   },
   facebook: {
-    type: String,
+    type: SocialNetworkSchema,
     required: false,
   },
   linkedin: {
-    type: String,
+    type: SocialNetworkSchema,
     required: false,
   },
   github: {
-    type: String,
+    type: SocialNetworkSchema,
     required: false,
   },
   instagram: {
-    type: String,
+    type: SocialNetworkSchema,
     required: false,
   },
   dribbble: {
-    type: String,
+    type: SocialNetworkSchema,
     required: false,
   },
 });
