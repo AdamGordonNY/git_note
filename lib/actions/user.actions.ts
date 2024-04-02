@@ -72,3 +72,18 @@ export const deleteUserById = async ({ _id }: DeleteUserParams) => {
     console.log(error);
   }
 };
+export const updateUserSocials = async (socials: Partial<IUser["socials"]>) => {
+  try {
+    await dbConnect();
+    const session = await getSession();
+    const email = session?.user?.email;
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { socials },
+      { new: true }
+    );
+    return updatedUser;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -17,39 +17,92 @@ import linkedin from "@/public/icons/icn-linkedin.svg";
 import github from "@/public/icons/icn-github.svg";
 import dribble from "@/public/icons/icn-dribbble.svg";
 import facebook from "@/public/icons/icn-facebook.svg";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { X } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CompleteProfileEditSchema } from "@/lib/profileValidations";
+import { SocialsSchema } from "@/lib/profileValidations";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+
+import { updateUserSocials } from "@/lib/actions/user.actions";
+import { z } from "zod";
+
 interface EditSocialsProps {
   user: Partial<IUser>;
 }
+
 const EditSocials = ({ user }: EditSocialsProps) => {
-  const { handleSubmit, register } = useForm({
-    resolver: zodResolver(CompleteProfileEditSchema),
+  const { handleSubmit, register, setValue, getValues } = useForm({
+    resolver: zodResolver(SocialsSchema),
     defaultValues: {
-      user: {
-        socials: {
-          twitter: user.socials?.twitter,
-          instagram: user.socials?.instagram,
-          linkedin: user.socials?.linkedin,
-          github: user.socials?.github,
-          dribbble: user.socials?.dribbble,
-          facebook: user.socials?.facebook,
-        },
+      twitter: {
+        username: user.socials?.twitter?.username || "",
+        url: user.socials?.twitter?.url || "",
+      },
+      instagram: {
+        username: user.socials?.instagram?.username || "",
+        url: user.socials?.instagram?.url || "",
+      },
+      linkedin: {
+        username: user.socials?.linkedin?.username || "",
+        url: user.socials?.linkedin?.url || "",
+      },
+      github: {
+        username: user.socials?.github?.username || "",
+        url: user.socials?.github?.url || "",
+      },
+      dribbble: {
+        username: user.socials?.dribbble?.username || "",
+        url: user.socials?.dribbble?.url || "",
+      },
+      facebook: {
+        username: user.socials?.facebook?.username || "",
+        url: user.socials?.facebook?.url || "",
       },
     },
   });
-  const onSubmit = (data: any) => {
-    console.log(data);
-    // functionality to updae socials here
+  const onSubmit: SubmitHandler<z.infer<typeof SocialsSchema>> = async () => {
+    try {
+      const { twitter, instagram, linkedin, github, dribbble, facebook } =
+        getValues();
+      await updateUserSocials({
+        twitter: {
+          username: twitter?.username ?? "",
+          url: twitter?.url ?? "",
+        },
+        instagram: {
+          username: instagram?.username ?? "",
+          url: instagram?.url ?? "",
+        },
+        linkedin: {
+          username: linkedin?.username ?? "",
+          url: linkedin?.url ?? "",
+        },
+        github: {
+          username: github?.username ?? "",
+          url: github?.url ?? "",
+        },
+        dribbble: {
+          username: dribbble?.username ?? "",
+          url: dribbble?.url ?? "",
+        },
+        facebook: {
+          username: facebook?.username ?? "",
+          url: facebook?.url ?? "",
+        },
+      });
+    } catch (error) {
+      // Handle error
+    }
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <CustomButton className="gap-2 px-2 py-3.5" buttonType="profileButton">
+        <CustomButton
+          className="profile-shadow mt-[60px] gap-2 px-2 py-3.5"
+          buttonType="profileButton"
+        >
           Add Social Links
         </CustomButton>
       </DialogTrigger>
@@ -68,17 +121,25 @@ const EditSocials = ({ user }: EditSocialsProps) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-row gap-6">
-            <Image src={twitter} alt="twitter" height={32} width={32} />
+            <Image
+              src={twitter}
+              alt="twitter"
+              height={32}
+              width={32}
+              className="mr-[4px]"
+            />
             <div className="flex h-6 flex-row gap-2 ">
               <Input
-                {...register("user.socials.twitter.username")}
-                defaultValue={"@" + user.socials?.twitter?.username}
+                {...register("twitter.username")}
+                defaultValue={"@" + user.socials?.twitter?.username!}
+                onChange={(e) => setValue("twitter.username", e.target.value)}
                 className="w-1/2 bg-black-700 text-white-300 "
               />
               <Input
-                {...register("user.socials.twitter.url")}
+                {...register("twitter.url")}
+                onChange={(e) => setValue("twitter.url", e.target.value)}
                 className="w-1/2 bg-black-700 text-white-300 "
-                defaultValue={user.socials?.twitter?.url}
+                defaultValue={user.socials?.twitter?.url!}
               />
             </div>
           </div>
@@ -87,14 +148,16 @@ const EditSocials = ({ user }: EditSocialsProps) => {
             <Image src={instagram} alt="ig" height={32} width={32} />
             <div className="flex h-6 flex-row gap-2 ">
               <Input
-                {...register("user.socials.instagram.username")}
-                defaultValue={"@" + user.socials?.instagram?.username}
+                {...register("instagram.username")}
+                defaultValue={"@" + user.socials?.instagram?.username!}
                 className="w-1/2 bg-black-700 text-white-300 "
+                onChange={(e) => setValue("instagram.username", e.target.value)}
               />
               <Input
-                {...register("user.socials.instagram.url")}
+                {...register("instagram.url")}
                 className="w-1/2 bg-black-700 text-white-300 "
-                defaultValue={user.socials?.instagram?.url}
+                defaultValue={user.socials?.instagram?.url!}
+                onChange={(e) => setValue("instagram.url", e.target.value)}
               />
             </div>
           </div>
@@ -104,13 +167,15 @@ const EditSocials = ({ user }: EditSocialsProps) => {
             <div className="flex h-6 flex-row gap-2 ">
               <Input
                 className="w-1/2 bg-black-700 text-white-300 "
-                {...register("user.socials.linkedin.username")}
-                defaultValue={"@" + user?.socials?.linkedin?.username}
+                {...register("linkedin.username")}
+                defaultValue={"@" + user?.socials?.linkedin?.username!}
+                onChange={(e) => setValue("linkedin.username", e.target.value)}
               />
               <Input
                 className="w-1/2 bg-black-700 text-white-300 "
-                {...register("user.socials.linkedin.url")}
-                defaultValue={user.socials?.linkedin?.url}
+                {...register("linkedin.url")}
+                defaultValue={user.socials?.linkedin?.url!}
+                onChange={(e) => setValue("linkedin.url", e.target.value)}
               />
             </div>
           </div>
@@ -119,14 +184,16 @@ const EditSocials = ({ user }: EditSocialsProps) => {
             <Image src={facebook} alt="twitter" height={32} width={32} />
             <div className="flex h-6 flex-row gap-2 ">
               <Input
-                {...register("user.socials.facebook.username")}
+                {...register("facebook.username")}
                 className="w-1/2 bg-black-700 text-white-300 "
-                defaultValue={"@" + user.socials?.facebook?.username}
+                defaultValue={"@" + user.socials?.facebook?.username!}
+                onChange={(e) => setValue("facebook.username", e.target.value)}
               />
               <Input
-                {...register("user.socials.facebook.url")}
+                {...register("facebook.url")}
                 className="w-1/2 bg-black-700 text-white-300 "
-                defaultValue={user.socials?.facebook?.url}
+                defaultValue={user.socials?.facebook?.url!}
+                onChange={(e) => setValue("facebook.url", e.target.value)}
               />
             </div>
           </div>
@@ -135,14 +202,18 @@ const EditSocials = ({ user }: EditSocialsProps) => {
             <Image src={dribble} alt="twitter" height={32} width={32} />
             <div className="flex h-6 flex-row gap-2 ">
               <Input
-                {...register("user.socials.dribbble.username")}
+                {...register("dribbble.username")}
                 className="w-1/2 bg-black-700 text-white-300 "
-                defaultValue={"@" + user.socials?.dribbble?.username}
+                defaultValue={"@" + user.socials?.dribbble?.username!}
+                onChange={(e) => setValue("dribbble.username", e.target.value)}
               />
               <Input
-                {...register("user.socials.dribbble.url")}
+                {...register("dribbble.url")}
                 className="w-1/2 bg-black-700 text-white-300 "
-                defaultValue={"@" + user.socials?.dribbble?.url}
+                defaultValue={"@" + user?.socials?.dribbble?.url!}
+                onChange={
+                  (e) => setValue("dribbble.url", e.target.value) // Updated argument to "dribbble"
+                }
               />
             </div>
           </div>
@@ -151,14 +222,16 @@ const EditSocials = ({ user }: EditSocialsProps) => {
             <Image src={github} alt="gh" height={32} width={32} />
             <div className="flex h-6 flex-row gap-2 ">
               <Input
-                {...register("user.socials.github.username")}
-                defaultValue={"@" + user.socials?.twitter?.username}
+                {...register("github.username")}
+                defaultValue={"@" + user.socials?.github?.username!}
                 className="w-1/2 bg-black-700 text-white-300 "
+                onChange={(e) => setValue("github.username", e.target.value)}
               />
               <Input
-                {...register("user.socials.github.url")}
-                defaultValue={user.socials?.twitter?.url}
+                {...register("github.url")}
+                defaultValue={user.socials?.github?.url!}
                 className="w-1/2 bg-black-700 text-white-300 "
+                onChange={(e) => setValue("github.url", e.target.value)}
               />
             </div>
           </div>

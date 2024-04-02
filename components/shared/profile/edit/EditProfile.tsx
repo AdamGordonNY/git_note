@@ -26,6 +26,7 @@ interface EditProfileProps {
 }
 
 const EditProfile = ({ user }: EditProfileProps) => {
+  console.log(user);
   const router = useRouter();
   const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
@@ -53,7 +54,10 @@ const EditProfile = ({ user }: EditProfileProps) => {
       experiences: experienceNames || [],
       technologies: user?.technologies || [],
       availability:
-        { startTime: user?.startTime, endTime: user?.endTime } || {},
+        {
+          startTime: new Date(user?.startTime!),
+          endTime: new Date(user?.endTime!),
+        } || {},
       newProjects: user?.newProjects || false,
     },
   });

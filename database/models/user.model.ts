@@ -52,12 +52,12 @@ const GoalSchema = new Schema({
   name: { type: String, required: true },
   completed: { type: Boolean, required: true },
 });
-const SocialNetworkSchema = new Schema({
+export const SocialNetworkSchema = new Schema({
   username: { type: String, required: false },
   url: { type: String, required: false },
 });
 
-const SocialsSchema = new Schema({
+export const SocialsSchema = new Schema({
   twitter: {
     type: SocialNetworkSchema,
     required: false,

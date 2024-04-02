@@ -1,13 +1,20 @@
+"use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IUser } from "@/database/models/user.model";
 
 import EditSocials from "./edit/EditSocials";
 import { Separator } from "@/components/ui/separator";
+
+import { usePathname } from "next/navigation";
+import SocialLinks from "./SocialLinks";
+
 interface ProfileSidebarContentProps {
   user: Partial<IUser>;
 }
 const ProfileSidebarContent = ({ user }: ProfileSidebarContentProps) => {
+  const pathName = usePathname();
+
   return (
     <div className=" flex-1 flex-col items-center justify-center ">
       <div className="ml-[28px] mt-[50px] flex gap-[6px]">
@@ -24,9 +31,23 @@ const ProfileSidebarContent = ({ user }: ProfileSidebarContentProps) => {
           </span>
         </div>
       </div>
-      <Separator />
+
       <div className="gap-2 px-2 py-3.5">
         <EditSocials user={user} />
+      </div>
+      <Separator />
+      <div>
+        {(user.socials && pathName === `/profile/${user._id}`) ||
+        pathName === `/profile/${user._id}/edit` ? (
+          <SocialLinks
+            twitter={user.socials?.twitter!}
+            github={user.socials?.github!}
+            dribbble={user.socials?.dribbble!}
+            linkedin={user.socials?.linkedin!}
+            facebook={user.socials?.facebook!}
+            instagram={user.socials?.instagram!}
+          />
+        ) : null}
       </div>
     </div>
   );
