@@ -151,13 +151,11 @@ const EditSocials = ({ user }: EditSocialsProps) => {
                 {...register("instagram.username")}
                 defaultValue={"@" + user.socials?.instagram?.username!}
                 className="w-1/2 bg-black-700 text-white-300 "
-                onChange={(e) => setValue("instagram.username", e.target.value)}
               />
               <Input
                 {...register("instagram.url")}
                 className="w-1/2 bg-black-700 text-white-300 "
                 defaultValue={user.socials?.instagram?.url!}
-                onChange={(e) => setValue("instagram.url", e.target.value)}
               />
             </div>
           </div>
@@ -169,13 +167,13 @@ const EditSocials = ({ user }: EditSocialsProps) => {
                 className="w-1/2 bg-black-700 text-white-300 "
                 {...register("linkedin.username")}
                 defaultValue={"@" + user?.socials?.linkedin?.username!}
-                onChange={(e) => setValue("linkedin.username", e.target.value)}
+
               />
               <Input
                 className="w-1/2 bg-black-700 text-white-300 "
                 {...register("linkedin.url")}
                 defaultValue={user.socials?.linkedin?.url!}
-                onChange={(e) => setValue("linkedin.url", e.target.value)}
+
               />
             </div>
           </div>
@@ -187,13 +185,11 @@ const EditSocials = ({ user }: EditSocialsProps) => {
                 {...register("facebook.username")}
                 className="w-1/2 bg-black-700 text-white-300 "
                 defaultValue={"@" + user.socials?.facebook?.username!}
-                onChange={(e) => setValue("facebook.username", e.target.value)}
               />
               <Input
                 {...register("facebook.url")}
                 className="w-1/2 bg-black-700 text-white-300 "
                 defaultValue={user.socials?.facebook?.url!}
-                onChange={(e) => setValue("facebook.url", e.target.value)}
               />
             </div>
           </div>
@@ -205,15 +201,12 @@ const EditSocials = ({ user }: EditSocialsProps) => {
                 {...register("dribbble.username")}
                 className="w-1/2 bg-black-700 text-white-300 "
                 defaultValue={"@" + user.socials?.dribbble?.username!}
-                onChange={(e) => setValue("dribbble.username", e.target.value)}
               />
               <Input
                 {...register("dribbble.url")}
                 className="w-1/2 bg-black-700 text-white-300 "
                 defaultValue={"@" + user?.socials?.dribbble?.url!}
-                onChange={
-                  (e) => setValue("dribbble.url", e.target.value) // Updated argument to "dribbble"
-                }
+
               />
             </div>
           </div>
@@ -225,13 +218,11 @@ const EditSocials = ({ user }: EditSocialsProps) => {
                 {...register("github.username")}
                 defaultValue={"@" + user.socials?.github?.username!}
                 className="w-1/2 bg-black-700 text-white-300 "
-                onChange={(e) => setValue("github.username", e.target.value)}
               />
               <Input
                 {...register("github.url")}
                 defaultValue={user.socials?.github?.url!}
                 className="w-1/2 bg-black-700 text-white-300 "
-                onChange={(e) => setValue("github.url", e.target.value)}
               />
             </div>
           </div>
