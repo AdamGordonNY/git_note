@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SocialsSchema } from "@/lib/profileValidations";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-
+import LoadingSpinner from "../../LoadingSpinner";
 import { updateUserSocials } from "@/lib/actions/user.actions";
 import { z } from "zod";
 
@@ -66,40 +66,42 @@ const EditSocials = ({ user }: EditSocialsProps) => {
   const onSubmit: SubmitHandler<z.infer<typeof SocialsSchema>> = async (
     values
   ) => {
-    try {
-      startTransition(async () => {
-        const { twitter, instagram, linkedin, github, dribbble, facebook } =
-          values;
-        await updateUserSocials({
-          twitter: {
-            username: twitter?.username ?? "",
-            url: twitter?.url ?? "",
-          },
-          instagram: {
-            username: instagram?.username ?? "",
-            url: instagram?.url ?? "",
-          },
-          linkedin: {
-            username: linkedin?.username ?? "",
-            url: linkedin?.url ?? "",
-          },
-          github: {
-            username: github?.username ?? "",
-            url: github?.url ?? "",
-          },
-          dribbble: {
-            username: dribbble?.username ?? "",
-            url: dribbble?.url ?? "",
-          },
-          facebook: {
-            username: facebook?.username ?? "",
-            url: facebook?.url ?? "",
-          },
-        });
+    startTransition(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const { twitter, instagram, linkedin, github, dribbble, facebook } =
+        values;
+      const user = await updateUserSocials({
+        twitter: {
+          username: twitter?.username ?? "",
+          url: twitter?.url ?? "",
+        },
+        instagram: {
+          username: instagram?.username ?? "",
+          url: instagram?.url ?? "",
+        },
+        linkedin: {
+          username: linkedin?.username ?? "",
+          url: linkedin?.url ?? "",
+        },
+        github: {
+          username: github?.username ?? "",
+          url: github?.url ?? "",
+        },
+        dribbble: {
+          username: dribbble?.username ?? "",
+          url: dribbble?.url ?? "",
+        },
+        facebook: {
+          username: facebook?.username ?? "",
+          url: facebook?.url ?? "",
+        },
       });
-    } catch (error) {
-      console.error(error);
-    }
+      if (user) {
+        window.location.reload();
+      } else {
+        alert("Failed to update socials");
+      }
+    });
   };
 
   return (
@@ -240,7 +242,7 @@ const EditSocials = ({ user }: EditSocialsProps) => {
             </div>
           </div>
           <CustomButton buttonType="primary" disabled={isPending}>
-            Update Socials
+            Update Socials {isPending && <LoadingSpinner />}
           </CustomButton>
         </form>
       </DialogContent>
