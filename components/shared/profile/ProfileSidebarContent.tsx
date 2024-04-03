@@ -6,19 +6,15 @@ import { IUser } from "@/database/models/user.model";
 import EditSocials from "./edit/EditSocials";
 import { Separator } from "@/components/ui/separator";
 
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import SocialLinks from "./SocialLinks";
-import { getSession } from "@/lib/authOptions";
 
 interface ProfileSidebarContentProps {
   user: Partial<IUser>;
 }
 const ProfileSidebarContent = ({ user }: ProfileSidebarContentProps) => {
   const pathName = usePathname();
-  const session = getSession();
-  if (!session) {
-    redirect("/sign-in");
-  }
+
   return (
     <div className=" flex-1 flex-col items-center justify-center ">
       <div className="ml-[28px] mt-[50px] flex gap-[6px]">
