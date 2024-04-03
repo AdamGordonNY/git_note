@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import LoadingSpinner from "../../LoadingSpinner";
 import { updateUserSocials } from "@/lib/actions/user.actions";
 import { z } from "zod";
+import { toast } from "@/components/ui/use-toast";
 
 interface EditSocialsProps {
   user: Partial<IUser>;
@@ -34,6 +35,7 @@ interface EditSocialsProps {
 
 const EditSocials = ({ user }: EditSocialsProps) => {
   const [isPending, startTransition] = useTransition();
+
   const { handleSubmit, register } = useForm({
     resolver: zodResolver(SocialsSchema),
     defaultValues: {
@@ -97,9 +99,17 @@ const EditSocials = ({ user }: EditSocialsProps) => {
         },
       });
       if (user) {
-        // window.location.reload();
+        toast({
+          title: "Socials updated successfully",
+          type: "foreground",
+          variant: "default",
+        });
       } else {
-        alert("Failed to update socials");
+        toast({
+          title: "Failed to update socials",
+          type: "foreground",
+          variant: "destructive",
+        });
       }
     });
   };

@@ -7,6 +7,7 @@ import { LuUploadCloud, LuImage } from "react-icons/lu";
 
 import { Input } from "@/components/ui/input";
 import { uploadImage } from "@/lib/actions/cloudinary.actions";
+import { toast } from "@/components/ui/use-toast";
 interface UploadPhotoProps {
   image?: string;
   className?: string;
@@ -14,6 +15,7 @@ interface UploadPhotoProps {
 }
 const UploadPhoto = ({ image, className, step }: UploadPhotoProps) => {
   const { register, handleSubmit, getValues, watch } = useForm();
+
   const watchInput = watch("file");
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const { ref, ...rest } = register("file");
@@ -32,6 +34,11 @@ const UploadPhoto = ({ image, className, step }: UploadPhotoProps) => {
     reader.onloadend = async () => {
       const fileData = reader.result;
       await uploadImage(fileData);
+      return toast({
+        type: "foreground",
+        variant: "default",
+        title: "Image uploaded successfully",
+      });
     };
   }, [getValues, watchInput]);
   return (
