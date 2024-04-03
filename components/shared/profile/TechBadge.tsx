@@ -10,9 +10,8 @@ import { techStackBadges } from "@/lib/constants";
 
 interface TechBadgesProps {
   technology: string;
-  key: string;
 }
-const TechBadge = ({ technology, key }: TechBadgesProps) => {
+const TechBadge = ({ technology }: TechBadgesProps) => {
   const icon = techStackBadges.find(
     (badge: any) => badge.name === technology
   )?.icon;
@@ -24,9 +23,7 @@ const TechBadge = ({ technology, key }: TechBadgesProps) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button key={key} className="cursor-pointer ">
-            {icon && icon(size)}
-          </Button>
+          <Button className="cursor-pointer ">{icon && icon(size)}</Button>
         </TooltipTrigger>
         <TooltipContent className=" gap-2.5 text-nowrap rounded-[4px] bg-black-700 px-1 py-2.5 capitalize text-white-300">
           <p>{displayName}</p>
