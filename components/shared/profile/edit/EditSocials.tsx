@@ -1,5 +1,5 @@
 "use client";
-import React, { useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import {
   Dialog,
   DialogClose,
@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import LoadingSpinner from "../../LoadingSpinner";
 import { updateUserSocials } from "@/lib/actions/user.actions";
 import { z } from "zod";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EditSocialsProps {
   user: Partial<IUser>;
@@ -34,6 +35,8 @@ interface EditSocialsProps {
 
 const EditSocials = ({ user }: EditSocialsProps) => {
   const [isPending, startTransition] = useTransition();
+  const [updateSuccessful, setUpdateSuccessful] = useState(false);
+  const { toast } = useToast();
   const { handleSubmit, register } = useForm({
     resolver: zodResolver(SocialsSchema),
     defaultValues: {
@@ -66,42 +69,62 @@ const EditSocials = ({ user }: EditSocialsProps) => {
   const onSubmit: SubmitHandler<z.infer<typeof SocialsSchema>> = async (
     values
   ) => {
-    startTransition(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const { twitter, instagram, linkedin, github, dribbble, facebook } =
-        values;
-      const user = await updateUserSocials({
-        twitter: {
-          username: twitter?.username ?? "",
-          url: twitter?.url ?? "",
-        },
-        instagram: {
-          username: instagram?.username ?? "",
-          url: instagram?.url ?? "",
-        },
-        linkedin: {
-          username: linkedin?.username ?? "",
-          url: linkedin?.url ?? "",
-        },
-        github: {
-          username: github?.username ?? "",
-          url: github?.url ?? "",
-        },
-        dribbble: {
-          username: dribbble?.username ?? "",
-          url: dribbble?.url ?? "",
-        },
-        facebook: {
-          username: facebook?.username ?? "",
-          url: facebook?.url ?? "",
-        },
+    try {
+      startTransition(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const { twitter, instagram, linkedin, github, dribbble, facebook } =
+          values;
+        const user = await updateUserSocials({
+          twitter: {
+            username: twitter?.username ?? "",
+            url: twitter?.url ?? "",
+          },
+          instagram: {
+            username: instagram?.username ?? "",
+            url: instagram?.url ?? "",
+          },
+          linkedin: {
+            username: linkedin?.username ?? "",
+            url: linkedin?.url ?? "",
+          },
+          github: {
+            username: github?.username ?? "",
+            url: github?.url ?? "",
+          },
+          dribbble: {
+            username: dribbble?.username ?? "",
+            url: dribbble?.url ?? "",
+          },
+          facebook: {
+            username: facebook?.username ?? "",
+            url: facebook?.url ?? "",
+          },
+        });
+        if (user) setUpdateSuccessful(true);
       });
-      if (user) {
-        // window.location.reload();
-      } else {
-        alert("Failed to update socials");
-      }
-    });
+    } catch (error) {
+      setUpdateSuccessful(false);
+    }
+
+    if (updateSuccessful) {
+      return toast({
+        title: "Socials updated successfully",
+        type: "foreground",
+        variant: "default",
+        action: (
+          <button onClick={() => setUpdateSuccessful(false)}>Close</button>
+        ),
+      });
+    } else {
+      return toast({
+        title: "Failed to update socials",
+        type: "foreground",
+        variant: "destructive",
+        action: (
+          <button onClick={() => setUpdateSuccessful(false)}>Retry</button>
+        ),
+      });
+    }
   };
 
   return (
