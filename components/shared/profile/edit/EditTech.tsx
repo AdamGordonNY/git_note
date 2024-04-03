@@ -72,7 +72,7 @@ const EditTech = ({ technologies, setTechnologies }: EditTechProps) => {
           </div>
         </div>
       </div>
-      <div className="flex h-9 w-full flex-col content-stretch  justify-items-center ">
+      <div className="flex w-full flex-col content-stretch justify-items-center  bg-black-700 ">
         {search &&
           results.length > 0 &&
           // eslint-disable-next-line array-callback-return
@@ -95,7 +95,7 @@ const EditTech = ({ technologies, setTechnologies }: EditTechProps) => {
                     >
                       <li
                         key={result.name}
-                        className="z-20 flex h-9 w-full flex-row content-center  items-center overflow-y-hidden rounded-[3px]  bg-black-700 p-1"
+                        className="z-20 flex h-9 w-full flex-row content-center  items-center overflow-y-hidden rounded-[3px]   p-1"
                       >
                         <span className="paragraph-3-medium profile-shadow flex h-5 content-center items-center justify-center rounded bg-black-600 p-2 capitalize text-white-100">
                           {icon?.icon(16)}

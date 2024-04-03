@@ -49,8 +49,7 @@ export async function updateUser({ updateData }: UpdateUserParams) {
     revalidateTag("user");
     return true;
   } catch (error) {
-    console.log(error);
-    throw error;
+    return false;
   }
 }
 export const createNewUser = async (userData: CreateUserParams) => {

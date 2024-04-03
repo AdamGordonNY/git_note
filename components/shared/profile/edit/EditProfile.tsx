@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React, { useState, useTransition } from "react";
+import React, { useTransition } from "react";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
   useForm,
@@ -31,7 +31,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
   console.log(user);
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [updateSuccessful, setUpdateSuccessful] = useState(false);
+
   const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
     completed: goal.completed,
@@ -103,7 +103,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
     if (user?._id) {
       try {
         startTransition(async () => {
-          await updateUser({
+          const success = await updateUser({
             updateData: {
               fullname,
               portfolio,
@@ -115,26 +115,25 @@ const EditProfile = ({ user }: EditProfileProps) => {
               newProjects,
             },
           });
+          if (success) {
+            toast({
+              title: "Profile updated successfully",
+              variant: "default",
+              type: "foreground",
+              onTransitionEnd: () => {
+                router.push(`/profile/${user._id}`);
+              },
+            });
+          } else {
+            toast({
+              title: "Error updating profile",
+              variant: "destructive",
+              type: "foreground",
+            });
+          }
         });
-        setUpdateSuccessful(true);
       } catch (error) {
-        setUpdateSuccessful(false);
-      }
-      if (updateSuccessful) {
-        toast({
-          title: "Profile updated successfully",
-          variant: "default",
-          type: "foreground",
-          onTransitionEnd: () => {
-            router.push(`/profile/${user._id}`);
-          },
-        });
-      } else {
-        toast({
-          title: "Profile update failed",
-          variant: "destructive",
-          type: "foreground",
-        });
+        console.error(error);
       }
     }
   };
