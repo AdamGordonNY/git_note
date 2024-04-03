@@ -123,10 +123,10 @@ const EditSocials = ({ user }: EditSocialsProps) => {
           </DialogClose>
         </DialogHeader>
         <form
-          className=" flex w-full flex-col justify-between gap-[22px] space-y-2"
+          className=" flex w-full flex-col justify-between gap-[22px] "
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="flex flex-row gap-6">
+          <div className="flex flex-row gap-3">
             <Image
               src={twitter}
               alt="twitter"
@@ -134,51 +134,51 @@ const EditSocials = ({ user }: EditSocialsProps) => {
               width={32}
               className="mr-[4px]"
             />
-            <div className="flex h-6 flex-row gap-2 ">
+            <div className="flex h-12  w-[574px] flex-row  gap-2 ">
               <Input
                 placeholder="@TwitterHandle"
                 {...register("twitter.username")}
                 defaultValue={"@" + user.socials?.twitter?.username!}
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
               />
               <Input
                 placeholder="Twitter Profile"
                 {...register("twitter.url")}
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 defaultValue={user.socials?.twitter?.url!}
               />
             </div>
           </div>
 
-          <div className="flex flex-row gap-6">
+          <div className="flex flex-row gap-3 align-top ">
             <Image src={instagram} alt="ig" height={32} width={32} />
-            <div className="flex h-6 flex-row gap-2 ">
+            <div className="flex h-12  w-[574px] flex-row  gap-2 ">
               <Input
                 {...register("instagram.username")}
                 placeholder="@InstagramHandle"
                 defaultValue={"@" + user.socials?.instagram?.username!}
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
               />
               <Input
                 {...register("instagram.url")}
                 placeholder="Instagram Profile"
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 defaultValue={user.socials?.instagram?.url!}
               />
             </div>
           </div>
 
-          <div className="flex flex-row gap-6">
+          <div className="flex flex-row gap-3 align-top">
             <Image src={linkedin} alt="twitter" height={32} width={32} />
-            <div className="flex h-6 flex-row gap-2 ">
+            <div className="flex h-12  w-[574px] flex-row  gap-2 ">
               <Input
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 {...register("linkedin.username")}
                 defaultValue={"@" + user?.socials?.linkedin?.username!}
                 placeholder="@LinkedInHandle"
               />
               <Input
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 {...register("linkedin.url")}
                 defaultValue={user.socials?.linkedin?.url!}
                 placeholder="LinkedIn Profile URL"
@@ -186,55 +186,55 @@ const EditSocials = ({ user }: EditSocialsProps) => {
             </div>
           </div>
 
-          <div className="flex flex-row gap-6">
+          <div className="flex flex-row gap-3 align-top">
             <Image src={facebook} alt="twitter" height={32} width={32} />
-            <div className="flex h-6 flex-row gap-2 ">
+            <div className="flex h-12  w-[574px] flex-row   gap-2">
               <Input
                 {...register("facebook.username")}
                 placeholder="@FacebookHandle"
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 defaultValue={"@" + user.socials?.facebook?.username!}
               />
               <Input
                 {...register("facebook.url")}
                 placeholder="Facebook Profile URL"
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 bg-black-700 text-white-300/50 "
                 defaultValue={user.socials?.facebook?.url!}
               />
             </div>
           </div>
 
-          <div className="flex flex-row gap-6">
+          <div className="flex flex-row gap-3 align-top">
             <Image src={dribble} alt="twitter" height={32} width={32} />
-            <div className="flex h-6 flex-row gap-2 ">
+            <div className="flex h-12  w-[574px] flex-row  gap-2 ">
               <Input
                 {...register("dribbble.username")}
                 placeholder="@DribbbleHandle"
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 defaultValue={"@" + user.socials?.dribbble?.username!}
               />
               <Input
                 {...register("dribbble.url")}
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 placeholder="Dribbble Profile URL"
                 defaultValue={"@" + user?.socials?.dribbble?.url!}
               />
             </div>
           </div>
 
-          <div className="flex flex-row gap-6">
+          <div className="flex flex-row gap-3 align-top">
             <Image src={github} alt="gh" height={32} width={32} />
-            <div className="flex h-6 flex-row gap-2 ">
+            <div className="flex h-12  w-[574px] flex-row   gap-2">
               <Input
                 {...register("github.username")}
                 defaultValue={"@" + user.socials?.github?.username!}
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 placeholder="@GithubHandle"
               />
               <Input
                 {...register("github.url")}
                 defaultValue={user.socials?.github?.url!}
-                className="w-1/2 bg-black-700 text-white-300 "
+                className="w-1/2 rounded bg-black-700 text-white-300/50 "
                 placeholder="Github Profile URL"
               />
             </div>

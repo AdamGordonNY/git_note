@@ -57,7 +57,7 @@ const SocialLinks = ({
           <a
             key={link.name}
             href={link.url}
-            className="justify-left  flex flex-row content-center items-center gap-4  p-2 text-white-100"
+            className="justify-left flex  flex-row content-center items-center gap-4 p-2  text-white-100 hover:shadow-lg"
           >
             {link.name === "twitter" && (
               <Image src={twitterIcon} alt="twitter" height={16} width={16} />
@@ -78,7 +78,7 @@ const SocialLinks = ({
               <Image src={facebookIcon} alt="facebook" height={16} width={16} />
             )}
 
-            <span className="paragraph-2-regular capitalize text-white-300 ">
+            <span className="paragraph-2-regular capitalize text-white-300/50 ">
               {link.username}
             </span>
           </a>
