@@ -97,7 +97,7 @@ const EditSocials = ({ user }: EditSocialsProps) => {
         },
       });
       if (user) {
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert("Failed to update socials");
       }
