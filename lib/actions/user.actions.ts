@@ -7,12 +7,13 @@ import {
   CreateUserParams,
   DeleteUserParams,
 } from "./shared.types";
+import { revalidateTag, unstable_cache as cache } from "next/cache";
 
 import bcryptjs from "bcryptjs";
 import User, { IUser } from "@/database/models/user.model";
 import { getSession } from "../authOptions";
 
-export const getOneUser = async (email: string) => {
+export const _getOneUser = async (email: string) => {
   try {
     await dbConnect();
     const user = (await User.findOne({ email })) as IUser;
@@ -21,7 +22,9 @@ export const getOneUser = async (email: string) => {
     console.log(error);
   }
 };
-
+export const getOneUser = cache(_getOneUser, ["getOneUser"], {
+  tags: ["user"],
+});
 export const getUserById = async ({ _id }: { _id: string }) => {
   try {
     await dbConnect();
@@ -43,6 +46,8 @@ export async function updateUser({ updateData }: UpdateUserParams) {
     await User.findOneAndUpdate({ email: session.user.email }, updateData, {
       new: true,
     });
+    revalidateTag("user");
+    return true;
   } catch (error) {
     console.log(error);
     throw error;
@@ -70,5 +75,17 @@ export const deleteUserById = async ({ _id }: DeleteUserParams) => {
     return true;
   } catch (error) {
     console.log(error);
+  }
+};
+export const updateUserSocials = async (socials: Partial<IUser["socials"]>) => {
+  try {
+    await dbConnect();
+    const session = await getSession();
+    const email = session?.user?.email;
+    await User.findOneAndUpdate({ email }, { socials }, { new: true });
+    revalidateTag("user");
+    return true;
+  } catch (error) {
+    return false;
   }
 };

@@ -5,9 +5,11 @@ import React, { useEffect, useState } from "react";
 const LearningGoal = ({
   name,
   completed,
+  className,
 }: {
   name: string;
   completed: boolean;
+  className?: string;
 }) => {
   const [isCompleted, setIsCompleted] = useState<boolean>(completed);
 
@@ -20,13 +22,13 @@ const LearningGoal = ({
     setIsCompleted(!isCompleted);
   };
   return (
-    <div className="inline-flex w-full flex-row">
+    <div className="flex w-full gap-2">
       <Checkbox
         checked={isCompleted}
         className="gap-x-1 bg-green-400 text-black-900"
         onChange={handleCheckboxChange}
       />
-      <span className="paragraph-3-regular align-top text-white-100">
+      <span className="paragraph-3-regular align-top text-white-300">
         {name}
       </span>
     </div>

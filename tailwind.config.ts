@@ -15,6 +15,11 @@ const config = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+        xl: "1200px",
+        lg: "960px",
+        md: "720px",
+        sm: "640px",
+        xs: "430px",
       },
     },
     extend: {
@@ -62,7 +67,7 @@ const config = {
           "900": "rgba(66, 255, 119, 0.1)",
         },
 
-        border: "hsl(var(--border))",
+        border: "#4448691a",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
 

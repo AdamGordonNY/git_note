@@ -12,12 +12,14 @@ interface LeftButtonGroupProps {
 
 const LeftButtonGroup = ({ children, className }: LeftButtonGroupProps) => {
   return (
-    <div className="flex-between mt-[110px] flex-col ">
+    <div className="flex-between mt-[110px] flex-col space-y-2 ">
       <Button className="sidebar-btn  gap-1">
         <Image
           src={pluscircle}
           alt="pluscircle"
-          className="object-fit p-[4px]"
+          width={16}
+          height={16}
+          className="p-[4px]"
         />{" "}
         <span className="paragraph-3-bold">Create Post</span>
       </Button>

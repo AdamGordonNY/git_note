@@ -26,11 +26,21 @@ export interface SocialLink {
     | "dribbble"
     | "instagram"
     | "facebook";
-  route: string;
-  label: string;
+  href: string;
   icon?: React.JSX.Element;
 }
 export interface TechnologyStack {
   name: string;
   icon: React.JSX.Element;
+}
+export interface ProfileSocials {
+  name:
+    | "twitter"
+    | "instagram"
+    | "linkedin"
+    | "github"
+    | "dribbble"
+    | "facebook";
+  username: string;
+  url: string;
 }

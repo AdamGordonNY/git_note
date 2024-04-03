@@ -19,12 +19,15 @@ import EditAvailability from "./EditAvailability";
 import Divider from "../../Divider";
 import EditTech from "./EditTech";
 import EditBasicInfo from "./EditBasicInfo";
+import { useRouter } from "next/navigation";
 interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
 }
 
 const EditProfile = ({ user }: EditProfileProps) => {
+  console.log(user);
+  const router = useRouter();
   const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
     completed: goal.completed,
@@ -51,7 +54,10 @@ const EditProfile = ({ user }: EditProfileProps) => {
       experiences: experienceNames || [],
       technologies: user?.technologies || [],
       availability:
-        { startTime: user?.startTime, endTime: user?.endTime } || {},
+        {
+          startTime: new Date(user?.startTime!),
+          endTime: new Date(user?.endTime!),
+        } || {},
       newProjects: user?.newProjects || false,
     },
   });
@@ -89,6 +95,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
     const dbExperiences = experiences?.map((experience) => experience.name);
     const startTime = availability?.startTime;
     const endTime = availability?.endTime;
+
     if (user?._id) {
       try {
         await updateUser({
@@ -103,6 +110,7 @@ const EditProfile = ({ user }: EditProfileProps) => {
             newProjects,
           },
         });
+        router.push(`/profile/${user._id}`);
       } catch (error) {
         console.log(error);
       }

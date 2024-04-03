@@ -36,16 +36,18 @@ const AvailabilitySchema = z.object({
   endTime: z.date(),
 });
 
-// Socials Form Schema
-const SocialsSchema = z.object({
-  twitter: z.string().url().optional(),
-  facebook: z.string().url().optional(),
-  linkedin: z.string().url().optional(),
-  github: z.string().url().optional(),
-  instagram: z.string().url().optional(),
-  dribbble: z.string().url().optional(),
+const NetworkSchema = z.object({
+  username: z.string().optional(),
+  url: z.string().optional(),
 });
-
+const SocialsSchema = z.object({
+  twitter: NetworkSchema.optional(),
+  facebook: NetworkSchema.optional(),
+  linkedin: NetworkSchema.optional(),
+  github: NetworkSchema.optional(),
+  instagram: NetworkSchema.optional(),
+  dribbble: NetworkSchema.optional(),
+});
 // Combining all schemas for a complete Profile Edit Schema (if needed as one)
 const CompleteProfileEditSchema = z.object({
   fullname: z.string().optional(),
@@ -56,8 +58,8 @@ const CompleteProfileEditSchema = z.object({
   technologies: TechnologiesSchema.optional(),
   experiences: ExperiencesSchema.optional(),
   availability: AvailabilitySchema.optional(),
-  socials: z.array(SocialsSchema).optional(),
-  newProjects: z.boolean().default(false),
+  newProjects: z.boolean().default(false).optional(),
+  socials: SocialsSchema.optional(),
 });
 
 export {

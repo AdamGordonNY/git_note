@@ -111,3 +111,6 @@ rdp {
 [data-state="incomplete"] {
   @apply bg-black-600;
 }
+border-profile-top {
+  border: 1px solid #4448691a;
+}

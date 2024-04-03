@@ -16,7 +16,8 @@ import {
   DiCode,
   DiNodejs,
 } from "react-icons/di";
-import { TechStackBadges } from "@/lib/constants";
+import { TechnologyStack } from "@/types/global";
+
 type ResourceTagType =
   | "knowledge"
   | "component"
@@ -26,7 +27,7 @@ type ResourceTagType =
 interface ResourceTagProps extends React.PropsWithChildren {
   type: ResourceTagType;
   text?: string;
-  tech?: TechStackBadges;
+  tech?: TechnologyStack;
   icon?: any;
 }
 
