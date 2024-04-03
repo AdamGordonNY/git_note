@@ -1,6 +1,6 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React from "react";
+import React, { useState, useTransition } from "react";
 import { updateUser } from "@/lib/actions/user.actions";
 import {
   useForm,
@@ -20,6 +20,8 @@ import Divider from "../../Divider";
 import EditTech from "./EditTech";
 import EditBasicInfo from "./EditBasicInfo";
 import { useRouter } from "next/navigation";
+import LoadingSpinner from "../../LoadingSpinner";
+import { toast } from "@/components/ui/use-toast";
 interface EditProfileProps {
   user?: Partial<IUser>;
   _id?: string;
@@ -28,6 +30,8 @@ interface EditProfileProps {
 const EditProfile = ({ user }: EditProfileProps) => {
   console.log(user);
   const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [updateSuccessful, setUpdateSuccessful] = useState(false);
   const dbGoals = user?.learningGoals?.map((goal, idx) => ({
     name: goal.name,
     completed: goal.completed,
@@ -98,21 +102,39 @@ const EditProfile = ({ user }: EditProfileProps) => {
 
     if (user?._id) {
       try {
-        await updateUser({
-          updateData: {
-            fullname,
-            portfolio,
-            learningGoals,
-            experiences: dbExperiences,
-            technologies,
-            startTime,
-            endTime,
-            newProjects,
+        startTransition(async () => {
+          await updateUser({
+            updateData: {
+              fullname,
+              portfolio,
+              learningGoals,
+              experiences: dbExperiences,
+              technologies,
+              startTime,
+              endTime,
+              newProjects,
+            },
+          });
+        });
+        setUpdateSuccessful(true);
+      } catch (error) {
+        setUpdateSuccessful(false);
+      }
+      if (updateSuccessful) {
+        toast({
+          title: "Profile updated successfully",
+          variant: "default",
+          type: "foreground",
+          onTransitionEnd: () => {
+            router.push(`/profile/${user._id}`);
           },
         });
-        router.push(`/profile/${user._id}`);
-      } catch (error) {
-        console.log(error);
+      } else {
+        toast({
+          title: "Profile update failed",
+          variant: "destructive",
+          type: "foreground",
+        });
       }
     }
   };
@@ -159,8 +181,8 @@ const EditProfile = ({ user }: EditProfileProps) => {
         <Divider />
         <EditAvailability register={register} control={control} />
         <div className="py-10">
-          <CustomButton buttonType={`primary`} type="submit">
-            Submit
+          <CustomButton buttonType="primary" type="submit" disabled={pending}>
+            Submit {pending && <LoadingSpinner />}
           </CustomButton>
         </div>
       </form>
