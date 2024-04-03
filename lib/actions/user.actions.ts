@@ -43,6 +43,7 @@ export async function updateUser({ updateData }: UpdateUserParams) {
     await User.findOneAndUpdate({ email: session.user.email }, updateData, {
       new: true,
     });
+    return true;
   } catch (error) {
     console.log(error);
     throw error;
@@ -77,13 +78,9 @@ export const updateUserSocials = async (socials: Partial<IUser["socials"]>) => {
     await dbConnect();
     const session = await getSession();
     const email = session?.user?.email;
-    const updatedUser = await User.findOneAndUpdate(
-      { email },
-      { socials },
-      { new: true }
-    );
-    return updatedUser;
+    await User.findOneAndUpdate({ email }, { socials }, { new: true });
+    return true;
   } catch (error) {
-    console.log(error);
+    return false;
   }
 };

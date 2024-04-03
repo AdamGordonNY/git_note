@@ -6,21 +6,25 @@ import { IUser } from "@/database/models/user.model";
 import EditSocials from "./edit/EditSocials";
 import { Separator } from "@/components/ui/separator";
 
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import SocialLinks from "./SocialLinks";
+import { getSession } from "@/lib/authOptions";
 
 interface ProfileSidebarContentProps {
   user: Partial<IUser>;
 }
 const ProfileSidebarContent = ({ user }: ProfileSidebarContentProps) => {
   const pathName = usePathname();
-
+  const session = getSession();
+  if (!session) {
+    redirect("/sign-in");
+  }
   return (
     <div className=" flex-1 flex-col items-center justify-center ">
       <div className="ml-[28px] mt-[50px] flex gap-[6px]">
         <Avatar className="sidebar-avatar">
-          <AvatarImage src={user.image!} alt="user avatar" />
-          <AvatarFallback>{user.fullname?.slice(0)}</AvatarFallback>
+          <AvatarImage src={user?.image!} alt="user avatar" />
+          <AvatarFallback>{user?.fullname?.slice(0)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
           <span className="paragraph-3-medium text-white-100">

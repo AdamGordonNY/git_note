@@ -1,13 +1,6 @@
-import { SidebarLink, SocialLink } from "@/types/global";
+import { SidebarLink } from "@/types/global";
 import React from "react";
-import {
-  FaDribbble,
-  FaGithub,
-  FaInstagram,
-  FaLinkedin,
-  FaPhp,
-  FaTwitter,
-} from "react-icons/fa";
+import { FaPhp } from "react-icons/fa";
 import { TbBrandNextjs, TbBrandPrisma, TbBrandVscode } from "react-icons/tb";
 import {
   BiLogoMongodb,
@@ -54,38 +47,7 @@ export const quickLinks: SidebarLink[] = [
     iconSrc: "/icons/jsm-logo.png",
   },
 ];
-export const socialLinks: SocialLink[] = [
-  {
-    linkType: "github",
-    route: "https://github.com/agordon123",
-    label: "agordon123",
-    icon: <FaGithub />,
-  },
-  {
-    linkType: "linkedin",
-    route: "https://www.linkedin.com/in/aaron-gordon-1a1a0a1b7/",
-    label: "adamgordon-119",
-    icon: <FaLinkedin />,
-  },
-  {
-    linkType: "twitter",
-    route: "https://twitter.com/AGordon123",
-    label: "@agordon123",
-    icon: <FaTwitter />,
-  },
-  {
-    linkType: "dribbble",
-    route: "https://dribbble.com/agordon123",
-    label: "Email",
-    icon: <FaDribbble />,
-  },
-  {
-    linkType: "instagram",
-    route: "https://instagram.com",
-    label: "InstaGram",
-    icon: <FaInstagram />,
-  },
-];
+
 export interface TechStackBadge {
   name: string;
   icon: (size?: number) => React.JSX.Element;

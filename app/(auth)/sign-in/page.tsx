@@ -7,7 +7,7 @@ const SignInPage = async () => {
   return (
     <section>
       <SignIn />
-      <Divider />
+      <Divider text="or" />
       <SocialAuthGroup />
     </section>
   );
