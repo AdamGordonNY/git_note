@@ -10,14 +10,16 @@ export interface CreateUserParams {
 }
 export interface CreateNewPostParams {
   title: string;
-  body: string;
+  content: string;
   author: string;
-  postType: string;
-  tags: Schema.Types.ObjectId[];
-  resourceLink?: {
+  postType: "knowledge" | "component" | "workflow";
+  tags: string[];
+  resourceLinks?: {
     label: string;
     url: string;
   };
+  code?: string;
+  experiences?: string[];
 }
 export interface CreateNewTagParams {
   name: string;

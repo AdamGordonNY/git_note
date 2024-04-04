@@ -30,35 +30,23 @@ export const onboardingSchema = z.object({
   onboardingSchemaThree,
   onboardingSchemaFour,
 });
-
-const SocialsZodSchema = z.object({
-  twitter: z.string().url(),
-  facebook: z.string().url(),
-  linkedin: z.string().url(),
-  github: z.string().url(),
-  instagram: z.string().url(),
-  dribbble: z.string().url(),
+export const ResourceLinkSchema = z.object({
+  title: z.string().min(4).max(50),
+  url: z.string().url(),
 });
-
-export const GoalZodSchema = z.object({
-  goals: z
-    .array(z.object({ name: z.string(), completed: z.boolean() }))
-    .optional(),
-});
-
-const UserEditZodSchema = z.object({
-  fullname: z.string().optional(),
-  email: z.string().optional().readonly(),
-  location: z.string().optional(),
-  image: z.string().optional(),
-  portfolio: z.string().optional(),
-  learningGoals: GoalZodSchema,
-  technologies: z.array(z.string()).optional(),
+const PostTypeSchema = z.enum(["knowledge", "component", "workflow"]);
+export const CreatePostSchema = z.object({
+  title: z.string().min(4).max(50),
+  postType: PostTypeSchema.default("knowledge"),
+  description: z.string().min(4).max(50),
+  content: z.string().min(4).max(50),
+  tags: z.array(z.string()).optional(),
+  code: z.string().optional(),
   experiences: z.array(z.object({ name: z.string() })).optional(),
-  availability: z
-    .array(z.date().min(new Date(Date.now().toFixed(2))))
-    .optional(),
-  socials: z.array(SocialsZodSchema).optional(),
+  resourceLinks: z.array(ResourceLinkSchema.optional()).optional(),
 });
 
-export default UserEditZodSchema;
+export const CreateTagSchema = z.object({
+  name: z.string().min(4).max(50),
+  postId: z.string(),
+});
