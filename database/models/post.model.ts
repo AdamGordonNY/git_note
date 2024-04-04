@@ -1,20 +1,18 @@
 import { Schema, Document, model, models } from "mongoose";
 
 export interface IPost extends Document {
-  _id: Schema.Types.ObjectId;
+  _id: string;
   title: string;
-  body: string;
-  author: Schema.Types.ObjectId;
-  postType: {
-    knowledge: string;
-    workflows: string;
-    components: string;
-  };
-  tags: Schema.Types.ObjectId[];
+  content: string;
+  description: string;
+  author: string;
+  postType: "knowledge" | "component" | "workflow";
+  tags: string[];
   resourceLink: {
     label: string;
     url: string;
-  };
+  }[];
+  code?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -56,16 +54,18 @@ const PostSchema = new Schema({
     type: String,
     required: false,
   },
-  resourceLink: {
-    label: {
-      type: String,
-      required: false,
+  resourceLink: [
+    {
+      label: {
+        type: String,
+        required: false,
+      },
+      url: {
+        type: String,
+        required: false,
+      },
     },
-    url: {
-      type: String,
-      required: false,
-    },
-  },
+  ],
   tags: [
     {
       type: [Schema.Types.ObjectId],

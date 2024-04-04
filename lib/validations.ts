@@ -30,10 +30,18 @@ export const onboardingSchema = z.object({
   onboardingSchemaThree,
   onboardingSchemaFour,
 });
-export const ResourceLinkSchema = z.object({
-  title: z.string().min(4).max(50),
-  url: z.string().url(),
-});
+export const ResourceLinkSchema = z.array(
+  z.object({
+    title: z.string().min(4).max(50),
+    url: z.string().url(),
+  })
+);
+const ExperiencesSchema = z.array(
+  z.object({
+    name: z.string(),
+  })
+);
+
 const PostTypeSchema = z.enum(["knowledge", "component", "workflow"]);
 export const CreatePostSchema = z.object({
   title: z.string().min(4).max(50),
@@ -42,8 +50,8 @@ export const CreatePostSchema = z.object({
   content: z.string().min(4).max(50),
   tags: z.array(z.string()).optional(),
   code: z.string().optional(),
-  experiences: z.array(z.object({ name: z.string() })).optional(),
-  resourceLinks: z.array(ResourceLinkSchema.optional()).optional(),
+  experiences: ExperiencesSchema,
+  resourceLinks: ResourceLinkSchema,
 });
 
 export const CreateTagSchema = z.object({

@@ -12,12 +12,13 @@ export interface CreateNewPostParams {
   title: string;
   content: string;
   author: string;
+  description?: string;
   postType: "knowledge" | "component" | "workflow";
   tags: string[];
   resourceLinks?: {
-    label: string;
+    title: string;
     url: string;
-  };
+  }[];
   code?: string;
   experiences?: string[];
 }

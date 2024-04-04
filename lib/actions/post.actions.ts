@@ -1,6 +1,6 @@
 "use server";
-import postModel, { IPost } from "@/database/models/post.model";
-import { revalidatePath } from "next/cache";
+import Post, { IPost } from "@/database/models/post.model";
+
 import dbConnect from "@/database/dbConnect";
 import { FilterQuery } from "mongoose";
 
@@ -44,14 +44,13 @@ export const getAllPosts = async (params: GetPostParams) => {
         sortOptions = { createdAt: -1 };
         break;
     }
-    const totalPosts = await postModel.countDocuments(query);
+    const totalPosts = await Post.countDocuments(query);
 
-    const filteredPosts = await postModel
-      .find(query)
+    const filteredPosts = await Post.find(query)
       .sort(sortOptions)
       .skip(skipAmount)
       .limit(pageSize);
-    const isNext = totalPosts > skipAmount + postModel.length;
+    const isNext = totalPosts > skipAmount + Post.length;
 
     return { posts: filteredPosts as IPost[], isNext };
   } catch (error) {
@@ -62,7 +61,7 @@ export const getAllPosts = async (params: GetPostParams) => {
 export const getPostById = async (postId: GetTagByPostIdParams) => {
   try {
     await dbConnect();
-    const post = await postModel.findById(postId);
+    const post = await Post.findById(postId);
     return post as IPost;
   } catch (error) {
     console.log(error);
@@ -72,13 +71,14 @@ export const getPostById = async (postId: GetTagByPostIdParams) => {
 export const createNewPost = async (data: CreateNewPostParams) => {
   try {
     await dbConnect();
-    const post = (await postModel.create({
+    const post = (await Post.create({
       title: data.title,
-      body: data.body,
+      content: data.content,
+      code: data.code,
       author: data.author,
       postType: data.postType,
       tags: data.tags,
-      resourceLink: data.resourceLink,
+      resourceLink: data.resourceLinks,
     })) as IPost;
 
     return post as IPost;
@@ -87,18 +87,13 @@ export const createNewPost = async (data: CreateNewPostParams) => {
   }
 };
 
-export const updatePost = async ({
-  _id,
-  updateData,
-  path,
-}: UpdatePostParams) => {
+export const updatePost = async ({ _id, updateData }: UpdatePostParams) => {
   try {
     await dbConnect();
 
-    const post = await postModel.findByIdAndUpdate(_id, updateData, {
+    const post = await Post.findByIdAndUpdate(_id, updateData, {
       new: true,
     });
-    revalidatePath(path);
     return post as IPost;
   } catch (error) {
     console.log(error);
@@ -108,7 +103,7 @@ export const updatePost = async ({
 export const deletePostById = async (_id: DeletePostParams) => {
   try {
     await dbConnect();
-    const deletedPost = await postModel.findByIdAndDelete(_id);
+    const deletedPost = await Post.findByIdAndDelete(_id);
     return deletedPost as IPost;
   } catch (error) {
     console.log(error);
