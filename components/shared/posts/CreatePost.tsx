@@ -89,7 +89,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
         })),
         author: user?._id!,
       });
-      toast({ title: "Post Created Successfully" });
+      // toast({ title: "Post Created Successfully" });
     } catch (error) {}
   };
 
