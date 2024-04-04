@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/components/ui/use-toast";
 
 import CustomButton from "../CustomButton";
 
@@ -26,6 +25,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
     defaultValues: {
@@ -39,6 +39,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
       resourceLinks: [],
     },
   });
+  const postType = watch("postType");
   const {
     fields: experience,
     append: appendExperience,
@@ -55,6 +56,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
     control,
     name: "resourceLinks",
   });
+
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -92,7 +94,10 @@ const CreatePost = ({ user }: CreatePostProps) => {
       // toast({ title: "Post Created Successfully" });
     } catch (error) {}
   };
-
+  useEffect(() => {
+    console.log(postType);
+    console.log(register("postType"));
+  }, [postType]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full gap-[40px]">
       <span className="display-1-bold text-white-100">Create a Post</span>

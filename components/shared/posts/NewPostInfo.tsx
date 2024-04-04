@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 import CustomButton from "../CustomButton";
 import ResourceTag from "../ResourceTag";
+import { Controller } from "react-hook-form";
 interface NewPostInfoProps {
   register: any;
   errors?: any;
@@ -27,26 +28,30 @@ const NewPostInfo = ({ register, errors, control }: NewPostInfoProps) => {
       />
       <div className="flex justify-between">
         <div>{}</div>
-        <Select>
-          <SelectTrigger className=" flex w-[full] flex-1 bg-black-700">
-            <SelectValue {...register("postType")} defaultValue="knowledge">
-              {" "}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent className="flex w-full bg-black-700 group-focus-within:fill-mode-forwards data-[state=open]:bg-black-700">
-            <SelectItem value="knowledge">
-              <ResourceTag type="knowledge" />
-            </SelectItem>
-            <SelectItem value="component">
-              {" "}
-              <ResourceTag type="component" />
-            </SelectItem>
-            <SelectItem value="workflow">
-              {" "}
-              <ResourceTag type="workflow" />
-            </SelectItem>
-          </SelectContent>
-        </Select>
+        <Controller
+          control={control}
+          name="postType"
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} {...field}>
+              <SelectTrigger className=" flex w-[full] flex-1 bg-black-700">
+                <SelectValue defaultValue="knowledge"></SelectValue>
+              </SelectTrigger>
+              <SelectContent className="flex w-full bg-black-700 group-focus-within:fill-mode-forwards data-[state=open]:bg-black-700">
+                <SelectItem value="knowledge">
+                  <ResourceTag type="knowledge" />
+                </SelectItem>
+                <SelectItem value="component">
+                  {" "}
+                  <ResourceTag type="component" />
+                </SelectItem>
+                <SelectItem value="workflow">
+                  {" "}
+                  <ResourceTag type="workflow" />
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+        />
       </div>
     </section>
   );
