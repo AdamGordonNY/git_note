@@ -12,22 +12,19 @@ export interface IPost extends Document {
     label: string;
     url: string;
   }[];
+  experiences: {
+    name: string;
+  }[];
+
   code?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 const ResourceSchema = new Schema({
-  knowledge: {
+  postType: {
     type: String,
     required: true,
-  },
-  workflows: {
-    type: String,
-    required: true,
-  },
-  components: {
-    type: String,
-    required: true,
+    enum: ["knowledge", "component", "workflow"],
   },
 });
 

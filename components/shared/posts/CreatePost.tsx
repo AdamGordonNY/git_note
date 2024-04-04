@@ -39,18 +39,22 @@ const CreatePost = ({ user }: CreatePostProps) => {
       resourceLinks: [],
     },
   });
-  const { experience, appendExperience, removeExperience } = useFieldArray<
-    z.infer<typeof CreatePostSchema>,
-    "experiences"
-  >({
+  const {
+    fields: experience,
+    append: appendExperience,
+    remove: removeExperience,
+  } = useFieldArray<z.infer<typeof CreatePostSchema>, "experiences">({
     control,
     name: "experiences",
   });
-  const { resourceLinks, appendResourceLink, removeResourceLink } =
-    useFieldArray<z.infer<typeof CreatePostSchema>, "resourceLinks">({
-      control,
-      name: "resourceLinks",
-    });
+  const {
+    fields: resourceLinks,
+    append: appendResourceLink,
+    remove: removeResourceLink,
+  } = useFieldArray<z.infer<typeof CreatePostSchema>, "resourceLinks">({
+    control,
+    name: "resourceLinks",
+  });
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
