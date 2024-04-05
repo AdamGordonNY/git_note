@@ -18,15 +18,14 @@ const NewExperience = ({
   register,
 }: NewExperienceProps) => {
   return (
-    <section className=" gap-x-2 ">
-      <div className="flex flex-col">
-        <label
-          className="paragraph-3-regular align-top text-white-500"
-          htmlFor="experiences"
-        >
-          KNOWLEDGE
-        </label>
-      </div>
+    <section className="flex w-full flex-col gap-x-2 ">
+      <label
+        className="paragraph-3-regular align-top text-white-500"
+        htmlFor="experiences"
+      >
+        What was Learned
+      </label>
+
       {experienceFields.map((field: any, index: number) => {
         return (
           <React.Fragment key={field.id}>

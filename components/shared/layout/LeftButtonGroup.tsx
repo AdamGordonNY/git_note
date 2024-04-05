@@ -16,7 +16,7 @@ const LeftButtonGroup = ({ children, className }: LeftButtonGroupProps) => {
     <div className="flex-between mt-[110px] flex-col space-y-2 ">
       <Link href="/posts/add">
         <Button
-          className="justify-center; flex h-[38px] w-[235px] items-center gap-1 rounded-md bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] px-1.5 py-3 text-white-100"
+          className="flex h-[38px] w-[235px] items-center justify-center gap-1 rounded-md bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] px-1.5 py-3 text-white-100"
           type="button"
         >
           <Image

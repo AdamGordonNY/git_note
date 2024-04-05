@@ -25,7 +25,6 @@ const CreatePost = ({ user }: CreatePostProps) => {
     handleSubmit,
     control,
     formState: { errors },
-    watch,
   } = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
     defaultValues: {
@@ -39,7 +38,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
       resourceLinks: [],
     },
   });
-  const postType = watch("postType");
+
   const {
     fields: experience,
     append: appendExperience,
@@ -94,32 +93,39 @@ const CreatePost = ({ user }: CreatePostProps) => {
       // toast({ title: "Post Created Successfully" });
     } catch (error) {}
   };
-  useEffect(() => {
-    console.log(postType);
-    console.log(register("postType"));
-  }, [postType]);
+  // useEffect(() => {
+  //   console.log(postType);
+  //   console.log(register("postType"));
+  // }, [postType]);
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full gap-[40px]">
-      <span className="display-1-bold text-white-100">Create a Post</span>
-      <NewPostInfo register={register} control={control} errors={errors} />
-      <NewExperience
-        experienceFields={experience}
-        appendExperience={appendExperience}
-        removeExperience={removeExperience}
-        register={register}
-      />
-      <NewContent register={register} control={control} />
-      <NewResourceLink
-        resourceLinks={resourceLinks}
-        appendResourceLink={appendResourceLink}
-        removeResourceLink={removeResourceLink}
-        register={register}
-      />
+    <section>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="py-7.5 flex w-full flex-1 flex-col gap-[40px]"
+      >
+        <span className="display-1-bold pt-10 text-white-100">
+          Create a Post
+        </span>
+        <NewPostInfo register={register} control={control} errors={errors} />
+        <NewExperience
+          experienceFields={experience}
+          appendExperience={appendExperience}
+          removeExperience={removeExperience}
+          register={register}
+        />
+        <NewContent register={register} control={control} />
+        <NewResourceLink
+          resourceLinks={resourceLinks}
+          appendResourceLink={appendResourceLink}
+          removeResourceLink={removeResourceLink}
+          register={register}
+        />
 
-      <CustomButton buttonType="primary" type="submit">
-        Create Post
-      </CustomButton>
-    </form>
+        <CustomButton buttonType="primary" type="submit">
+          Create Post
+        </CustomButton>
+      </form>
+    </section>
   );
 };
 

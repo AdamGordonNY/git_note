@@ -12,7 +12,7 @@ const Page = async () => {
   }
   const cleanUser: IUser = JSON.parse(JSON.stringify(user));
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col px-[30px]">
       <CreatePost user={cleanUser} />
     </div>
   );
