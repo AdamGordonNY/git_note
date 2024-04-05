@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useTransition } from "react";
+import React, { useTransition } from "react";
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,8 +29,6 @@ const CreatePost = ({ user }: CreatePostProps) => {
     handleSubmit,
     control,
     formState: { errors },
-    getValues,
-    watch,
   } = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
     defaultValues: {
@@ -61,7 +59,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
     control,
     name: "resourceLinks",
   });
-  const watchContent = watch("content");
+
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -95,7 +93,6 @@ const CreatePost = ({ user }: CreatePostProps) => {
             title: link?.title || "",
             url: link?.url || "",
           })),
-          author: user?._id!,
         });
         if (result) {
           toast({ title: "Post Created Successfully" });
@@ -103,9 +100,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
       });
     } catch (error) {}
   };
-  useEffect(() => {
-    console.log(watchContent);
-  }, [watchContent]);
+
   return (
     <section>
       <form
@@ -122,6 +117,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
           removeExperience={removeExperience}
           register={register}
         />
+        {/* Placeholder for Code Blocks under a Create Component */}
         <NewContent register={register} control={control} />
         <NewResourceLink
           resourceLinks={resourceLinks}

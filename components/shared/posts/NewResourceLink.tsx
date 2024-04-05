@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import React from "react";
+import CustomButton from "../CustomButton";
 
 interface NewResourceLinkProps {
   resourceLinks: any;
@@ -68,6 +69,9 @@ const NewResourceLink = ({
           </div>
         </React.Fragment>
       )}
+      <CustomButton buttonType="profileButton" type="button">
+        Add Resource
+      </CustomButton>
     </section>
   );
 };

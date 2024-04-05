@@ -11,10 +11,9 @@ export interface CreateUserParams {
 export interface CreateNewPostParams {
   title: string;
   content: string;
-  author: string;
-  description?: string;
-  postType: "knowledge" | "component" | "workflow";
-  tags: string[];
+  description: string;
+  postType: string;
+  tags?: string[];
   resourceLinks?: {
     title: string;
     url: string;

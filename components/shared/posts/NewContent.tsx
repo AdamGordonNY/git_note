@@ -52,7 +52,6 @@ const NewContent = ({ register, control }: NewContentProps) => {
               skin: "oxide-dark",
               content_css: "dark",
             }}
-            initialValue={field.value}
             value={field.value}
           />
         )}
