@@ -101,7 +101,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
     <section>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="py-7.5 flex w-full flex-1 flex-col gap-[40px]"
+        className="py-7.5 flex w-full flex-1 flex-col gap-6"
       >
         <span className="display-1-bold pt-10 text-white-100">
           Create a Post

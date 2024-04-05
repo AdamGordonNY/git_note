@@ -41,6 +41,7 @@
     "next-auth": "^4.24.6",
     "next-cloudinary": "^6.2.1",
     "prettier": "^3.2.5",
+    "prismjs": "^1.29.0",
     "query-string": "^9.0.0",
     "react": "^18",
     "react-day-picker": "^8.10.0",

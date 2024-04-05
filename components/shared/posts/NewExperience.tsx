@@ -58,7 +58,34 @@ const NewExperience = ({
           </React.Fragment>
         );
       })}
-
+      {experienceFields.length === 0 && (
+        <div
+          className="paragraph-3-regular mx-auto flex w-full content-center items-center justify-center justify-items-center gap-[14px] bg-black-700 align-middle"
+          key="0"
+        >
+          <Button
+            className="paragraph-3-regular order-2 bg-black-700  text-white-100"
+            type="button"
+            disabled
+          >
+            {" "}
+            <X size={20} />
+          </Button>
+          <Input
+            id={`experiences[0].name`}
+            type="text"
+            className="paragraph-3-regular order-1 border-0  bg-black-700 text-white-100 ring-transparent focus:outline-transparent focus:ring-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
+            {...register(`experiences[0].name` as any)}
+          />
+          <Image
+            src={blueCheck}
+            alt="knowledge"
+            className="ml-2"
+            width={20}
+            height={20}
+          />
+        </div>
+      )}
       <CustomButton
         buttonType="profileButton"
         type="button"
