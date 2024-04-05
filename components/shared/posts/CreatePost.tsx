@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useTransition } from "react";
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,15 +16,21 @@ import NewContent from "./NewContent";
 import NewPostInfo from "./NewPostInfo";
 
 import NewExperience from "./NewExperience";
+import LoadingSpinner from "../LoadingSpinner";
+import { toast } from "@/components/ui/use-toast";
+
 interface CreatePostProps {
   user: Partial<IUser>;
 }
 const CreatePost = ({ user }: CreatePostProps) => {
+  const [pending, startTransition] = useTransition();
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
+    getValues,
+    watch,
   } = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
     defaultValues: {
@@ -55,7 +61,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
     control,
     name: "resourceLinks",
   });
-
+  const watchContent = watch("content");
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -74,29 +80,32 @@ const CreatePost = ({ user }: CreatePostProps) => {
         title: link?.title,
         url: link?.url,
       })) || [];
-
+    console.log(data);
     try {
-      await createNewPost({
-        title,
-        postType,
-        content,
-        tags,
-        code,
-        description,
-        experiences: experiences?.map((experience) => experience.name) || [],
-        resourceLinks: dbResources.map((link) => ({
-          title: link?.title || "",
-          url: link?.url || "",
-        })),
-        author: user?._id!,
+      startTransition(async () => {
+        const result = await createNewPost({
+          title,
+          postType,
+          content,
+          tags,
+          code,
+          description,
+          experiences: experiences?.map((experience) => experience.name) || [],
+          resourceLinks: dbResources.map((link) => ({
+            title: link?.title || "",
+            url: link?.url || "",
+          })),
+          author: user?._id!,
+        });
+        if (result) {
+          toast({ title: "Post Created Successfully" });
+        }
       });
-      // toast({ title: "Post Created Successfully" });
     } catch (error) {}
   };
-  // useEffect(() => {
-  //   console.log(postType);
-  //   console.log(register("postType"));
-  // }, [postType]);
+  useEffect(() => {
+    console.log(watchContent);
+  }, [watchContent]);
   return (
     <section>
       <form
@@ -121,8 +130,8 @@ const CreatePost = ({ user }: CreatePostProps) => {
           register={register}
         />
 
-        <CustomButton buttonType="primary" type="submit">
-          Create Post
+        <CustomButton buttonType="primary" type="submit" disabled={pending}>
+          Create Post {pending && <LoadingSpinner />}
         </CustomButton>
       </form>
     </section>

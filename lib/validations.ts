@@ -42,16 +42,15 @@ const ExperiencesSchema = z.array(
   })
 );
 
-const PostTypeSchema = z.enum(["knowledge", "component", "workflow"]);
 export const CreatePostSchema = z.object({
   title: z.string().min(4).max(50),
-  postType: PostTypeSchema.default("knowledge"),
-  description: z.string().min(4).max(50),
-  content: z.string().min(4).max(50),
+  postType: z.string().min(4).max(50),
+  description: z.string().min(10).max(200),
+  content: z.string().min(10).max(500),
   tags: z.array(z.string()).optional(),
   code: z.string().optional(),
-  experiences: ExperiencesSchema,
-  resourceLinks: ResourceLinkSchema,
+  experiences: ExperiencesSchema.optional(),
+  resourceLinks: ResourceLinkSchema.optional(),
 });
 
 export const CreateTagSchema = z.object({

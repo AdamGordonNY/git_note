@@ -6,9 +6,9 @@ export interface IPost extends Document {
   content: string;
   description: string;
   author: string;
-  postType: "knowledge" | "component" | "workflow";
-  tags: string[];
-  resourceLink: {
+  postType?: "knowledge" | "component" | "workflow";
+  tags?: string[];
+  resourceLinks?: {
     label: string;
     url: string;
   }[];
@@ -17,20 +17,13 @@ export interface IPost extends Document {
   }[];
 
   code?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-const ResourceSchema = new Schema({
-  postType: {
-    type: String,
-    required: true,
-    enum: ["knowledge", "component", "workflow"],
-  },
-});
 
 const PostSchema = new Schema({
   postType: {
-    type: ResourceSchema,
+    type: String,
     required: true,
   },
 
@@ -51,7 +44,19 @@ const PostSchema = new Schema({
     type: String,
     required: false,
   },
-  resourceLink: [
+  experiences: [
+    {
+      name: {
+        type: String,
+        required: false,
+      },
+    },
+  ],
+  code: {
+    type: String,
+    required: false,
+  },
+  resourceLinks: [
     {
       label: {
         type: String,

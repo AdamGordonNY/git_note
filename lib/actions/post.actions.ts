@@ -11,7 +11,9 @@ import {
   GetTagByPostIdParams,
   UpdatePostParams,
 } from "./shared.types";
-
+import { revalidateTag, unstable_cache as cache } from "next/cache";
+import { getSession } from "../authOptions";
+import { getOneUser } from "./user.actions";
 // just using basic crud funcitons for now
 export const getAllPosts = async (params: GetPostParams) => {
   try {
@@ -71,19 +73,30 @@ export const getPostById = async (postId: GetTagByPostIdParams) => {
 export const createNewPost = async (data: CreateNewPostParams) => {
   try {
     await dbConnect();
-    const post = (await Post.create({
+    console.log(data);
+    const session = await getSession();
+    const userEmail = session?.user?.email;
+    if (!userEmail) {
+      return false;
+    }
+    const user = await getOneUser(userEmail);
+    const userId = user?._id;
+
+    const post = await Post.create({
       title: data.title,
+      description: data.description,
       content: data.content,
       code: data.code,
-      author: data.author,
+      author: userId,
       postType: data.postType,
       tags: data.tags,
-      resourceLink: data.resourceLinks,
-    })) as IPost;
-
-    return post as IPost;
+      resourceLinks: data.resourceLinks,
+    });
+    console.log(post);
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 };
 

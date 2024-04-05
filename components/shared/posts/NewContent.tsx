@@ -12,9 +12,10 @@ const NewContent = ({ register, control }: NewContentProps) => {
     <section className="border-#4448691A border-t">
       <Controller
         control={control}
-        name="code"
+        name="content"
         render={({ field }) => (
           <Editor
+            id="content"
             onBlur={field.onBlur}
             apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
             onEditorChange={(content) => field.onChange(content)}
@@ -22,10 +23,10 @@ const NewContent = ({ register, control }: NewContentProps) => {
               // @ts-ignore
               editorRef.current = editor;
             }}
+            ref={field.ref}
             init={{
               height: 350,
               menubar: false,
-
               plugins: [
                 "advlist",
                 "autolink",
@@ -44,17 +45,12 @@ const NewContent = ({ register, control }: NewContentProps) => {
                 "table",
               ],
               toolbar:
-                "codesample | bold italic h1 h2 image blockquote" +
+                "codesample | bold italic h1 h2 image blockquote link" +
                 " bullist numlist",
               content_style:
                 "body { font-family:Inter; font-size:16px background-color:black-700; color:white-300 }",
-              skin: window.matchMedia("(prefers-color-scheme: dark)").matches
-                ? "oxide-dark"
-                : "oxide",
-              content_css: window.matchMedia("(prefers-color-scheme: dark)")
-                .matches
-                ? "dark"
-                : "default",
+              skin: "oxide-dark",
+              content_css: "dark",
             }}
             initialValue={field.value}
             value={field.value}
