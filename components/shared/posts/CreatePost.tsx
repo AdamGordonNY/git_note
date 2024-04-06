@@ -1,5 +1,5 @@
 "use client";
-import React, { useTransition } from "react";
+import React, { useEffect, useTransition } from "react";
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +28,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
@@ -100,7 +101,9 @@ const CreatePost = ({ user }: CreatePostProps) => {
       });
     } catch (error) {}
   };
-
+  useEffect(() => {
+    console.log(watch());
+  });
   return (
     <section>
       <form

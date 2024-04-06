@@ -32,44 +32,54 @@ const NewResourceLink = ({
             <Input
               placeholder="Label"
               {...register(`resourceLinks[${index}].title`)}
-              defaultValue={link?.title || "Label"}
+              defaultValue={link?.title}
               className="w-1/2 rounded bg-black-700 text-white-300/50 "
             />
             <Input
               {...register(`resourceLinks[${index}].url`)}
               className="w-1/2 rounded bg-black-700 text-white-300/50 "
-              defaultValue={link?.url || "URL"}
+              defaultValue={link?.url}
             />
-          </div>
-        );
-      })}
-      {resourceLinks?.length === 0 && (
-        <React.Fragment key={resourceLinks.title}>
-          <div className="flex gap-2">
-            <div className="flex h-12  w-full flex-row  gap-2 ">
-              <Input
-                placeholder="Label"
-                {...register(`resourceLinks[0].title`)}
-                defaultValue={resourceLinks[0]?.title || "Label"}
-                className="w-1/2 rounded bg-black-700 text-white-300/50 "
-              />
-              <Input
-                {...register("resourceLinks[0].url")}
-                className="w-1/2 rounded bg-black-700 text-white-300/50 "
-                defaultValue={resourceLinks[0]?.url || "URL"}
-              />
-            </div>
             <Button
               className="paragraph-3-regular order-2 bg-black-700  text-white-100"
               type="button"
+              onClick={() => removeResourceLink(index)}
             >
               {" "}
               <X size={20} />
             </Button>
           </div>
-        </React.Fragment>
+        );
+      })}
+      {resourceLinks?.length === 0 && (
+        <div className="flex gap-2">
+          <div className="flex h-12  w-full flex-row  gap-2 ">
+            <Input
+              placeholder="Label"
+              {...register(`resourceLinks[0].title`)}
+              className="w-1/2 rounded bg-black-700 text-white-300/50 "
+            />
+            <Input
+              {...register("resourceLinks[0].url")}
+              placeholder="URL"
+              className="w-1/2 rounded bg-black-700 text-white-300/50 "
+            />
+          </div>
+          <Button
+            className="paragraph-3-regular order-2 bg-black-700  text-white-100"
+            type="button"
+            disabled
+          >
+            {" "}
+            <X size={20} />
+          </Button>
+        </div>
       )}
-      <CustomButton buttonType="profileButton" type="button">
+      <CustomButton
+        buttonType="profileButton"
+        type="button"
+        onClick={() => appendResourceLink({ title: "", url: "" })}
+      >
         Add Resource
       </CustomButton>
     </section>
