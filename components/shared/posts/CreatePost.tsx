@@ -29,9 +29,14 @@ const CreatePost = ({ user }: CreatePostProps) => {
     handleSubmit,
     control,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
+    setError,
+    clearErrors,
+    reset,
   } = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
+    shouldFocusError: true,
+    criteriaMode: "all",
     defaultValues: {
       title: "",
       postType: "knowledge",
@@ -39,7 +44,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
       content: "",
       tags: [],
       code: "",
-      experiences: [],
+      experiences: [{ name: "" }],
       resourceLinks: [],
     },
   });
@@ -74,6 +79,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
       experiences,
       resourceLinks,
     } = data;
+
     const dbResources =
       resourceLinks?.map((link) => ({
         title: link?.title,
@@ -89,7 +95,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
           tags,
           code,
           description,
-          experiences: experiences?.map((experience) => experience.name) || [],
+          experiences: experiences?.map((experience) => experience.name),
           resourceLinks: dbResources.map((link) => ({
             title: link?.title || "",
             url: link?.url || "",
@@ -97,6 +103,18 @@ const CreatePost = ({ user }: CreatePostProps) => {
         });
         if (result) {
           toast({ title: "Post Created Successfully" });
+          reset({
+            title: "",
+            postType: "knowledge",
+            description: "",
+            content: "",
+            tags: [],
+            code: "",
+            experiences: [],
+            resourceLinks: [],
+          });
+        } else {
+          toast({ title: "Failed to create post", variant: "destructive" });
         }
       });
     } catch (error) {}
@@ -115,6 +133,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
         </span>
         <NewPostInfo register={register} control={control} errors={errors} />
         <NewExperience
+          errors={errors}
           experienceFields={experience}
           appendExperience={appendExperience}
           removeExperience={removeExperience}
@@ -123,6 +142,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
         {/* Placeholder for Code Blocks under a Create Component */}
         <NewContent register={register} control={control} />
         <NewResourceLink
+          errors={errors}
           resourceLinks={resourceLinks}
           appendResourceLink={appendResourceLink}
           removeResourceLink={removeResourceLink}

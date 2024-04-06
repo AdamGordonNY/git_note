@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.3.4",
     "@next-auth/mongodb-adapter": "^1.1.3",
     "@radix-ui/react-avatar": "^1.0.4",

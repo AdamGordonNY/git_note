@@ -46,15 +46,15 @@ export const getAllPosts = async (params: GetPostParams) => {
         sortOptions = { createdAt: -1 };
         break;
     }
-    const totalPosts = await Post.countDocuments(query);
+    // const totalPosts = await Post.countDocuments(query);
 
     const filteredPosts = await Post.find(query)
       .sort(sortOptions)
       .skip(skipAmount)
       .limit(pageSize);
-    const isNext = totalPosts > skipAmount + Post.length;
+    // const isNext = totalPosts > skipAmount + Post.length;
 
-    return { posts: filteredPosts as IPost[], isNext };
+    return { posts: filteredPosts as IPost[] };
   } catch (error) {
     console.log(error);
   }
@@ -91,6 +91,7 @@ export const createNewPost = async (data: CreateNewPostParams) => {
       postType: data.postType,
       tags: data.tags,
       resourceLinks: data.resourceLinks,
+      experiences: data.experiences,
     });
     console.log(post);
     return true;
@@ -118,6 +119,14 @@ export const deletePostById = async (_id: DeletePostParams) => {
     await dbConnect();
     const deletedPost = await Post.findByIdAndDelete(_id);
     return deletedPost as IPost;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllPostTypes = async (params: GetPostParams) => {
+  try {
+    await dbConnect();
+    const { posts } = params;
   } catch (error) {
     console.log(error);
   }

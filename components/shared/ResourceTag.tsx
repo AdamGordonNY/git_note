@@ -9,6 +9,7 @@ interface ResourceTagProps extends React.PropsWithChildren {
   type: ResourceTagType;
   icon?: React.JSX.Element;
   text?: string;
+  className?: string;
 }
 
 const ResourceTag = ({ type, text, ...props }: ResourceTagProps) => {

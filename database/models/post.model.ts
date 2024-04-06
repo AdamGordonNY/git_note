@@ -6,13 +6,13 @@ export interface IPost extends Document {
   content: string;
   description: string;
   author: string;
-  postType?: "knowledge" | "component" | "workflow";
+  postType: "knowledge" | "component" | "workflow";
   tags?: string[];
   resourceLinks?: {
     label: string;
     url: string;
   }[];
-  experiences: {
+  experiences?: {
     name: string;
   }[];
 
@@ -44,14 +44,10 @@ const PostSchema = new Schema({
     type: String,
     required: false,
   },
-  experiences: [
-    {
-      name: {
-        type: String,
-        required: false,
-      },
-    },
-  ],
+  experiences: {
+    type: [String],
+    required: false,
+  },
   code: {
     type: String,
     required: false,

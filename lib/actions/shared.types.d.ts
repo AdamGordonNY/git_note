@@ -27,8 +27,8 @@ export interface CreateNewTagParams {
 }
 
 export interface GetPostParams {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   filter?: string;
   searchQuery?: string;
 }
@@ -37,6 +37,9 @@ export interface GetTagParams {
   pageSize: number;
   _id?: Schema.Types.ObjectId;
   name?: string;
+}
+export interface GetPostsParams {
+  posts: IPost[];
 }
 export interface GetAllUsersParams {
   page?: number;
