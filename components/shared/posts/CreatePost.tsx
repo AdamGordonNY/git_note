@@ -1,6 +1,11 @@
 "use client";
 import React, { useEffect, useTransition } from "react";
-import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
+import {
+  SubmitHandler,
+  useForm,
+  useFieldArray,
+  useWatch,
+} from "react-hook-form";
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -29,9 +34,9 @@ const CreatePost = ({ user }: CreatePostProps) => {
     handleSubmit,
     control,
     watch,
-    formState: { errors, isValid },
-    setError,
-    clearErrors,
+    setValue,
+    formState: { errors },
+
     reset,
   } = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
@@ -65,7 +70,10 @@ const CreatePost = ({ user }: CreatePostProps) => {
     control,
     name: "resourceLinks",
   });
-
+  const tagFields = useWatch({ name: "tags", control });
+  const handleTagChange = (newTags: any) => {
+    setValue("tags", newTags);
+  };
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -74,7 +82,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
       postType,
       content,
       description,
-      tags = [],
+      tags,
       code,
       experiences,
       resourceLinks,
@@ -85,7 +93,7 @@ const CreatePost = ({ user }: CreatePostProps) => {
         title: link?.title,
         url: link?.url,
       })) || [];
-    console.log(data);
+
     try {
       startTransition(async () => {
         const result = await createNewPost({
@@ -131,7 +139,13 @@ const CreatePost = ({ user }: CreatePostProps) => {
         <span className="display-1-bold pt-10 text-white-100">
           Create a Post
         </span>
-        <NewPostInfo register={register} control={control} errors={errors} />
+        <NewPostInfo
+          register={register}
+          control={control}
+          errors={errors}
+          tags={tagFields}
+          setTags={handleTagChange}
+        />
         <NewExperience
           errors={errors}
           experienceFields={experience}

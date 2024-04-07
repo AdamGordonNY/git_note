@@ -11,9 +11,9 @@ import {
   GetTagByPostIdParams,
   UpdatePostParams,
 } from "./shared.types";
-import { revalidateTag, unstable_cache as cache } from "next/cache";
 import { getSession } from "../authOptions";
 import { getOneUser } from "./user.actions";
+import { createNewTag } from "./tag.actions";
 // just using basic crud funcitons for now
 export const getAllPosts = async (params: GetPostParams) => {
   try {
@@ -38,7 +38,7 @@ export const getAllPosts = async (params: GetPostParams) => {
         query.postType = "knowledge";
         sortOptions = { createdAt: -1 };
         break;
-      case "workflows":
+      case "workflow":
         query.postType = "workflows";
         sortOptions = { createdAt: -1 };
         break;
@@ -93,6 +93,11 @@ export const createNewPost = async (data: CreateNewPostParams) => {
       resourceLinks: data.resourceLinks,
       experiences: data.experiences,
     });
+    if (post) {
+      post.tags.map((tag: string) =>
+        createNewTag({ name: tag, postId: post._id })
+      );
+    }
     console.log(post);
     return true;
   } catch (error) {
@@ -126,7 +131,7 @@ export const deletePostById = async (_id: DeletePostParams) => {
 export const getAllPostTypes = async (params: GetPostParams) => {
   try {
     await dbConnect();
-    const { posts } = params;
+    //   const { posts } = params;
   } catch (error) {
     console.log(error);
   }

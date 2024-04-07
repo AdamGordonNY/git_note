@@ -3,7 +3,7 @@ import { Schema, Document, model, models } from "mongoose";
 export interface ITag extends Document {
   _id: Schema.Types.ObjectId;
   name: string;
-  posts: Schema.Types.ObjectId[];
+  postId: Schema.Types.ObjectId[];
 }
 
 export const Tag = new Schema(
@@ -12,11 +12,11 @@ export const Tag = new Schema(
       type: String,
       required: true,
     },
-    posts: [
+    postId: [
       {
         type: Schema.Types.ObjectId,
         ref: "Post",
-        required: false,
+        required: true,
       },
     ],
   },

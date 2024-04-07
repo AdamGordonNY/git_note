@@ -21,7 +21,7 @@ const NewExperience = ({
   errors,
 }: NewExperienceProps) => {
   return (
-    <section className="flex w-full flex-col gap-x-2 ">
+    <section className="flex w-full flex-col gap-2 ">
       <label
         className="paragraph-3-regular align-top text-white-500"
         htmlFor="experiences"

@@ -1,25 +1,30 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import React, { useEffect, useState } from "react";
 import ResourceTag from "../ResourceTag";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { getAllTags } from "@/lib/actions/tag.actions";
+import { Input } from "@/components/ui/input";
 interface AddTagProps {
-  setError: any;
   setTags: (newTag: string[]) => void;
-  trigger: any;
-  clearErrors: any;
   tags: string[];
 }
-const AddTag = ({
-  setError,
-  setTags,
-  trigger,
-  clearErrors,
-  tags,
-}: AddTagProps) => {
-  const [search, setSearch] = useState("");
+const AddTag = ({ setTags, tags }: AddTagProps) => {
+  const [open, setOpen] = useState(false);
   const [results, setResults] = useState([]);
-  const [newTag, setNewTag] = useState<string>("");
+  const [value, setValue] = useState("");
   const addTag = (tag: string) => {
     const newTag = [...tags, tag];
     setTags(newTag);
@@ -29,116 +34,71 @@ const AddTag = ({
     const newTag = tags.filter((t) => t !== tag);
     setTags(newTag);
   };
-  const handleInputKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    field: any
-  ) => {
-    if (e.key === "Enter" && field.name === "tags") {
-      e.preventDefault();
-
-      const tagInput = e.target as HTMLInputElement;
-      const tagValue = tagInput.value.trim();
-
-      if (tagValue !== "") {
-        if (tagValue.length > 15) {
-          return setError("tags", {
-            type: "required",
-            message: "Tag must be less than 15 characters.",
-          });
-        }
-
-        if (!field.value.includes(tagValue as never)) {
-          setTags([...field.value, tagValue]);
-          tagInput.value = "";
-          clearErrors("tags");
-        }
-      } else {
-        trigger();
-      }
-    }
-  };
 
   useEffect(() => {
-    const results = tags.filter((choice: any) =>
-      choice.name.toLowerCase().includes(search.toLowerCase())
-    );
-
-    setResults(results as any);
+    const getTags = async () => {
+      const tags = await getAllTags();
+      return tags;
+    };
+    const results = getTags();
+    if (results) {
+      setResults(results as any);
+    }
   }, [search, tags]);
   return (
-    <div className="flex-start mt-2.5 gap-2.5">
+    <section className="mt-2.5 flex  h-14 w-full gap-2.5">
       {/* Placeholder, plan on doing this area similar to the edit technology */}
-      <label htmlFor="tags" className="justify-start space-y-2 text-white-300">
-        Add or Search Tags
+      <label
+        htmlFor="tags"
+        className="paragraph-3-medium justify-start space-y-2 text-white-300"
+      >
+        tags
       </label>
-      <div className="flex w-full">
-        <div className="mt-10 box-border  flex w-full bg-black-700 px-2">
-          <div className="flex flex-row  content-center items-center justify-center  gap-x-3 ">
-            {tags && // eslint-disable-next-line array-callback-return
-              tags.map((tag: any, index: number) => {
-                return (
-                  <React.Fragment key={tag.name}>
-                    <div className="flex flex-wrap content-center items-center justify-stretch">
-                      <button onClick={() => removeTags(tag)}>
-                        <span
-                          key={index}
-                          className="paragraph-3-medium profile-shadow flex h-5 content-center items-center justify-center rounded bg-black-600 p-2 capitalize text-white-100"
-                        >
-                          <ResourceTag type="plain" />
-                        </span>
-                      </button>
-                    </div>
-                  </React.Fragment>
-                );
-              })}
-          </div>{" "}
-          <div className="min-w-1/2   justify-self-stretch bg-black-700">
-            <Input
-              className=" bg-black-700 text-white-100"
-              value={newTag}
-              onKeyDown={(e) => handleInputKeyDown(e, tags)}
-            />
-            <Input
-              className=" bg-black-700 text-white-100"
-              value={search}
-              placeholder="Search Tech..."
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex w-full flex-col content-stretch justify-items-center  bg-black-700 ">
-        {search &&
-          results.length > 0 &&
-          // eslint-disable-next-line array-callback-return
-          results.map((result: any, index: number) => {
-            if (tags?.includes(result.name)) {
-              return false;
-            }
-
-            return (
-              <React.Fragment key={result.name}>
-                <div className="flex flex-col gap-x-2" key={index}>
-                  <Button
-                    key={index}
-                    className="w-full text-white-100"
-                    onClick={() => addTag(result.name)}
+      <div className="flex w-full bg-black-700">
+        <Input />
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-full justify-between"
+            >
+              {value ? tags.find((tag) => tag === value) : "Select tag..."}
+              <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0">
+            <Command>
+              <CommandInput placeholder="Search tag..." />
+              <CommandEmpty>
+                No tag found. <Button onClick={() => addTag(value)}></Button>
+              </CommandEmpty>
+              <CommandGroup>
+                {tags.map((tag: string) => (
+                  <CommandItem
+                    key={tag}
+                    value={tag}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
+                    }}
                   >
-                    <li
-                      key={result.name}
-                      className="z-20 flex h-9 w-full flex-row content-center  items-center overflow-y-hidden rounded-[3px]   p-1"
-                    >
-                      <span className="paragraph-3-medium profile-shadow flex h-5 content-center items-center justify-center rounded bg-black-600 p-2 capitalize text-white-100">
-                        {result.name}
-                      </span>
-                    </li>
-                  </Button>
-                </div>
-              </React.Fragment>
-            );
-          })}
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === tag ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {tag}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </Command>
+          </PopoverContent>
+        </Popover>
       </div>
-    </div>
+    </section>
   );
 };
 

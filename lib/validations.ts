@@ -41,19 +41,14 @@ const ExperiencesSchema = z.array(
     name: z.string(),
   })
 );
-
+export const CreateTagSchema = z.array(z.string().min(4).max(15));
 export const CreatePostSchema = z.object({
   title: z.string().min(4).max(50),
   postType: z.string().min(4).max(50),
   description: z.string().min(10).max(200),
-  content: z.string().min(10).max(500),
-  tags: z.array(z.string()).optional(),
+  content: z.string().min(10).max(1000),
+  tags: CreateTagSchema.min(1).max(5),
   code: z.string().optional(),
   experiences: ExperiencesSchema.optional(),
   resourceLinks: ResourceLinkSchema.optional(),
-});
-
-export const CreateTagSchema = z.object({
-  name: z.string().min(4).max(50),
-  postId: z.string(),
 });
