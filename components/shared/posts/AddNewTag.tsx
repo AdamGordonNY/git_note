@@ -51,28 +51,35 @@ const AddNewTag = ({ postTags, setPostTags, uniqueTags }: AddNewTagProps) => {
       setResults([]);
       return;
     }
-    const results = data.filter((item) => item.includes(search));
+    const results = data.filter((item) =>
+      item.toLowerCase().includes(search.toLowerCase())
+    );
     setResults(results);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
   return (
     <>
-      <section className="flex gap-2">
-        {postTags.map((tag, i) => (
-          <ResourceTag
-            key={i}
-            type="plain"
-            text={tag}
-            onClick={() => removeTag(tag)}
-          />
-        ))}
+      <section className="flex flex-col gap-2">
+        <span className="paragraph-3-medium text-white-300">Tags</span>
+        <div className="flex gap-x-2">
+          {postTags.map((tag, i) => (
+            <ResourceTag
+              key={i}
+              type="plain"
+              text={tag}
+              onClick={() => removeTag(tag)}
+              className="cursor-pointer rounded-md !p-2 capitalize text-white-100 "
+            />
+          ))}
+        </div>
       </section>
-      <Command>
+      <Command className="bg-black-700 text-white-100">
         <CommandInput
+          className="bg-black-700 text-white-100"
           ref={inputRef}
           value={search}
           onValueChange={(e) => setSearch(e)}
-          placeholder="Type a command or search..."
+          placeholder="Enter or Search for a Tag"
         />
         <CommandList>
           <CommandGroup>
@@ -84,7 +91,9 @@ const AddNewTag = ({ postTags, setPostTags, uniqueTags }: AddNewTagProps) => {
                   setSearch("");
                 }}
               >
-                <CommandItem>{result}</CommandItem>
+                <CommandItem className="!capitalize !text-white-100 !opacity-100">
+                  {result}
+                </CommandItem>
               </div>
             ))}
           </CommandGroup>

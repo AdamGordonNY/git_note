@@ -14,7 +14,7 @@ interface ResourceTagProps extends React.PropsWithChildren {
 }
 
 const ResourceTag = ({ type, text, onClick, ...props }: ResourceTagProps) => {
-  const { children, ...rest } = props;
+  const { children, className, ...rest } = props;
 
   const badgeType = type || "knowledge";
   const baseClass =
@@ -42,7 +42,7 @@ const ResourceTag = ({ type, text, onClick, ...props }: ResourceTagProps) => {
 
   return (
     <span
-      className={`${baseClass} ${color[type || "plain"]} hover:${color[type || "plain"]}`}
+      className={`${baseClass} ${color[type || "plain"]} hover:${color[type || "plain"]} ${className}`}
       onClick={onClick}
       {...rest}
     >
