@@ -12,22 +12,11 @@ interface AddTagProps {
   tags: string[];
 
   uniqueTags: string[];
-  setError: any;
-
-  clearErrors: any;
-  trigger: any;
 }
 
-const AddTag = ({
-  setTags,
-  tags,
-  uniqueTags,
-  setError,
-  clearErrors,
-  trigger,
-}: AddTagProps) => {
+const AddTag = ({ setTags, tags, uniqueTags }: AddTagProps) => {
   const [results, setResults] = useState([]);
-
+  const [items, setItems] = useState<string[]>(uniqueTags);
   const [search, setSearch] = useState("");
 
   const addTag = (tag: string) => {
@@ -50,14 +39,17 @@ const AddTag = ({
     }
   };
   useEffect(() => {
-    const results = uniqueTags.filter((choice) =>
-      choice.toLowerCase().includes(search.toLowerCase())
+    setItems(uniqueTags);
+  }, [uniqueTags]);
+  useEffect(() => {
+    const results = items.filter((item: string) =>
+      item.toLowerCase().includes(search.toLowerCase())
     );
 
     setResults(results as any);
-  }, [search, uniqueTags]);
+  }, [search, items]);
   return (
-    <section className="py-7.5 mt-2.5 flex  w-full flex-col gap-2.5 px-6">
+    <section className="flex  w-full flex-col gap-2.5">
       {/* Placeholder, plan on doing this area similar to the edit tagnology */}
       <label
         htmlFor="tags"
@@ -83,30 +75,35 @@ const AddTag = ({
           <Input
             className=" bg-black-700 text-white-100"
             value={search}
+            id="tags"
             placeholder="Search Tags..."
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => handleKeyDown(e)}
           />
         </div>
 
-        <div className=" flex  w-1/2 flex-col">
+        <div className=" flex  w-1/2 flex-row space-y-2">
           {search &&
             results.length > 0 &&
             // eslint-disable-next-line array-callback-return
-            results.map((result: any, index: number) => {
-              if (tags.includes(result.name)) {
+            results.map((result: string, index: number) => {
+              if (tags.includes(result)) {
                 return false;
               }
 
               return (
                 <React.Fragment key={result}>
-                  <div className="flex flex-col gap-x-2" key={index}>
+                  <div className="flex flex-row gap-x-2" key={index}>
                     <Button
                       key={index}
                       className="w-full text-white-100"
                       onClick={() => addTag(result)}
                     >
-                      <ResourceTag text={result} type="plain" />
+                      <ResourceTag
+                        className="capitalize"
+                        text={result}
+                        type="plain"
+                      />
                     </Button>
                   </div>
                 </React.Fragment>

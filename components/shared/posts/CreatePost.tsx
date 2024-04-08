@@ -27,7 +27,7 @@ import NewDescription from "./NewDescription";
 
 import { Form } from "@/components/ui/form";
 
-import AddTag from "./AddTag";
+import AddNewTag from "./AddNewTag";
 
 interface CreatePostProps {
   uniqueTags: string[];
@@ -43,7 +43,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
       postType: "knowledge",
       description: "",
       content: "",
-      tags: [""],
+      tags: [],
       code: "",
       experiences: [{ name: "" }],
       resourceLinks: [],
@@ -66,10 +66,12 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
     control: form.control,
     name: "resourceLinks",
   });
-  const watchTags = useWatch({ control: form.control, name: "tags" });
-  const handleTagChange = (tags: string[]) => {
+
+  const postTags = useWatch({ control: form.control, name: "tags" });
+  const handleTagChange = (tags: any) => {
     form.setValue("tags", tags);
   };
+  const watchFormState = useWatch({ control: form.control });
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -89,6 +91,8 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
         title: link?.title,
         url: link?.url,
       })) || [];
+
+    // eslint-disable-next-line array-callback-return
 
     try {
       startTransition(async () => {
@@ -125,8 +129,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
   };
 
   useEffect(() => {
-    console.log(watchTags);
-    console.log(form.getValues());
+    console.log(watchFormState);
   });
 
   return (
@@ -144,13 +147,15 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           </span>
           <NewTitle register={form.register} />
           <NewPostType control={form.control} />
-          <AddTag
+          {/* <AddTag
             tags={watchTags}
-            trigger={form.trigger}
-            clearErrors={form.clearErrors}
             uniqueTags={uniqueTags}
-            setError={form.setError}
             setTags={handleTagChange}
+          /> */}
+          <AddNewTag
+            setPostTags={handleTagChange}
+            postTags={postTags}
+            uniqueTags={uniqueTags}
           />
           <NewDescription register={form.register} />
           <NewExperience
@@ -170,7 +175,12 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
             register={form.register}
           />
 
-          <CustomButton buttonType="primary" type="submit" disabled={pending}>
+          <CustomButton
+            buttonType="primary"
+            type="submit"
+            disabled={pending}
+            onClick={() => console.log(form.formState.errors)}
+          >
             Create Post {pending && <LoadingSpinner />}
           </CustomButton>
         </form>
