@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/command";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
+import { CommandList } from "cmdk";
 
 interface AddTagProps {
   setTags: (newTag: string[]) => void;
@@ -39,6 +40,7 @@ const AddTag = ({
   const [results, setResults] = useState([]);
   const [items, setItems] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
+  const [value, setValue] = React.useState("");
   // const addTag = (tag: string) => {
   //  const newTag = [...tags, tag];
   //  setTags(newTag);
@@ -88,15 +90,16 @@ const AddTag = ({
       console.log(uniqueTags);
       if (uniqueTags && uniqueTags.length > 0) {
         // Check if uniqueTags is defined
-        setItems(uniqueTags);
+        const newItems = uniqueTags.map((tag) => tag);
+        setItems(newItems as string[]);
         console.log(items);
       }
     }
 
     getItems();
-  }, [items, search, uniqueTags]);
+  }, []);
   useEffect(() => {
-    const results = items?.filter((choice) =>
+    const results = items.filter((choice) =>
       choice.toLowerCase().includes(search.toLowerCase())
     );
 
@@ -138,20 +141,22 @@ const AddTag = ({
           </PopoverTrigger>
           <PopoverContent className="p-0" side="right" align="start">
             <CommandDialog open={open} onOpenChange={setOpen}>
-              <Command label="Add Tags">
+              <Command label="Add Tags" shouldFilter={false}>
                 <CommandInput
                   value={search!}
                   onValueChange={setSearch}
                 ></CommandInput>
                 <CommandEmpty>No Tags Found</CommandEmpty>
                 <CommandGroup>
-                  {results.map((result: string, index: number) => (
-                    <CommandItem
-                      key={index}
-                      onSelect={() => addTag(result)}
-                      title={result}
-                    ></CommandItem>
-                  ))}
+                  <CommandList>
+                    {results.map((result: string, index: number) => (
+                      <CommandItem
+                        key={index}
+                        onSelect={() => addTag(result)}
+                        title={result}
+                      />
+                    ))}
+                  </CommandList>
                 </CommandGroup>
               </Command>
             </CommandDialog>
