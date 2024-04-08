@@ -3,6 +3,8 @@
 @tailwind utilities;
 @import "../styles/day-picker.css";
 @import "../styles/theme.css";
+
+@import "../styles/prism.css";
 body {
   font-family: "Inter", sans-serif;
 }
@@ -111,6 +113,38 @@ rdp {
 [data-state="incomplete"] {
   @apply bg-black-600;
 }
-border-profile-top {
+.border-profile-top {
   border: 1px solid #4448691a;
+}
+.code-editor-container {
+  position: relative;
+  border: 1px solid #000;
+}
+.code-editor-textarea {
+  font-family: monospace;
+  resize: none;
+  line-height: 1.5;
+  padding-left: 20px;
+  width: full;
+  white-space: nowrap;
+  background-color: transparent;
+  color: aliceblue;
+  overflow: hidden;
+}
+.code-editor-line-numbers {
+  position: absolute;
+  font-family: monospace;
+  top: 0;
+  left: 0;
+  line-height: 1.5;
+}
+.code-editor-textarea:focus {
+  outline: none;
+}
+.code-editor-container::-webkit-scrollbar {
+  background-color: #232323;
+}
+.code-editor-container::-webkit-scrollbar-thumb {
+  background-color: #232323;
+  width: 10px;
 }

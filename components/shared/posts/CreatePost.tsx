@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useTransition } from "react";
+import React, { useTransition } from "react";
 import {
   SubmitHandler,
   useForm,
@@ -22,7 +22,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import { toast } from "@/components/ui/use-toast";
 import NewTitle from "./NewTitle";
 import NewPostType from "./NewPostType";
-
+import CodeEditor from "./CodeEditor";
 import NewDescription from "./NewDescription";
 
 import { Form } from "@/components/ui/form";
@@ -71,7 +71,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
   const handleTagChange = (tags: any) => {
     form.setValue("tags", tags);
   };
-  const watchFormState = useWatch({ control: form.control });
+
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -85,14 +85,12 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
       experiences,
       resourceLinks,
     } = data;
-    console.log(data);
+
     const dbResources =
       resourceLinks?.map((link) => ({
         title: link?.title,
         url: link?.url,
       })) || [];
-
-    // eslint-disable-next-line array-callback-return
 
     try {
       startTransition(async () => {
@@ -128,10 +126,6 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    console.log(watchFormState);
-  });
-
   return (
     <section>
       <Form {...form}>
@@ -147,17 +141,14 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           </span>
           <NewTitle register={form.register} />
           <NewPostType control={form.control} />
-          {/* <AddTag
-            tags={watchTags}
-            uniqueTags={uniqueTags}
-            setTags={handleTagChange}
-          /> */}
+
           <AddNewTag
             setPostTags={handleTagChange}
             postTags={postTags}
             uniqueTags={uniqueTags}
           />
           <NewDescription register={form.register} />
+          <CodeEditor register={form.register} />
           <NewExperience
             errors={form.setError}
             experienceFields={experience}
