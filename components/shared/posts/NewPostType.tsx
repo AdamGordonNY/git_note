@@ -26,7 +26,7 @@ const NewPostType = ({ control }: NewPostTypeProps) => {
               className=" flex w-[full] flex-1 bg-black-700 text-white-100"
               id="postType"
             >
-              <SelectValue defaultValue="knowledge" />
+              <SelectValue defaultValue="knowledge" ref={field.ref} />
             </SelectTrigger>
             <SelectContent className="flex w-full bg-black-700 group-focus-within:fill-mode-forwards data-[state=open]:bg-black-700">
               <SelectItem value="knowledge">

@@ -126,6 +126,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
 
   useEffect(() => {
     console.log(watchTags);
+    console.log(form.getValues());
   });
 
   return (
