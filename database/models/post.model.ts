@@ -64,12 +64,10 @@ const PostSchema = new Schema({
       },
     },
   ],
-  tags: [
-    {
-      type: [String],
-      required: true,
-    },
-  ],
+  tags: {
+    type: [String],
+    required: true,
+  },
 });
 
 export default models?.Post || model<IPost>("Post", PostSchema);

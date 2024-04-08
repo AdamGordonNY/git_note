@@ -110,8 +110,9 @@ export const createNewPost = async (data: CreateNewPostParams) => {
       experiences: data.experiences,
     });
 
-    console.log(post);
-    return true;
+    if (post) {
+      return true;
+    }
   } catch (error) {
     console.log(error);
     return false;
