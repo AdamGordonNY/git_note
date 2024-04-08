@@ -13,7 +13,23 @@ import {
 } from "./shared.types";
 import { getSession } from "../authOptions";
 import { getOneUser } from "./user.actions";
-import { createNewTag } from "./tag.actions";
+
+export const getUniqueTags = async () => {
+  try {
+    const uniqueTags = await Post.aggregate([
+      { $unwind: "$tags" },
+      { $group: { _id: null, tags: { $addToSet: "$tags" } } },
+      { $project: { tags: 1, _id: 0 } },
+    ]);
+    if (uniqueTags.length > 0) {
+      return uniqueTags[0].tags;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error retrieving tags", error);
+  }
+};
 // just using basic crud funcitons for now
 export const getAllPosts = async (params: GetPostParams) => {
   try {
@@ -93,11 +109,7 @@ export const createNewPost = async (data: CreateNewPostParams) => {
       resourceLinks: data.resourceLinks,
       experiences: data.experiences,
     });
-    if (post) {
-      post.tags.map((tag: string) =>
-        createNewTag({ name: tag, postId: post._id })
-      );
-    }
+
     console.log(post);
     return true;
   } catch (error) {

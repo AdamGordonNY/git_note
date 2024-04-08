@@ -10,9 +10,10 @@ interface ResourceTagProps extends React.PropsWithChildren {
   icon?: React.JSX.Element;
   text?: string;
   className?: string;
+  onClick?: () => void;
 }
 
-const ResourceTag = ({ type, text, ...props }: ResourceTagProps) => {
+const ResourceTag = ({ type, text, onClick, ...props }: ResourceTagProps) => {
   const { children, ...rest } = props;
 
   const badgeType = type || "knowledge";
@@ -42,6 +43,7 @@ const ResourceTag = ({ type, text, ...props }: ResourceTagProps) => {
   return (
     <span
       className={`${baseClass} ${color[type || "plain"]} hover:${color[type || "plain"]}`}
+      onClick={onClick}
       {...rest}
     >
       {type !== "plain" && (

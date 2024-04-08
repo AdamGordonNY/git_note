@@ -1,19 +1,17 @@
 import React from "react";
 import CreatePost from "@/components/shared/posts/CreatePost";
-import { getSession } from "@/lib/authOptions";
-import { getOneUser } from "@/lib/actions/user.actions";
-import { IUser } from "@/database/models/user.model";
+import { getUniqueTags } from "@/lib/actions/post.actions";
+import dbConnect from "@/database/dbConnect";
+import Post from "@/database/models/post.model";
 const Page = async () => {
-  const session = await getSession();
-  let user;
-
-  if (session) {
-    user = await getOneUser(session?.user?.email!);
-  }
-  const cleanUser: IUser = JSON.parse(JSON.stringify(user));
+  await dbConnect();
+  const posts = await Post.find({});
+  console.log(posts);
+  const uniqueTags = await getUniqueTags();
+  console.log(uniqueTags);
   return (
     <div className="flex w-full flex-col px-[30px]">
-      <CreatePost user={cleanUser} />
+      <CreatePost uniqueTags={uniqueTags} />
     </div>
   );
 };
