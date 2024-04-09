@@ -127,9 +127,12 @@ rdp {
   padding-left: 20px;
   width: full;
   white-space: nowrap;
-  background-color: transparent;
+  background-color: #2e3757;
   color: aliceblue;
   overflow: hidden;
+  box-shadow: 0px 0px 0px 1px #1212121a;
+
+  box-shadow: 0px 1px 1px 0px #1212121a;
 }
 .code-editor-line-numbers {
   position: absolute;

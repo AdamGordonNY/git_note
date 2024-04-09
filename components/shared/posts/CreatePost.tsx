@@ -148,7 +148,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
             uniqueTags={uniqueTags}
           />
           <NewDescription register={form.register} />
-          <CodeEditor register={form.register} />
+          <CodeEditor register={form.register} control={form.control} />
           <NewExperience
             errors={form.setError}
             experienceFields={experience}
