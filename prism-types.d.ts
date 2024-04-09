@@ -1,0 +1,12 @@
+declare module "prismjs/components/prism-core";
+declare module "prismjs/components/prism-javascript";
+declare module "prismjs/components/prism-python";
+declare module "prismjs/components/prism-java";
+declare module "prismjs/components/prism-jsx";
+declare module "prismjs/components/prism-typescript";
+declare module "prismjs/components/prism-solidity";
+declare module "prismjs/components/prism-json";
+declare module "prismjs/components/prism-sql";
+declare module "prismjs/components/prism-mongodb";
+declare module "prismjs/plugins/line-numbers/prism-line-numbers.js";
+declare module "prismjs/plugins/line-numbers/prism-line-numbers.css";
