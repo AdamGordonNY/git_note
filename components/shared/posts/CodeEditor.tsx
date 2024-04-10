@@ -15,34 +15,29 @@ import "prismjs/components/prism-sql";
 import "prismjs/components/prism-mongodb";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import "@/styles/prism.css";
+import "prismjs/themes/prism.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface CodeEditorProps {
   register: any;
-  control: any;
-  setValue?: any;
+  watch: any;
 }
-const CodeEditor = ({ register, control, setValue }: CodeEditorProps) => {
-  const codeEditorRef = register("code").ref;
-  const codeRef = React.useRef(codeEditorRef);
-  const codeValue = register("code").value;
-  //  const generateLineNumbers = () => {
-  //    const lines = codeValue.split("\n");
-  //    // @ts-ignore
-  //    return lines.map((_, idx) => {
-  //      return <div key={idx}>{idx + 1} </div>;
-  //    });
-  //  };
-  useEffect(() => {
-    if (codeEditorRef.current) {
-      codeEditorRef.current.style.height = "auto";
-      codeEditorRef.current.style.height =
-        codeEditorRef.current.scrollHeight + "px";
-    }
+const CodeEditor = ({ register, watch }: CodeEditorProps) => {
+  const setRef = (element: any) => {
+    // Call the register ref function to ensure the input is registered
+    register("code").ref(element);
 
+    if (element) {
+      element.style.height = "auto";
+      element.style.height = element.scrollHeight + "px";
+    }
+  };
+
+  const codeValue = watch("code");
+
+  useEffect(() => {
     Prism.highlightAll();
-  }, [codeEditorRef, codeValue]);
+  }, [codeValue]); // Rerun Prism.highlightAll when codeValue changes
   return (
     <>
       <Tabs className="space-y-2">
@@ -60,10 +55,11 @@ const CodeEditor = ({ register, control, setValue }: CodeEditorProps) => {
             <Textarea
               contentEditable
               id="code"
-              className="code-editor-textarea px-3.5 py-3"
+              className="code-editor-textarea bg-black-600 px-3.5 py-3"
               spellCheck={false}
               placeholder="Write your code here"
               {...register("code")}
+              ref={setRef}
             />
 
             <div className="code-editor-line-numbers"></div>
