@@ -202,4 +202,7 @@
   .tech-badges {
     @apply px-0.5 py-1 gap-1 rounded-[3px] bg-black-600 text-white-100 h-[24px] border-[1px] w-full;
   }
+  .faded {
+    background: #adb3cc0d;
+  }
 }

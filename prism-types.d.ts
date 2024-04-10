@@ -10,3 +10,4 @@ declare module "prismjs/components/prism-sql";
 declare module "prismjs/components/prism-mongodb";
 declare module "prismjs/plugins/line-numbers/prism-line-numbers.js";
 declare module "prismjs/plugins/line-numbers/prism-line-numbers.css";
+declare module "prismjs/themes/prism.css";

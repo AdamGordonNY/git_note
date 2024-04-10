@@ -1,10 +1,9 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
-import Prism from "prismjs";
-import { Code } from "lucide-react";
-import React, { useEffect } from "react";
-import "prismjs/components/prism-javascript";
 
+import { CodeIcon } from "lucide-react";
+import React from "react";
+import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-jsx";
@@ -23,29 +22,38 @@ interface CodeEditorProps {
   watch: any;
 }
 const CodeEditor = ({ register, watch }: CodeEditorProps) => {
-  const setRef = (element: any) => {
-    // Call the register ref function to ensure the input is registered
-    register("code").ref(element);
-
-    if (element) {
-      element.style.height = "auto";
-      element.style.height = element.scrollHeight + "px";
-    }
+  const code = watch("code");
+  const generateLineNumbers = () => {
+    const lines = code.split("\n");
+    // @ts-ignore
+    return lines.map((_, idx) => {
+      return <div key={idx}>{idx + 1} </div>;
+    });
   };
+  // const setRef = (element: any) => {
+  //   // Call the register ref function to ensure the input is registered
+  //   register("code").ref(element);
 
-  const codeValue = watch("code");
+  //   if (element) {
+  //     element.style.height = "auto";
+  //     element.style.height = element.scrollHeight + "px";
+  //   }
+  // };
 
-  useEffect(() => {
-    Prism.highlightAll();
-  }, [codeValue]); // Rerun Prism.highlightAll when codeValue changes
+  // const codeValue = watch("code");
+
+  // useEffect(() => {
+  //   Prism.highlightAll();
+  // }, [codeValue]);
   return (
     <>
-      <Tabs className="space-y-2">
+      <Tabs className="w-full space-y-2">
         {" "}
         <TabsList className="grid w-[222px]  grid-cols-2">
-          <TabsTrigger value="code" className="w-1/2">
-            <Code size={16} /> Code{" "}
+          <TabsTrigger value="code" className="bg-black-600 text-white-300">
+            <CodeIcon fill="black-700" stroke="white-300" size={16} /> Code
           </TabsTrigger>
+
           <TabsTrigger className="w-1/2" value="preview">
             Preview
           </TabsTrigger>
@@ -59,16 +67,17 @@ const CodeEditor = ({ register, watch }: CodeEditorProps) => {
               spellCheck={false}
               placeholder="Write your code here"
               {...register("code")}
-              ref={setRef}
             />
 
-            <div className="code-editor-line-numbers"></div>
+            <div className="code-editor-line-numbers">
+              {generateLineNumbers()}
+            </div>
           </div>
         </TabsContent>
         <TabsContent value="preview">
-          <pre>
-            <code className="language-javascript"> {codeValue}</code>
-          </pre>
+          <div className="gap-7.5 h-[361px] w-full">
+            <div></div>
+          </div>
         </TabsContent>
       </Tabs>
     </>
