@@ -51,4 +51,5 @@ export const CreatePostSchema = z.object({
   code: z.string().optional(),
   experiences: ExperiencesSchema.optional(),
   resourceLinks: ResourceLinkSchema.optional(),
+  image: z.string().url().optional(),
 });

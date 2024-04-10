@@ -1,20 +1,9 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
 
-import { CodeIcon } from "lucide-react";
+import { CodeIcon, Eye } from "lucide-react";
 import React from "react";
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-java";
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-typescript";
-import "prismjs/components/prism-solidity";
-import "prismjs/components/prism-json";
-import "prismjs/components/prism-sql";
-import "prismjs/components/prism-mongodb";
-import "prismjs/plugins/line-numbers/prism-line-numbers.js";
-import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import "prismjs/themes/prism.css";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface CodeEditorProps {
@@ -47,15 +36,15 @@ const CodeEditor = ({ register, watch }: CodeEditorProps) => {
   // }, [codeValue]);
   return (
     <>
-      <Tabs className="w-full space-y-2">
+      <Tabs className="w-full space-y-2 ">
         {" "}
-        <TabsList className="grid w-[222px]  grid-cols-2">
-          <TabsTrigger value="code" className="bg-black-600 text-white-300">
-            <CodeIcon fill="black-700" stroke="white-300" size={16} /> Code
+        <TabsList className="h-[36px] bg-black-600 text-white-100">
+          <TabsTrigger value="code" className="flex gap-x-2">
+            <CodeIcon size={16} /> Code
           </TabsTrigger>
 
-          <TabsTrigger className="w-1/2" value="preview">
-            Preview
+          <TabsTrigger className="flex gap-x-2" value="preview">
+            <Eye size={16} /> Preview
           </TabsTrigger>
         </TabsList>
         <TabsContent value="code">

@@ -5,13 +5,13 @@ import React from "react";
 import CustomButton from "../CustomButton";
 import Image from "next/image";
 import blueCheck from "@/public/icons/checksquare.svg";
-import { ErrorMessage } from "@hookform/error-message";
+
 interface NewExperienceProps {
   experienceFields: any;
   removeExperience: (index: number) => void;
   appendExperience: (experience: { name: string }) => void;
   register: any;
-  errors: any;
+  errors?: any;
 }
 const NewExperience = ({
   experienceFields,
@@ -96,7 +96,6 @@ const NewExperience = ({
       >
         Add Knowledge
       </CustomButton>
-      {errors && <ErrorMessage errors={errors} name="experiences" />}
     </section>
   );
 };
