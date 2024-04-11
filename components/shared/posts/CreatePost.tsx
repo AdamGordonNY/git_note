@@ -26,6 +26,7 @@ import CodeEditor from "./CodeEditor";
 import NewDescription from "./NewDescription";
 import { ErrorMessage } from "@hookform/error-message";
 import AddNewTag from "./AddNewTag";
+import { Separator } from "@/components/ui/separator";
 
 interface CreatePostProps {
   uniqueTags: string[];
@@ -197,6 +198,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           as="p"
           render={({ message }) => <p className="text-red-500">{message}</p>}
         />
+        <Separator />
         <NewContent control={control} />
         <ErrorMessage
           errors={errors}

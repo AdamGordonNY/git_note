@@ -9,7 +9,8 @@ const NewContent = ({ control }: NewContentProps) => {
   const editorRef = useRef<any>(null);
 
   return (
-    <section>
+    <section className="px-7.5 mb-[30px]  gap-[30px]">
+      <span className="paragraph-4-medium text-white-500"> CONTENT </span>
       <Controller
         control={control}
         name="content"

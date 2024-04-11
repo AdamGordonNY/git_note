@@ -20,7 +20,7 @@ const NewResourceLink = ({
   return (
     <section className="flex w-full flex-col gap-2">
       <label
-        className="paragraph-4-medium text-white-300"
+        className="paragraph-4-medium text-white-500"
         htmlFor="resourceLinks"
       >
         RESOURCES AND LINKS
