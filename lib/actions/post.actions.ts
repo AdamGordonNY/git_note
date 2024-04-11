@@ -97,21 +97,33 @@ export const createNewPost = async (data: CreateNewPostParams) => {
     }
     const user = await getOneUser(userEmail);
     const userId = user?._id;
-
-    const post = await Post.create({
-      title: data.title,
-      description: data.description,
-      content: data.content,
-      code: data.code,
-      author: userId,
-      postType: data.postType,
-      tags: data.tags,
-      resourceLinks: data.resourceLinks,
-      experiences: data.experiences,
-    });
-
-    if (post) {
-      return true;
+    if (data.postType === "component") {
+      const post = await Post.create({
+        title: data.title,
+        description: data.description,
+        content: data.content,
+        code: data.code,
+        author: userId,
+        postType: data.postType,
+        tags: data.tags,
+        resourceLinks: data.resourceLinks,
+        experiences: data.experiences,
+        image: data.image,
+      });
+      if (post) return true;
+    } else {
+      const post = await Post.create({
+        title: data.title,
+        description: data.description,
+        content: data.content,
+        code: data.code,
+        author: userId,
+        postType: data.postType,
+        tags: data.tags,
+        resourceLinks: data.resourceLinks,
+        experiences: data.experiences,
+      });
+      if (post) return true;
     }
   } catch (error) {
     console.log(error);

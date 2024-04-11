@@ -20,6 +20,7 @@ export interface CreateNewPostParams {
   }[];
   code?: string;
   experiences?: string[];
+  image?: string;
 }
 export interface CreateNewTagParams {
   name: string;
