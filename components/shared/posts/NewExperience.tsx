@@ -23,7 +23,7 @@ const NewExperience = ({
   return (
     <section className="flex w-full flex-col gap-2 ">
       <label
-        className="paragraph-3-regular align-top text-white-500"
+        className="paragraph-3-regular align-top text-white-300"
         htmlFor="experiences"
       >
         What was Learned

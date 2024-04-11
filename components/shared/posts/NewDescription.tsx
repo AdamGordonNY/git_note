@@ -7,9 +7,9 @@ interface NewDescriptionProps {
 }
 const NewDescription = ({ register, errors }: NewDescriptionProps) => {
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col gap-2">
       <label
-        className="paragraph-3-regular text-white-500"
+        className="paragraph-3-regular text-white-300"
         htmlFor="description"
       >
         Description

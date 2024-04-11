@@ -68,6 +68,35 @@ const AddNewTag = ({
     <>
       <section className="flex flex-col gap-2">
         <span className="paragraph-3-medium text-white-300">Tags</span>
+
+        <Command className="bg-black-700 text-white-100">
+          <CommandInput
+            className="bg-black-700 text-white-100"
+            ref={inputRef}
+            value={search}
+            onValueChange={(e) => setSearch(e)}
+            placeholder="Enter or Search for a Tag"
+          />
+          <CommandList>
+            {results.length !== 0 && (
+              <CommandGroup>
+                {results.map((result, i) => (
+                  <div
+                    key={i}
+                    onClick={() => {
+                      addTag(result);
+                      setSearch("");
+                    }}
+                  >
+                    <CommandItem className="!capitalize !text-white-100 !opacity-100">
+                      {result}
+                    </CommandItem>
+                  </div>
+                ))}
+              </CommandGroup>
+            )}
+          </CommandList>
+        </Command>
         <div className="flex gap-x-2">
           {postTags.map((tag, i) => (
             <ResourceTag
@@ -79,34 +108,8 @@ const AddNewTag = ({
             />
           ))}
         </div>
+        {errors && <ErrorMessage errors={errors} name="tags" />}
       </section>
-      <Command className="bg-black-700 text-white-100">
-        <CommandInput
-          className="bg-black-700 text-white-100"
-          ref={inputRef}
-          value={search}
-          onValueChange={(e) => setSearch(e)}
-          placeholder="Enter or Search for a Tag"
-        />
-        <CommandList>
-          <CommandGroup>
-            {results.map((result, i) => (
-              <div
-                key={i}
-                onClick={() => {
-                  addTag(result);
-                  setSearch("");
-                }}
-              >
-                <CommandItem className="!capitalize !text-white-100 !opacity-100">
-                  {result}
-                </CommandItem>
-              </div>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </Command>
-      {errors && <ErrorMessage errors={errors} name="tags" />}
     </>
   );
 };

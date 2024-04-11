@@ -28,7 +28,6 @@ interface EditProfileProps {
 }
 
 const EditProfile = ({ user }: EditProfileProps) => {
-  console.log(user);
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 

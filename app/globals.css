@@ -153,3 +153,33 @@ rdp {
 .code-editor-container::-webkit-scrollbar-thumb {
   background-color: white;
 }
+.tox-editor-container {
+  @apply !bg-black-700;
+}
+.tox-editor-header {
+  @apply !bg-black-700;
+}
+.tox-toolbar-overlord {
+  @apply !bg-black-700;
+}
+.tox-toolbar__primary {
+  @apply !bg-black-600;
+}
+.tox-toolbar__group > button {
+  @apply !bg-black-600 !text-white-300;
+}
+.tox-toolbar__group > button > span > svg {
+  @apply fill-black-700 stroke-white-300;
+}
+.tox-split-button > span {
+  @apply !bg-black-600 !text-white-300;
+}
+.tox-split-button > span > span > svg {
+  @apply !fill-black-700 !stroke-white-300;
+}
+.tox-statusbar {
+  @apply !hidden;
+}
+.tox-tinymce {
+  @apply !border-black-700;
+}

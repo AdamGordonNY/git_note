@@ -9,7 +9,7 @@ const NewContent = ({ register, control }: NewContentProps) => {
   const editorRef = useRef<any>(null);
 
   return (
-    <section className="border-#4448691A border-t">
+    <section>
       <Controller
         control={control}
         name="content"
@@ -48,9 +48,7 @@ const NewContent = ({ register, control }: NewContentProps) => {
                 "codesample | bold italic h1 h2 image blockquote link" +
                 " bullist numlist",
               content_style:
-                "body { font-family:Inter; font-size:16px background-color:black-700; color:white-300 }",
-              skin: "oxide-dark",
-              content_css: "dark",
+                "body { font-family:Inter; font-size:16px; background-color:#1D2032; color:#ADB2CC }",
             }}
             value={field.value}
           />

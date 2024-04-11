@@ -80,7 +80,7 @@ const CodeEditor = ({
 
   return (
     <>
-      <Tabs className={` w-full space-y-2 text-white-300` + `${className}`}>
+      <Tabs className={` w-full ga space-y-2 text-white-300` + `${className}`}>
         {" "}
         <TabsList className=" rounded-[5px] bg-black-600 px-0.5 ">
           <TabsTrigger

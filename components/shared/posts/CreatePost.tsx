@@ -24,7 +24,7 @@ import NewTitle from "./NewTitle";
 import NewPostType from "./NewPostType";
 import CodeEditor from "./CodeEditor";
 import NewDescription from "./NewDescription";
-
+import { ErrorMessage } from "@hookform/error-message";
 import AddNewTag from "./AddNewTag";
 
 interface CreatePostProps {
@@ -108,6 +108,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           tags,
           code,
           description,
+          image,
           experiences: experiences?.map((experience) => experience.name),
           resourceLinks: dbResources.map((link) => ({
             title: link?.title || "",
@@ -125,6 +126,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
             code: "",
             experiences: [],
             resourceLinks: [],
+            image,
           });
         } else {
           toast({ title: "Failed to create post", variant: "destructive" });
@@ -132,6 +134,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
       });
     } catch (error) {}
   };
+  const image = watch("image");
 
   return (
     <section>
@@ -153,7 +156,14 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           postTags={postTags}
           uniqueTags={uniqueTags}
         />
+        <ErrorMessage
+          className="text-red-500"
+          errors={errors}
+          name="tags"
+          as="p"
+        />
         <NewDescription register={register} />
+        <ErrorMessage errors={errors} name="description" as="p" />
         {postType === "component" ? (
           <CodeEditor
             register={register}
@@ -178,12 +188,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           register={register}
         />
 
-        <CustomButton
-          buttonType="primary"
-          type="submit"
-          disabled={pending}
-          onClick={() => console.log(errors)}
-        >
+        <CustomButton buttonType="primary" type="submit" disabled={pending}>
           Create Post {pending && <LoadingSpinner />}
         </CustomButton>
       </form>

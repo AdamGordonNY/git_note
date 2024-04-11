@@ -74,7 +74,6 @@ export const validatePassword = async (
 export const turnNameToIcon = (iconName: string) => {
   switch (iconName.toLowerCase()) {
     case "react":
-      console.log("react");
       return <DiReact />;
     case "nodejs":
       return <DiNodejs />;

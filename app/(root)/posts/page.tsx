@@ -10,7 +10,7 @@ const AllPostsPage = async () => {
     posts = await getAllPosts({ filter: "old" });
   }
   const cleanPosts = JSON.parse(JSON.stringify(posts));
-  console.log(cleanPosts);
+
   return (
     <section className="flex w-full flex-col">
       {/* <AllPosts posts={cleanPosts?.posts!} />{" "} */}

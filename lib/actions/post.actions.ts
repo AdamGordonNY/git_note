@@ -89,7 +89,7 @@ export const getPostById = async (postId: GetTagByPostIdParams) => {
 export const createNewPost = async (data: CreateNewPostParams) => {
   try {
     await dbConnect();
-    console.log(data);
+
     const session = await getSession();
     const userEmail = session?.user?.email;
     if (!userEmail) {
