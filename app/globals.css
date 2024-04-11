@@ -108,10 +108,7 @@ rdp {
   background-color: #42bbff;
   color: #e7edff;
 }
-[data-state="active"] {
-  background-color: #adb3cc0d;
-  /* Segmented tabs */
-}
+
 [data-state="incomplete"] {
   @apply bg-black-600;
 }
@@ -188,4 +185,9 @@ rdp {
 }
 .tox .tox-edit-area::before {
   @apply border-none;
+}
+.tabs-shadow {
+  box-shadow: 0px 1px 3px 0px #0b13241a;
+
+  box-shadow: 0px 1px 1px 0px #0b13241a;
 }

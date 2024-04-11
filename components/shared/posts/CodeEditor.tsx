@@ -80,18 +80,21 @@ const CodeEditor = ({
 
   return (
     <>
-      <Tabs className={` w-full ga space-y-2 text-white-300` + `${className}`}>
+      <Tabs
+        defaultValue="code"
+        className={` w-full space-y-2 text-white-300  ${className} `}
+      >
         {" "}
-        <TabsList className=" rounded-[5px] bg-black-600 px-0.5 ">
+        <TabsList className="tabs-shadow  bg-black-600  ">
           <TabsTrigger
             value="code"
-            className="paragraph-3-medium flex gap-x-2 rounded-[5px] px-1.5 py-4"
+            className="paragraph-3-medium flex w-[111px] gap-x-2  rounded-[5px] bg-black-600 px-1.5 py-4"
           >
             <CodeIcon size={16} /> Code
           </TabsTrigger>
 
           <TabsTrigger
-            className="paragraph-3-medium flex gap-x-2 rounded-[5px] px-1.5 py-4"
+            className="paragraph-3-medium flex w-[111px] gap-x-2 rounded-[5px] bg-black-700 px-1.5 py-4"
             value="preview"
           >
             <Eye size={16} /> Preview
