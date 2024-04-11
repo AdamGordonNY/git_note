@@ -108,7 +108,10 @@ rdp {
   background-color: #42bbff;
   color: #e7edff;
 }
-
+[data-state="active"] {
+  background-color: #adb3cc0d;
+  /* Segmented tabs */
+}
 [data-state="incomplete"] {
   @apply bg-black-600;
 }
@@ -137,7 +140,7 @@ rdp {
 .code-editor-line-numbers {
   position: absolute;
   font-family: monospace;
-  top: 0;
+  top: 12.5px;
   left: 0;
   line-height: 1.5;
 }

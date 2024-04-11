@@ -7,12 +7,19 @@ import {
 } from "@/components/ui/command";
 import React, { useEffect, useState } from "react";
 import ResourceTag from "../ResourceTag";
+import { ErrorMessage } from "@hookform/error-message";
 interface AddNewTagProps {
   postTags: string[];
   setPostTags: (tags: string[]) => void;
   uniqueTags: string[];
+  errors?: any;
 }
-const AddNewTag = ({ postTags, setPostTags, uniqueTags }: AddNewTagProps) => {
+const AddNewTag = ({
+  postTags,
+  setPostTags,
+  uniqueTags,
+  errors,
+}: AddNewTagProps) => {
   const data = uniqueTags;
   const [search, setSearch] = useState("");
   const [results, setResults] = useState<string[]>([]);
@@ -99,6 +106,7 @@ const AddNewTag = ({ postTags, setPostTags, uniqueTags }: AddNewTagProps) => {
           </CommandGroup>
         </CommandList>
       </Command>
+      {errors && <ErrorMessage errors={errors} name="tags" />}
     </>
   );
 };
