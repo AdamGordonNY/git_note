@@ -183,3 +183,9 @@ rdp {
 .tox-tinymce {
   @apply !border-black-700;
 }
+.mce-content-body {
+  @apply !bg-black-700 border-none;
+}
+.tox .tox-edit-area::before {
+  @apply border-none;
+}
