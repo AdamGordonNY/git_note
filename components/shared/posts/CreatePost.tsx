@@ -155,7 +155,12 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
         />
         <NewDescription register={register} />
         {postType === "component" ? (
-          <CodeEditor register={register} watch={watch} errors={errors} />
+          <CodeEditor
+            register={register}
+            watch={watch}
+            errors={errors}
+            setValue={setValue}
+          />
         ) : null}
         <NewExperience
           experienceFields={experience}

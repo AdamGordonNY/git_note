@@ -9,13 +9,13 @@ import { ErrorMessage } from "@hookform/error-message";
 import { uploadImage } from "@/lib/actions/cloudinary.actions";
 import { LuUploadCloud } from "react-icons/lu";
 import { toast } from "@/components/ui/use-toast";
-
+import Image from "next/image";
 interface CodeEditorProps {
   register: any;
   watch: any;
   errors?: any;
   className?: string;
-  setValue?: (name: string, image: string) => void;
+  setValue: any;
   postType?: string;
 }
 const CodeEditor = ({
@@ -49,7 +49,7 @@ const CodeEditor = ({
     });
   };
 
-  const handleFileChange = async (event) => {
+  const handleFileChange = async (event: any) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -61,8 +61,13 @@ const CodeEditor = ({
       });
       setUploadedImageUrl(uploadResult);
       if (uploadResult) {
-        setValue && setValue("image", uploadResult);
+        setValue("image", uploadResult);
       }
+      toast({
+        type: "foreground",
+        variant: "default",
+        title: "Image Uploaded Successfully",
+      });
     } catch (error) {
       console.log(error);
       toast({
@@ -109,10 +114,21 @@ const CodeEditor = ({
           </div>
         </TabsContent>
         <TabsContent value="preview">
-          <div
-            className="gap-7.5 flex h-[361px] w-full flex-col content-center items-center justify-center space-y-2 bg-black-800"
-            style={{ backgroundImage: "url('/images/placeholder.png')" }}
-          >
+          <div className="gap-7.5 relative flex h-[361px] w-full flex-col content-center items-center justify-center space-y-2 bg-black-800 ">
+            <div
+              style={{ backgroundImage: ` "url('/images/placeholder.png')"` }}
+            >
+              {uploadedImageUrl && (
+                <Image
+                  src={uploadedImageUrl}
+                  alt="uploaded image"
+                  className=" object-cover"
+                  height={200}
+                  width={200}
+                  sizes="200px"
+                />
+              )}
+            </div>
             <input
               type="hidden"
               {...rest}
