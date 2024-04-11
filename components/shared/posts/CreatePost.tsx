@@ -149,6 +149,14 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           Basic Information
         </span>
         <NewTitle register={register} />
+        {errors && (
+          <ErrorMessage
+            errors={errors}
+            name="title"
+            as="p"
+            render={({ message }) => <p className="text-red-500">{message}</p>}
+          />
+        )}
         <NewPostType control={control} />
 
         <AddNewTag
@@ -157,7 +165,6 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           uniqueTags={uniqueTags}
         />
         <ErrorMessage
-          className="text-red-500"
           errors={errors}
           name="tags"
           as="p"
@@ -184,16 +191,31 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           removeExperience={removeExperience}
           register={register}
         />
-
-        <NewContent control={control} />
-        <NewResourceLink
+        <ErrorMessage
           errors={errors}
+          name="experiences"
+          as="p"
+          render={({ message }) => <p className="text-red-500">{message}</p>}
+        />
+        <NewContent control={control} />
+        <ErrorMessage
+          errors={errors}
+          name="content"
+          as="p"
+          render={({ message }) => <p className="text-red-500">{message}</p>}
+        />
+        <NewResourceLink
           resourceLinks={resourceLinks}
           appendResourceLink={appendResourceLink}
           removeResourceLink={removeResourceLink}
           register={register}
         />
-
+        <ErrorMessage
+          errors={errors}
+          name="resourceLinks"
+          as="p"
+          render={({ message }) => <p className="text-red-500">{message}</p>}
+        />
         <CustomButton buttonType="primary" type="submit" disabled={pending}>
           Create Post {pending && <LoadingSpinner />}
         </CustomButton>

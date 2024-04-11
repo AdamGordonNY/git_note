@@ -4,20 +4,18 @@ import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import React from "react";
 import CustomButton from "../CustomButton";
-import { ErrorMessage } from "@hookform/error-message";
+
 interface NewResourceLinkProps {
   resourceLinks: any;
   removeResourceLink: (index: number) => void;
   appendResourceLink: (resourceLink: { title: string; url: string }) => void;
   register: any;
-  errors: any;
 }
 const NewResourceLink = ({
   resourceLinks,
   register,
   removeResourceLink,
   appendResourceLink,
-  errors,
 }: NewResourceLinkProps) => {
   return (
     <section className="flex w-full flex-col gap-2">
@@ -84,7 +82,6 @@ const NewResourceLink = ({
       >
         Add Resource
       </CustomButton>
-      {errors && <ErrorMessage errors={errors} name="resourceLinks" as="p" />}
     </section>
   );
 };

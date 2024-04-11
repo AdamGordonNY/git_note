@@ -170,7 +170,7 @@ const CodeEditor = ({
       {errors && (
         <ErrorMessage
           errors={errors}
-          name="code"
+          name="image"
           render={({ message }) => <p className="text-red-500">{message}</p>}
         />
       )}

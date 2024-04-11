@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
+
 interface NewContentProps {
   control: any;
 }

@@ -109,7 +109,16 @@ const AddNewTag = ({
           ))}
         </div>
         <div className="text-red-500">
-          {errors && <ErrorMessage errors={errors} name="tags" as="p" />}
+          {errors && (
+            <ErrorMessage
+              errors={errors}
+              name="tags"
+              as="p"
+              render={({ message }) => (
+                <p className="text-red-500">{message}</p>
+              )}
+            />
+          )}
         </div>
       </section>
     </>
