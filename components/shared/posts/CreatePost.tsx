@@ -78,7 +78,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
   const handleTagChange = (tags: any) => {
     setValue("tags", tags);
   };
-
+  const postType = watch("postType");
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -154,7 +154,9 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           uniqueTags={uniqueTags}
         />
         <NewDescription register={register} />
-        <CodeEditor register={register} watch={watch} errors={errors} />
+        {postType === "component" ? (
+          <CodeEditor register={register} watch={watch} errors={errors} />
+        ) : null}
         <NewExperience
           experienceFields={experience}
           appendExperience={appendExperience}
