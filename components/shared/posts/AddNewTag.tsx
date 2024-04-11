@@ -108,7 +108,9 @@ const AddNewTag = ({
             />
           ))}
         </div>
-        {errors && <ErrorMessage errors={errors} name="tags" />}
+        <div className="text-red-500">
+          {errors && <ErrorMessage errors={errors} name="tags" as="p" />}
+        </div>
       </section>
     </>
   );

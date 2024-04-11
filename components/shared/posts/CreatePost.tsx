@@ -161,9 +161,15 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           errors={errors}
           name="tags"
           as="p"
+          render={({ message }) => <p className="text-red-500">{message}</p>}
         />
         <NewDescription register={register} />
-        <ErrorMessage errors={errors} name="description" as="p" />
+        <ErrorMessage
+          errors={errors}
+          name="description"
+          as="p"
+          render={({ message }) => <p className="text-red-500">{message}</p>}
+        />
         {postType === "component" ? (
           <CodeEditor
             register={register}
@@ -178,8 +184,8 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           removeExperience={removeExperience}
           register={register}
         />
-        {/* Placeholder for Code Blocks under a Create Component */}
-        <NewContent register={register} control={control} />
+
+        <NewContent control={control} />
         <NewResourceLink
           errors={errors}
           resourceLinks={resourceLinks}

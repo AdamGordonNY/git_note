@@ -2,10 +2,9 @@ import React, { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
 interface NewContentProps {
-  register: any;
   control: any;
 }
-const NewContent = ({ register, control }: NewContentProps) => {
+const NewContent = ({ control }: NewContentProps) => {
   const editorRef = useRef<any>(null);
 
   return (

@@ -22,7 +22,7 @@ const NewResourceLink = ({
   return (
     <section className="flex w-full flex-col gap-2">
       <label
-        className="paragraph-4-medium text-white-500"
+        className="paragraph-4-medium text-white-300"
         htmlFor="resourceLinks"
       >
         RESOURCES AND LINKS
@@ -84,7 +84,7 @@ const NewResourceLink = ({
       >
         Add Resource
       </CustomButton>
-      {errors && <ErrorMessage errors={errors} name="resourceLinks" />}
+      {errors && <ErrorMessage errors={errors} name="resourceLinks" as="p" />}
     </section>
   );
 };

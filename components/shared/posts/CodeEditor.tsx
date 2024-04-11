@@ -112,6 +112,16 @@ const CodeEditor = ({
               {postType === "component" && generateLineNumbers()}
             </div>
           </div>
+          {errors && (
+            <ErrorMessage
+              errors={errors}
+              name="code"
+              as="p"
+              render={({ message }) => (
+                <p className="text-red-500">{message}</p>
+              )}
+            />
+          )}
         </TabsContent>
         <TabsContent value="preview">
           <div className="gap-7.5 relative flex h-[361px] w-full flex-col content-center items-center justify-center space-y-2 bg-black-800 ">
@@ -157,7 +167,13 @@ const CodeEditor = ({
           </div>
         </TabsContent>
       </Tabs>
-      {errors && <ErrorMessage errors={errors} name="code" />}
+      {errors && (
+        <ErrorMessage
+          errors={errors}
+          name="code"
+          render={({ message }) => <p className="text-red-500">{message}</p>}
+        />
+      )}
     </>
   );
 };
