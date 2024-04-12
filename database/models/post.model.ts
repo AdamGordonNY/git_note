@@ -15,7 +15,7 @@ export interface IPost extends Document {
   experiences?: {
     name: string;
   }[];
-
+  image?: string;
   code?: string;
   createdAt?: Date;
   updatedAt?: Date;
