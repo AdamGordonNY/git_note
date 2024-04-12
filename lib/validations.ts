@@ -30,35 +30,41 @@ export const onboardingSchema = z.object({
   onboardingSchemaThree,
   onboardingSchemaFour,
 });
-
-const SocialsZodSchema = z.object({
-  twitter: z.string().url(),
-  facebook: z.string().url(),
-  linkedin: z.string().url(),
-  github: z.string().url(),
-  instagram: z.string().url(),
-  dribbble: z.string().url(),
-});
-
-export const GoalZodSchema = z.object({
-  goals: z
-    .array(z.object({ name: z.string(), completed: z.boolean() }))
-    .optional(),
-});
-
-const UserEditZodSchema = z.object({
-  fullname: z.string().optional(),
-  email: z.string().optional().readonly(),
-  location: z.string().optional(),
+export const ResourceLinkSchema = z.array(
+  z.object({
+    title: z.string().min(4).max(50),
+    url: z.string().url(),
+  })
+);
+const ExperiencesSchema = z.array(
+  z.object({
+    name: z.string().max(300),
+  })
+);
+export const CreateTagSchema = z.array(
+  z
+    .string()
+    .min(3, { message: "Tag must be minimum 3 characters" })
+    .max(15, { message: "Tag must be maximum 15 characters" })
+);
+export const CreatePostSchema = z.object({
+  title: z
+    .string()
+    .min(4, { message: "Input must be minimum 4 characters" })
+    .max(50, { message: "Input must be maximum 50 characters" }),
+  postType: z.string(),
+  description: z
+    .string()
+    .min(25, { message: "Input must be at least 25 characters" })
+    .max(500, { message: "Input must be at most 500 characters" }),
+  content: z
+    .string()
+    .min(10, { message: "Input must be at least 10 characters" }),
+  tags: CreateTagSchema.min(1, { message: "One tag is required" }).max(5, {
+    message: "Maximum of 5 tags allowed",
+  }),
+  code: z.string().optional(),
+  experiences: ExperiencesSchema.optional(),
+  resourceLinks: ResourceLinkSchema.optional(),
   image: z.string().optional(),
-  portfolio: z.string().optional(),
-  learningGoals: GoalZodSchema,
-  technologies: z.array(z.string()).optional(),
-  experiences: z.array(z.object({ name: z.string() })).optional(),
-  availability: z
-    .array(z.date().min(new Date(Date.now().toFixed(2))))
-    .optional(),
-  socials: z.array(SocialsZodSchema).optional(),
 });
-
-export default UserEditZodSchema;

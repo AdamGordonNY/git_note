@@ -17,7 +17,7 @@ export default async function Home() {
     <main className="flex-center flex w-full text-white-300">
       <SignOutButton />
 
-      <Link href={`/profile/${mongoUser?.id!}`}>
+      <Link href={`/profile/${mongoUser?._id!}`}>
         <button className="heading-2-bold  bg-primary size-[200px]">
           Profile
         </button>

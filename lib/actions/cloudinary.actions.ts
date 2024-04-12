@@ -3,7 +3,10 @@ import { v2 as cloudinary } from "cloudinary";
 import { getSession } from "../authOptions";
 import { updateUser } from "./user.actions";
 
-export const uploadImage = async (file: any) => {
+interface UploadOptions {
+  action: "updateUser" | "postCreation";
+}
+export const uploadImage = async (file: any, options: UploadOptions) => {
   const session = await getSession();
   if (!session) {
     throw new Error("You must be logged in to upload an image");
@@ -17,9 +20,11 @@ export const uploadImage = async (file: any) => {
   const result = await cloudinary.uploader.upload(file, {
     folder: "gitnote",
   });
-  await updateUser({
-    updateData: { image: result.secure_url },
-  });
+  if (options.action === "updateUser") {
+    await updateUser({
+      updateData: { image: result.secure_url },
+    });
+  }
 
   return result.secure_url;
 };

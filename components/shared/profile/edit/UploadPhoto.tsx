@@ -33,12 +33,20 @@ const UploadPhoto = ({ image, className, step }: UploadPhotoProps) => {
     reader.readAsDataURL(file);
     reader.onloadend = async () => {
       const fileData = reader.result;
-      await uploadImage(fileData);
-      return toast({
-        type: "foreground",
-        variant: "default",
-        title: "Image uploaded successfully",
-      });
+      try {
+        await uploadImage(fileData, { action: "updateUser" });
+        toast({
+          type: "foreground",
+          variant: "default",
+          title: "Image uploaded successfully",
+        });
+      } catch (error) {
+        toast({
+          type: "foreground",
+          variant: "destructive",
+          title: "Error Uploading Image",
+        });
+      }
     };
   }, [getValues, watchInput]);
   return (

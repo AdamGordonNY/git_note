@@ -10,14 +10,17 @@ export interface CreateUserParams {
 }
 export interface CreateNewPostParams {
   title: string;
-  body: string;
-  author: string;
+  content: string;
+  description: string;
   postType: string;
-  tags: Schema.Types.ObjectId[];
-  resourceLink?: {
-    label: string;
+  tags?: string[];
+  resourceLinks?: {
+    title: string;
     url: string;
-  };
+  }[];
+  code?: string;
+  experiences?: string[];
+  image?: string;
 }
 export interface CreateNewTagParams {
   name: string;
@@ -25,8 +28,8 @@ export interface CreateNewTagParams {
 }
 
 export interface GetPostParams {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   filter?: string;
   searchQuery?: string;
 }
@@ -35,6 +38,9 @@ export interface GetTagParams {
   pageSize: number;
   _id?: Schema.Types.ObjectId;
   name?: string;
+}
+export interface GetPostsParams {
+  posts: IPost[];
 }
 export interface GetAllUsersParams {
   page?: number;

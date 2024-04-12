@@ -1,6 +1,6 @@
 "use server";
-import postModel, { IPost } from "@/database/models/post.model";
-import { revalidatePath } from "next/cache";
+import Post, { IPost } from "@/database/models/post.model";
+
 import dbConnect from "@/database/dbConnect";
 import { FilterQuery } from "mongoose";
 
@@ -11,7 +11,25 @@ import {
   GetTagByPostIdParams,
   UpdatePostParams,
 } from "./shared.types";
+import { getSession } from "../authOptions";
+import { getOneUser } from "./user.actions";
 
+export const getUniqueTags = async () => {
+  try {
+    const uniqueTags = await Post.aggregate([
+      { $unwind: "$tags" },
+      { $group: { _id: null, tags: { $addToSet: "$tags" } } },
+      { $project: { tags: 1, _id: 0 } },
+    ]);
+    if (uniqueTags.length > 0) {
+      return uniqueTags[0].tags;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error retrieving tags", error);
+  }
+};
 // just using basic crud funcitons for now
 export const getAllPosts = async (params: GetPostParams) => {
   try {
@@ -36,7 +54,7 @@ export const getAllPosts = async (params: GetPostParams) => {
         query.postType = "knowledge";
         sortOptions = { createdAt: -1 };
         break;
-      case "workflows":
+      case "workflow":
         query.postType = "workflows";
         sortOptions = { createdAt: -1 };
         break;
@@ -44,16 +62,15 @@ export const getAllPosts = async (params: GetPostParams) => {
         sortOptions = { createdAt: -1 };
         break;
     }
-    const totalPosts = await postModel.countDocuments(query);
+    // const totalPosts = await Post.countDocuments(query);
 
-    const filteredPosts = await postModel
-      .find(query)
+    const filteredPosts = await Post.find(query)
       .sort(sortOptions)
       .skip(skipAmount)
       .limit(pageSize);
-    const isNext = totalPosts > skipAmount + postModel.length;
+    // const isNext = totalPosts > skipAmount + Post.length;
 
-    return { posts: filteredPosts as IPost[], isNext };
+    return { posts: filteredPosts as IPost[] };
   } catch (error) {
     console.log(error);
   }
@@ -62,7 +79,7 @@ export const getAllPosts = async (params: GetPostParams) => {
 export const getPostById = async (postId: GetTagByPostIdParams) => {
   try {
     await dbConnect();
-    const post = await postModel.findById(postId);
+    const post = await Post.findById(postId);
     return post as IPost;
   } catch (error) {
     console.log(error);
@@ -72,33 +89,55 @@ export const getPostById = async (postId: GetTagByPostIdParams) => {
 export const createNewPost = async (data: CreateNewPostParams) => {
   try {
     await dbConnect();
-    const post = (await postModel.create({
-      title: data.title,
-      body: data.body,
-      author: data.author,
-      postType: data.postType,
-      tags: data.tags,
-      resourceLink: data.resourceLink,
-    })) as IPost;
 
-    return post as IPost;
+    const session = await getSession();
+    const userEmail = session?.user?.email;
+    if (!userEmail) {
+      return false;
+    }
+    const user = await getOneUser(userEmail);
+    const userId = user?._id;
+    if (data.postType === "component") {
+      const post = await Post.create({
+        title: data.title,
+        description: data.description,
+        content: data.content,
+        code: data.code,
+        author: userId,
+        postType: data.postType,
+        tags: data.tags,
+        resourceLinks: data.resourceLinks,
+        experiences: data.experiences,
+        image: data.image,
+      });
+      if (post) return true;
+    } else {
+      const post = await Post.create({
+        title: data.title,
+        description: data.description,
+        content: data.content,
+        code: data.code,
+        author: userId,
+        postType: data.postType,
+        tags: data.tags,
+        resourceLinks: data.resourceLinks,
+        experiences: data.experiences,
+      });
+      if (post) return true;
+    }
   } catch (error) {
     console.log(error);
+    return false;
   }
 };
 
-export const updatePost = async ({
-  _id,
-  updateData,
-  path,
-}: UpdatePostParams) => {
+export const updatePost = async ({ _id, updateData }: UpdatePostParams) => {
   try {
     await dbConnect();
 
-    const post = await postModel.findByIdAndUpdate(_id, updateData, {
+    const post = await Post.findByIdAndUpdate(_id, updateData, {
       new: true,
     });
-    revalidatePath(path);
     return post as IPost;
   } catch (error) {
     console.log(error);
@@ -108,8 +147,16 @@ export const updatePost = async ({
 export const deletePostById = async (_id: DeletePostParams) => {
   try {
     await dbConnect();
-    const deletedPost = await postModel.findByIdAndDelete(_id);
+    const deletedPost = await Post.findByIdAndDelete(_id);
     return deletedPost as IPost;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllPostTypes = async (params: GetPostParams) => {
+  try {
+    await dbConnect();
+    //   const { posts } = params;
   } catch (error) {
     console.log(error);
   }

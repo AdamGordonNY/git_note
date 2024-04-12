@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import "../styles/day-picker.css";
 @import "../styles/theme.css";
+
 body {
   font-family: "Inter", sans-serif;
 }
@@ -111,6 +112,82 @@ rdp {
 [data-state="incomplete"] {
   @apply bg-black-600;
 }
-border-profile-top {
+.border-profile-top {
   border: 1px solid #4448691a;
+}
+.code-editor-container {
+  position: relative;
+  border: 1px solid #000;
+}
+.code-editor-textarea {
+  font-family: monospace;
+  resize: none;
+  line-height: 1.5;
+  padding-left: 20px;
+  width: full;
+  white-space: nowrap;
+  background-color: #2e3757;
+  color: aliceblue;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px 1px #1212121a;
+  height: 200px;
+
+  box-shadow: 0px 1px 1px 0px #1212121a;
+}
+.code-editor-line-numbers {
+  position: absolute;
+  font-family: monospace;
+  top: 12.5px;
+  left: 0;
+  line-height: 1.5;
+}
+.code-editor-textarea:focus {
+  outline: none;
+}
+.code-editor-container::-webkit-scrollbar {
+  background-color: white;
+}
+.code-editor-container::-webkit-scrollbar-thumb {
+  background-color: white;
+}
+.tox-editor-container {
+  @apply !bg-black-700;
+}
+.tox-editor-header {
+  @apply !bg-black-700;
+}
+.tox-toolbar-overlord {
+  @apply !bg-black-700;
+}
+.tox-toolbar__primary {
+  @apply !bg-black-600;
+}
+.tox-toolbar__group > button {
+  @apply !bg-black-600 !text-white-300;
+}
+.tox-toolbar__group > button > span > svg {
+  @apply fill-black-700 stroke-white-300;
+}
+.tox-split-button > span {
+  @apply !bg-black-600 !text-white-300;
+}
+.tox-split-button > span > span > svg {
+  @apply !fill-black-700 !stroke-white-300;
+}
+.tox-statusbar {
+  @apply !hidden;
+}
+.tox-tinymce {
+  @apply !border-black-700;
+}
+.mce-content-body {
+  @apply !bg-black-700 border-none;
+}
+.tox .tox-edit-area::before {
+  @apply border-none;
+}
+.tabs-shadow {
+  box-shadow: 0px 1px 3px 0px #0b13241a;
+
+  box-shadow: 0px 1px 1px 0px #0b13241a;
 }

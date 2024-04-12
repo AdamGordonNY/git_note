@@ -1,41 +1,29 @@
 import { Schema, Document, model, models } from "mongoose";
 
 export interface IPost extends Document {
-  _id: Schema.Types.ObjectId;
+  _id: string;
   title: string;
-  body: string;
-  author: Schema.Types.ObjectId;
-  postType: {
-    knowledge: string;
-    workflows: string;
-    components: string;
-  };
-  tags: Schema.Types.ObjectId[];
-  resourceLink: {
+  content: string;
+  description: string;
+  author: string;
+  postType: "knowledge" | "component" | "workflow";
+  tags?: string[];
+  resourceLinks?: {
     label: string;
     url: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
+  }[];
+  experiences?: {
+    name: string;
+  }[];
+
+  code?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
-const ResourceSchema = new Schema({
-  knowledge: {
-    type: String,
-    required: true,
-  },
-  workflows: {
-    type: String,
-    required: true,
-  },
-  components: {
-    type: String,
-    required: true,
-  },
-});
 
 const PostSchema = new Schema({
   postType: {
-    type: ResourceSchema,
+    type: String,
     required: true,
   },
 
@@ -56,23 +44,34 @@ const PostSchema = new Schema({
     type: String,
     required: false,
   },
-  resourceLink: {
-    label: {
-      type: String,
-      required: false,
-    },
-    url: {
-      type: String,
-      required: false,
-    },
+  experiences: {
+    type: [String],
+    required: false,
   },
-  tags: [
+  code: {
+    type: String,
+    required: false,
+  },
+  resourceLinks: [
     {
-      type: [Schema.Types.ObjectId],
-      ref: "Tag",
-      required: true,
+      label: {
+        type: String,
+        required: false,
+      },
+      url: {
+        type: String,
+        required: false,
+      },
     },
   ],
+  tags: {
+    type: [String],
+    required: true,
+  },
+  image: {
+    type: String,
+    required: false,
+  },
 });
 
 export default models?.Post || model<IPost>("Post", PostSchema);
