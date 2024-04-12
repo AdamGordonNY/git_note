@@ -49,8 +49,8 @@ export interface GetAllUsersParams {
   searchQuery?: string; // Add searchQuery parameter
 }
 export interface GetTagByPostIdParams {
-  postId: Schema.Types.ObjectId[];
-  name: string;
+  postId: string;
+  postType?: string;
 }
 
 export interface GetTagByNameParams {

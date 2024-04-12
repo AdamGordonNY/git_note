@@ -68,6 +68,10 @@ const PostSchema = new Schema({
     type: [String],
     required: true,
   },
+  views: {
+    type: Number,
+    default: 0,
+  },
   image: {
     type: String,
     required: false,

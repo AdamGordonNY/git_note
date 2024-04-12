@@ -8,7 +8,6 @@ import {
   CreateNewPostParams,
   DeletePostParams,
   GetPostParams,
-  GetTagByPostIdParams,
   UpdatePostParams,
 } from "./shared.types";
 import { getSession } from "../authOptions";
@@ -76,10 +75,10 @@ export const getAllPosts = async (params: GetPostParams) => {
   }
 };
 
-export const getPostById = async (postId: GetTagByPostIdParams) => {
+export const getPostById = async (_id: string) => {
   try {
     await dbConnect();
-    const post = await Post.findById(postId);
+    const post = await Post.findById(_id);
     return post as IPost;
   } catch (error) {
     console.log(error);
