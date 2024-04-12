@@ -84,6 +84,16 @@ export const getPostById = async (_id: string) => {
     console.log(error);
   }
 };
+export const fetchPost = async (_id: string) => {
+  try {
+    await dbConnect();
+    const post = await Post.findOne({ _id });
+    console.log(post, "fetch post");
+    return post as IPost;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const createNewPost = async (data: CreateNewPostParams) => {
   try {

@@ -63,7 +63,7 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
         </div>
 
         <section className="flex shrink-0">
-          <Link href={`/profile/${user._id}/edit`}>
+          <Link href={`/profile/edit`}>
             <Button
               className="social-login-shadow paragraph-3-bold h-[40px] min-w-[140px] items-center  justify-center gap-1 bg-black-700 align-middle text-primary-500  "
               type="button"

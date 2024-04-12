@@ -76,6 +76,10 @@ const PostSchema = new Schema({
     type: String,
     required: false,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export default models?.Post || model<IPost>("Post", PostSchema);
