@@ -1,17 +1,16 @@
 import SignOutButton from "@/components/auth/SignOutButon";
 import { getAllPosts } from "@/lib/actions/post.actions";
 
-import { getOneUser } from "@/lib/actions/user.actions";
 import { getSession } from "@/lib/authOptions";
+import { redirect } from "next/navigation";
 
 import Link from "next/link";
 
 export default async function Home() {
   const session = await getSession();
-  let mongoUser;
 
-  if (session) {
-    mongoUser = await getOneUser(session.user?.email ?? "");
+  if (!session) {
+    redirect("/sign-in");
   }
   const posts = getAllPosts({
     page: 1,

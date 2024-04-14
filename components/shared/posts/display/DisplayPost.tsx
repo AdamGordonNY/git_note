@@ -1,11 +1,12 @@
 import React from "react";
 import DisplayPostHeader from "./DisplayPostHeader";
 import { IPost } from "@/database/models/post.model";
+import Experience from "./Experience";
 
 interface DisplayPostProps {
   post: Partial<IPost>;
 }
-const DisplayPost = ({ post }: DisplayPostProps) => {
+const DisplayPost = async ({ post }: DisplayPostProps) => {
   return (
     <>
       <DisplayPostHeader
@@ -15,6 +16,7 @@ const DisplayPost = ({ post }: DisplayPostProps) => {
         postType={post.postType!}
         tags={post.tags!}
       />
+      <Experience experiences={post?.experiences} />
     </>
   );
 };

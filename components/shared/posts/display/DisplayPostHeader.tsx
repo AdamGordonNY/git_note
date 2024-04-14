@@ -21,10 +21,10 @@ const DisplayPostHeader = ({
   views,
 }: DisplayPostHeaderProps) => {
   return (
-    <section className="py-7.5 flex h-[248px] w-full gap-[20px] pl-[40px] pr-[32px]">
+    <section className="flex h-[248px] w-full gap-[20px] pl-[40px] pr-[32px] pt-[30px]">
       <div className="flex w-full flex-col  gap-5  ">
         <div className="flex h-10 justify-between">
-          <h1 className="display-1-bold">{title}</h1>
+          <h1 className="display-1-bold text-white-100">{title}</h1>
           <div className="gap-2.5">
             <ResourceTag type={postType} />
             <Image src={threeDots} alt="three dots" />
@@ -35,13 +35,13 @@ const DisplayPostHeader = ({
         </span>
         <div className="flex w-full flex-col gap-4 text-white-300">
           <div className="flex gap-3.5 px-2">
-            <span className="gap-1">
+            <span className=" flex gap-1">
               {format(createdAt!, "MM dd, yyyy")} <Calendar size={16} />
             </span>
-            <span className="gap-1">
+            <span className=" flex gap-1">
               <Star size={16} /> 1k Stars
             </span>
-            <span className="gap-1">
+            <span className=" flex gap-1">
               <Eye size={16} /> 1k Views
             </span>
           </div>

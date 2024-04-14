@@ -9,18 +9,7 @@ export interface CreateUserParams {
   fullname: string;
 }
 export interface CreateNewPostParams {
-  title: string;
-  content: string;
-  description: string;
-  postType: string;
-  tags?: string[];
-  resourceLinks?: {
-    title: string;
-    url: string;
-  }[];
-  code?: string;
-  experiences?: string[];
-  image?: string;
+  post: Partial<IPost>;
 }
 export interface CreateNewTagParams {
   name: string;

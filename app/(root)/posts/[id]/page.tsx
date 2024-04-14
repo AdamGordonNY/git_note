@@ -2,6 +2,7 @@ import { fetchPost } from "@/lib/actions/post.actions";
 import React from "react";
 import DisplayPost from "@/components/shared/posts/display/DisplayPost";
 import { notFound } from "next/navigation";
+import DisplayPostHeader from "@/components/shared/posts/display/DisplayPostHeader";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const fetchedPost = await fetchPost(params.id);
@@ -13,7 +14,13 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <section className="py-7.5 h-[248px] w-full gap-[20px] pl-[40px] pr-[32px]">
-      <DisplayPost post={cleanPost} />
+      <DisplayPostHeader
+        title={cleanPost.title}
+        description={cleanPost.description}
+        postType={cleanPost.postTyoe}
+        createdAt={cleanPost.createdAt}
+        tags={cleanPost.tags}
+      />
     </section>
   );
 };
