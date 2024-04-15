@@ -11,9 +11,9 @@ const ExplorePage = async () => {
     posts = await getAllPosts({ filter: "new" });
   }
   const cleanPosts = JSON.parse(JSON.stringify(posts));
-  console.log(cleanPosts);
+
   return (
-    <div className="">
+    <div className="py-[30px]">
       <span className="display-2-bold">Posts</span>
       <div className="grid grid-cols-2">
         {cleanPosts?.posts.map((post: any, idx: AnyExpression) => (
