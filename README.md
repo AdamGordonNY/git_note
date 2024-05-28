@@ -50,7 +50,7 @@ GitNote is a dedicated hub designed for learners and educators alike, offering a
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/gitnote.git
+git clone https://github.com/agordon123/gitnote.git
 ```
 
 2. Install NPM packages
