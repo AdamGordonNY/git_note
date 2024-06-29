@@ -8,7 +8,6 @@ import {
   CreateNewPostParams,
   DeletePostParams,
   GetPostParams,
-  GetTagByPostIdParams,
   UpdatePostParams,
 } from "./shared.types";
 import { getSession } from "../authOptions";
@@ -46,8 +45,8 @@ export const getAllPosts = async (params: GetPostParams) => {
     let sortOptions = {};
 
     switch (filter) {
-      case "components":
-        query.postType = "components";
+      case "component":
+        query.postType = "component";
         sortOptions = { createdAt: -1 };
         break;
       case "knowledge":
@@ -55,7 +54,7 @@ export const getAllPosts = async (params: GetPostParams) => {
         sortOptions = { createdAt: -1 };
         break;
       case "workflow":
-        query.postType = "workflows";
+        query.postType = "workflow";
         sortOptions = { createdAt: -1 };
         break;
       default:
@@ -76,17 +75,27 @@ export const getAllPosts = async (params: GetPostParams) => {
   }
 };
 
-export const getPostById = async (postId: GetTagByPostIdParams) => {
+export const getPostById = async (_id: string) => {
   try {
     await dbConnect();
-    const post = await Post.findById(postId);
+    const post = await Post.findById(_id);
+    return post as IPost;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const fetchPost = async (_id: string) => {
+  try {
+    await dbConnect();
+    const post = await Post.findOne({ _id });
+    console.log(post, "fetch post");
     return post as IPost;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const createNewPost = async (data: CreateNewPostParams) => {
+export const createNewPost = async ({ post }: CreateNewPostParams) => {
   try {
     await dbConnect();
 
@@ -97,31 +106,44 @@ export const createNewPost = async (data: CreateNewPostParams) => {
     }
     const user = await getOneUser(userEmail);
     const userId = user?._id;
-    if (data.postType === "component") {
+    const {
+      title,
+      description,
+      content,
+      code,
+      postType,
+      tags,
+      resourceLinks,
+      experiences,
+      image,
+    } = post;
+    if (postType === undefined) {
+      return false;
+    }
+    if (postType === "component") {
       const post = await Post.create({
-        title: data.title,
-        description: data.description,
-        content: data.content,
-        code: data.code,
+        title,
+        description,
+        content,
+        code,
         author: userId,
-        postType: data.postType,
-        tags: data.tags,
-        resourceLinks: data.resourceLinks,
-        experiences: data.experiences,
-        image: data.image,
+        postType,
+        tags,
+        resourceLinks,
+        experiences,
+        image,
       });
       if (post) return true;
     } else {
       const post = await Post.create({
-        title: data.title,
-        description: data.description,
-        content: data.content,
-        code: data.code,
+        title,
+        description,
+        content,
         author: userId,
-        postType: data.postType,
-        tags: data.tags,
-        resourceLinks: data.resourceLinks,
-        experiences: data.experiences,
+        postType,
+        tags,
+        resourceLinks,
+        experiences,
       });
       if (post) return true;
     }

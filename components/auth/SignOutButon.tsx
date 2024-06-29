@@ -1,7 +1,18 @@
 "use client";
 import React from "react";
 import { signOut } from "next-auth/react";
-
-const SignOutButton = () => <button onClick={() => signOut()}>Sign out</button>;
+import logoutIcon from "@/public/icons/logout.svg";
+import Image from "next/image";
+const SignOutButton = () => (
+  <div className="mb-5 flex p-4">
+    <Image src={logoutIcon} alt="Logout Icon" />
+    <button
+      className="paragraph-3-medium flex gap-2 text-white-300"
+      onClick={() => signOut()}
+    >
+      Sign out
+    </button>
+  </div>
+);
 
 export default SignOutButton;

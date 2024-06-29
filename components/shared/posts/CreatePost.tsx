@@ -103,18 +103,20 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
     try {
       startTransition(async () => {
         const result = await createNewPost({
-          title,
-          postType,
-          content,
-          tags,
-          code,
-          description,
-          image,
-          experiences: experiences?.map((experience) => experience.name),
-          resourceLinks: dbResources.map((link) => ({
-            title: link?.title || "",
-            url: link?.url || "",
-          })),
+          post: {
+            title,
+            postType,
+            content,
+            tags,
+            code,
+            description,
+            image,
+            experiences: experiences?.map((experience) => experience.name),
+            resourceLinks: dbResources.map((link) => ({
+              title: link?.title || "",
+              url: link?.url || "",
+            })),
+          },
         });
         if (result) {
           toast({ title: "Post Created Successfully" });
@@ -186,12 +188,14 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
             setValue={setValue}
           />
         ) : null}
-        <NewExperience
-          experienceFields={experience}
-          appendExperience={appendExperience}
-          removeExperience={removeExperience}
-          register={register}
-        />
+        {postType !== "component" ? (
+          <NewExperience
+            experienceFields={experience}
+            appendExperience={appendExperience}
+            removeExperience={removeExperience}
+            register={register}
+          />
+        ) : null}
         <ErrorMessage
           errors={errors}
           name="experiences"

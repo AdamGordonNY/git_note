@@ -7,13 +7,13 @@ const AllPostsPage = async () => {
   const session = await getSession();
   let posts = null;
   if (session) {
-    posts = await getAllPosts({ filter: "old" });
+    posts = await getAllPosts({ filter: "new", pageSize: 20 });
   }
   const cleanPosts = JSON.parse(JSON.stringify(posts));
 
   return (
     <section className="flex w-full flex-col">
-      {/* <AllPosts posts={cleanPosts?.posts!} />{" "} */}
+      <AllPosts posts={cleanPosts?.posts!} />
     </section>
   );
 };

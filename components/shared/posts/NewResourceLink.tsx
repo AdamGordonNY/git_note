@@ -32,7 +32,7 @@ const NewResourceLink = ({
             <Input
               placeholder="Label"
               {...register(`resourceLinks[${index}].title`)}
-              defaultValue={link?.title}
+              defaultValue={link?.label}
               className="w-1/2 rounded bg-black-700 text-white-300/50 "
             />
             <Input
@@ -56,7 +56,7 @@ const NewResourceLink = ({
           <div className="flex h-12  w-full flex-row  gap-2 ">
             <Input
               placeholder="Label"
-              {...register(`resourceLinks[0].title`)}
+              {...register(`resourceLinks[0].label`)}
               className="w-1/2 rounded bg-black-700 text-white-300/50 "
             />
             <Input

@@ -1,27 +1,30 @@
-import SignOutButton from "@/components/auth/SignOutButon";
+import { getAllPosts } from "@/lib/actions/post.actions";
 
-import { getOneUser } from "@/lib/actions/user.actions";
 import { getSession } from "@/lib/authOptions";
+import { redirect } from "next/navigation";
 
-import Link from "next/link";
+import AllPosts from "@/components/shared/posts/AllPosts";
 
 export default async function Home() {
   const session = await getSession();
-  let mongoUser;
 
-  if (session) {
-    mongoUser = await getOneUser(session.user?.email ?? "");
+  if (!session) {
+    redirect("/sign-in");
   }
+  const posts = await getAllPosts({
+    page: 1,
+    pageSize: 20,
+    filter: "new",
+  });
 
   return (
     <main className="flex-center flex w-full text-white-300">
-      <SignOutButton />
-
-      <Link href={`/profile/${mongoUser?._id!}`}>
-        <button className="heading-2-bold  bg-primary size-[200px]">
-          Profile
-        </button>
-      </Link>
+      <div>
+        <h2 className="display-2-bold">All Posts</h2>
+        <section className="flex w-full flex-col">
+          <AllPosts posts={posts?.posts ?? []} />
+        </section>
+      </div>
     </main>
   );
 }

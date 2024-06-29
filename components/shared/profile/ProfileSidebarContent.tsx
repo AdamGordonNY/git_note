@@ -14,6 +14,32 @@ interface ProfileSidebarContentProps {
 }
 const ProfileSidebarContent = ({ user }: ProfileSidebarContentProps) => {
   const pathName = usePathname();
+  const paths = [
+    {
+      path: `/profile`,
+      name: "Profile",
+      component: (
+        <SocialLinks
+          twitter={user.socials?.twitter!}
+          github={user.socials?.github!}
+          dribbble={user.socials?.dribbble!}
+          linkedin={user.socials?.linkedin!}
+          facebook={user.socials?.facebook!}
+          instagram={user.socials?.instagram!}
+        />
+      ),
+    },
+    { path: `/posts`, name: "Posts", component: null },
+  ];
+  const getPathName = () => {
+    let component = null;
+    paths.forEach((path) => {
+      if (path.path === pathName) {
+        component = path.component;
+      }
+    });
+    return component;
+  };
 
   return (
     <div className=" flex-1 flex-col items-center justify-center ">
@@ -36,19 +62,8 @@ const ProfileSidebarContent = ({ user }: ProfileSidebarContentProps) => {
         <EditSocials user={user} />
       </div>
       <Separator />
-      <div>
-        {(user.socials && pathName === `/profile/${user._id}`) ||
-        pathName === `/profile/${user._id}/edit` ? (
-          <SocialLinks
-            twitter={user.socials?.twitter!}
-            github={user.socials?.github!}
-            dribbble={user.socials?.dribbble!}
-            linkedin={user.socials?.linkedin!}
-            facebook={user.socials?.facebook!}
-            instagram={user.socials?.instagram!}
-          />
-        ) : null}
-      </div>
+      <div>{getPathName()}</div>
+      {/* 1. Fill Other Pages 2. Expand - path can be an array of values, multiple paths can render the same/diff components */}
     </div>
   );
 };
