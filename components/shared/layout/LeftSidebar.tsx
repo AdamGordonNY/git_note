@@ -4,7 +4,6 @@ import Image from "next/image";
 import LeftButtonGroup from "./LeftButtonGroup";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import SignOutButton from "@/components/auth/SignOutButon";
 
 const LeftSidebar = () => {
   return (
@@ -21,15 +20,7 @@ const LeftSidebar = () => {
         <Separator />
       </div>
 
-      <div className="flex flex-col content-center justify-end pb-10 align-bottom">
-        {" "}
-        <SignOutButton />
-        <Link href={`/profile/`}>
-          <button className="heading-2-bold  bg-primary size-[200px]">
-            Profile
-          </button>
-        </Link>
-      </div>
+      <div className="flex flex-col content-center justify-end pb-10 align-bottom"></div>
     </section>
   );
 };

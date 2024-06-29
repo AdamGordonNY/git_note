@@ -4,7 +4,7 @@ import threeDots from "@/public/icons/threeDots.svg";
 import Image from "next/image";
 import { Calendar, Eye, Star } from "lucide-react";
 import { format } from "date-fns";
-import { Badge } from "@/components/ui/badge";
+import Badge from "@/components/ui/badge";
 interface DisplayPostHeaderProps {
   title: string;
   description: string;
@@ -27,9 +27,7 @@ const DisplayPostHeader = async ({
         <div className="flex h-10 justify-between">
           <h1 className="display-1-bold text-white-100">{title}</h1>
           <div className="gap-2.5">
-            <Badge title={postType} className="" variant={postType}>
-              {postType}
-            </Badge>
+            <Badge>{postType}</Badge>
             <Image src={threeDots} alt="three dots" />
           </div>
         </div>

@@ -20,6 +20,10 @@ import {
   DiReact,
 } from "react-icons/di";
 
+import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
+import ComponentIcon from "@/components/ui/icons/ComponentIcon";
+import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
+import { CreateTypeListItemType } from "@/types";
 export const githubClientID = process.env.GITHUB_CLIENT_ID!;
 export const githubClientSecret = process.env.GITHUB_CLIENT_SECRET!;
 
@@ -137,5 +141,29 @@ export const techStackBadges: TechStackBadge[] = [
       <TbBrandVscode fill="rgb(0, 255, 255)" stroke="black" size={size} />
     ),
     displayName: "Visual Studio Code",
+  },
+];
+
+export const createTypeList: CreateTypeListItemType[] = [
+  {
+    icon: WorkflowIcon,
+    name: "workflow",
+    uiName: "Workflow",
+    badgeColor: "blue",
+    color: "text-primary-500",
+  },
+  {
+    icon: KnowledgeIcon,
+    name: "knowledge",
+    uiName: "Knowledge",
+    badgeColor: "green",
+    color: "text-green-500",
+  },
+  {
+    icon: ComponentIcon,
+    name: "component",
+    uiName: "Component",
+    badgeColor: "purple",
+    color: "text-purple-500",
   },
 ];

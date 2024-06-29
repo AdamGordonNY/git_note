@@ -1,7 +1,6 @@
 "use server";
 import dbConnect from "@/database/dbConnect";
 import Interaction from "@/database/models/interaction.model";
-import Post from "@/database/models/post.model";
 
 export async function viewPost({
   userId,
