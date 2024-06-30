@@ -13,7 +13,7 @@ interface DisplayPostHeaderProps {
   createdAt: Date;
   views?: number;
 }
-const DisplayPostHeader = async ({
+const DisplayPostHeader = ({
   title,
   description,
   postType,
@@ -37,8 +37,7 @@ const DisplayPostHeader = async ({
         <div className="flex w-full flex-col gap-4 text-white-300">
           <div className="flex gap-3.5 px-2">
             <span className=" flex gap-1">
-              <Calendar size={16} />
-              {format(createdAt!, "MM dd, yyyy")}
+              {format(createdAt!, "MM dd, yyyy")} <Calendar size={16} />
             </span>
             <span className=" flex gap-1">
               <Star size={16} /> 1k Stars

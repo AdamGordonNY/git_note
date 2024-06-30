@@ -7,14 +7,12 @@ import { Separator } from "@/components/ui/separator";
 
 const LeftSidebar = () => {
   return (
-    <section className="flex w-72 flex-col content-center border-r-[1.5px] bg-black-800 text-white-300">
-      <Link href="/">
-        <Image
-          src={siteLogo}
-          alt="logo"
-          className="ml-[28px] mt-[40px] h-[24px] w-[102px]"
-        />
-      </Link>
+    <section className="flex w-72 flex-col border-r-[1.5px] bg-black-800">
+      <Image
+        src={siteLogo}
+        alt="logo"
+        className="ml-[28px] mt-[40px] h-[24px] w-[102px]"
+      />
       <LeftButtonGroup />
       <div className="py-20">
         <Separator />

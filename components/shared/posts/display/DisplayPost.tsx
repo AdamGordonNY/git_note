@@ -5,28 +5,18 @@ import Experience from "./Experience";
 
 interface DisplayPostProps {
   post: Partial<IPost>;
-  postType: "knowledge" | "component" | "workflow";
 }
-const DisplayPost = async ({ post, postType }: DisplayPostProps) => {
-  if (post.postType === "knowledge") {
-    postType = "knowledge";
-  }
-  if (post.postType === "component") {
-    postType = "component";
-  }
-  if (post.postType === "workflow") {
-    postType = "workflow";
-  }
+const DisplayPost = async ({ post }: DisplayPostProps) => {
   return (
     <>
       <DisplayPostHeader
         title={post.title!}
         description={post.description!}
         createdAt={post.createdAt!}
-        postType={postType}
+        postType={post.postType!}
         tags={post.tags!}
       />
-      <Experience experiences={post?.experiences!} />
+      <Experience experiences={post?.experiences} />
     </>
   );
 };
