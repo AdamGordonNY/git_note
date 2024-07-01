@@ -140,7 +140,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
   const image = watch("image");
 
   return (
-    <section>
+    <>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="py-7.5 flex w-full flex-1 flex-col gap-6"
@@ -226,7 +226,7 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           Create Post {pending && <LoadingSpinner />}
         </CustomButton>
       </form>
-    </section>
+    </>
   );
 };
 

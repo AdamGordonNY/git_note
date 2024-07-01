@@ -8,7 +8,7 @@ const Page = async () => {
   const uniqueTags = await getUniqueTags();
 
   return (
-    <div className="flex w-full flex-col px-[30px]">
+    <div className="mb-10 flex w-full flex-col justify-normal px-[30px]">
       <CreatePost uniqueTags={uniqueTags} />
     </div>
   );

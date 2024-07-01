@@ -2,13 +2,7 @@
 import { IPost } from "@/database/models/post.model";
 import React from "react";
 import PostCard from "./PostCard";
-import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
 
-import Badge from "@/components/shared/ui/Badge";
-import PostOverview from "@/components/post/PostOverview";
-
-import urlManager from "@/lib/utils";
 interface AllPostsProps {
   posts: IPost[];
 }

@@ -23,13 +23,16 @@ const NewPostType = ({ control }: NewPostTypeProps) => {
         render={({ field }) => (
           <Select onValueChange={field.onChange} {...field}>
             <SelectTrigger
-              className=" flex w-[full] flex-1 bg-black-700 text-white-100"
+              className=" flex w-full flex-1 bg-black-800 text-white-100 hover:bg-transparent"
               id="postType"
             >
               <SelectValue defaultValue="knowledge" ref={field.ref} />
             </SelectTrigger>
             <SelectContent className="flex w-full bg-black-700 group-focus-within:fill-mode-forwards data-[state=open]:bg-black-700">
-              <SelectItem value="knowledge">
+              <SelectItem
+                value="knowledge"
+                className="ring-0 focus:bg-black-800"
+              >
                 <ResourceTag type="knowledge" />
               </SelectItem>
               <SelectItem value="component">

@@ -13,10 +13,10 @@ const DisplayPost = async ({ post }: DisplayPostProps) => {
         title={post.title!}
         description={post.description!}
         createdAt={post.createdAt!}
-        postType={post.postType!}
+        postType={post.postType! as string}
         tags={post.tags!}
       />
-      <Experience experiences={post?.experiences} />
+      <Experience experiences={post?.experiences!} />
     </>
   );
 };

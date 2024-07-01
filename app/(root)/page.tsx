@@ -18,12 +18,10 @@ export default async function Home() {
     filter: "all",
     searchQuery: "",
   });
-  if (posts) {
-    console.log(posts);
-  }
+  const cleanPosts = JSON.parse(JSON.stringify(posts));
 
   return (
-    <main className="flex-center flex w-full text-white-300">
+    <main className="flex-center flex min-h-screen w-full text-white-300">
       <div>
         {" "}
         <SignOutButton />

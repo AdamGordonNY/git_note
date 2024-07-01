@@ -114,10 +114,10 @@
     box-shadow: 0px 1px 1px 0px #1212121a;
   }
   .sidebar-left {
-    @apply w-[292px] flex flex-col h-screen bg-black-700 fixed left-0;
+    @apply w-[292px] flex flex-col min-h-screen bg-black-700 fixed left-0;
   }
   .sidebar-right {
-    @apply w-[290px] flex flex-col h-screen bg-black-700 fixed right-0;
+    @apply w-[290px] flex flex-col min-h-screen bg-black-700 fixed right-0;
   }
   .sidebar-btn {
     @apply rounded-md py-3 px-1.5 w-[235px] h-[38px] text-white-100 bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] flex gap-1 items-center justify-center;

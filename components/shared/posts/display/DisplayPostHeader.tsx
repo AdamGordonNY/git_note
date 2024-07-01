@@ -8,7 +8,7 @@ import Badge from "@/components/ui/badge";
 interface DisplayPostHeaderProps {
   title: string;
   description: string;
-  postType: "knowledge" | "component" | "workflow";
+  postType: string;
   tags: string[];
   createdAt: Date;
   views?: number;
