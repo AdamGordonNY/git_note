@@ -10,12 +10,12 @@ import shortcutIcon from "@/public/shortcutIcon.svg";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 
-import { getAllPosts } from "@/lib/actions/post.actions";
 import urlManager from "@/lib/utils";
 import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
 import ComponentIcon from "@/components/ui/icons/ComponentIcon";
 import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
 import { IPost } from "@/database/models/post.model";
+import { getAllPosts } from "@/lib/actions/post.actions";
 const Search = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -25,8 +25,8 @@ const Search = () => {
 
   useEffect(() => {
     const getPosts = async () => {
-      //   const posts = await getAllPosts(searchTerm);
-      //   if (posts) setPosts(posts as IPost[]);
+      const posts = await getAllPosts({ searchQuery: searchTerm });
+      if (posts) setPosts(posts as IPost[]);
     };
 
     const setParams = async () => {
@@ -91,7 +91,7 @@ const Search = () => {
   return (
     <>
       <div
-        className="paragraph-4-medium flex w-full cursor-pointer items-center justify-between rounded-md bg-black-700 p-4"
+        className="paragraph-4-medium flex  cursor-pointer items-center justify-between rounded-md border bg-black-700 p-4"
         onClick={() => setOpen((open) => !open)}
       >
         <div className="flex w-full gap-x-2">

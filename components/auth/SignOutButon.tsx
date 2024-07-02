@@ -4,7 +4,7 @@ import { signOut } from "next-auth/react";
 import logoutIcon from "@/public/icons/logout.svg";
 import Image from "next/image";
 const SignOutButton = () => (
-  <div className="mb-5 flex p-4">
+  <div className="flex p-4">
     <Image src={logoutIcon} alt="Logout Icon" />
     <button
       className="paragraph-3-medium flex gap-2 text-white-300"

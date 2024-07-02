@@ -94,7 +94,15 @@ export const fetchPost = async (_id: string) => {
     console.log(error);
   }
 };
-
+export const getRecentPosts = async () => {
+  try {
+    await dbConnect();
+    const posts = await Post.find({}).sort({ createdAt: -1 }).limit(5);
+    return posts as IPost[];
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const createNewPost = async ({ post }: CreateNewPostParams) => {
   try {
     await dbConnect();

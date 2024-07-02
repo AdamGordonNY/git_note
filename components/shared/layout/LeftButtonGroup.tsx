@@ -8,19 +8,20 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import NavSection from "./NavSection";
 import QuickLink from "./QuickLink";
-import { signOut } from "next-auth/react";
 
 import Search from "../posts/Search";
-import logoutIcon from "@/public/icons/logout.svg";
+
+import { IPost } from "@/database/models/post.model";
+import SidebarTag from "./SidebarTags";
+
 interface LeftButtonGroupProps {
-  children?: React.ReactNode;
-  className?: string;
+  posts: IPost[];
 }
 
-const LeftButtonGroup = ({ children, className }: LeftButtonGroupProps) => {
+const LeftButtonGroup = ({ posts }: LeftButtonGroupProps) => {
   return (
-    <div>
-      <div className="mt-20 flex flex-col items-center justify-center space-y-2 ">
+    <>
+      <div className="mt-20 flex  flex-col items-center justify-center space-y-2 border-b border-white-500">
         <Link href="/posts/add">
           <Button
             className="flex h-[38px] w-[235px] items-center justify-center gap-1 rounded-md bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] px-1.5 py-3 text-white-100"
@@ -41,10 +42,12 @@ const LeftButtonGroup = ({ children, className }: LeftButtonGroupProps) => {
           <Search />
         </div>
       </div>
-      <div>
-        <div className="space-y-4 pb-12"></div>
-      </div>
-      <NavSection title="POSTS"> placeholder for posts</NavSection>
+
+      <NavSection title="POSTS">
+        {" "}
+        {posts &&
+          posts.map((post, idx) => <SidebarTag key={idx} post={post} />)}
+      </NavSection>
 
       <NavSection title="QUICK LINKS">
         <QuickLink
@@ -58,7 +61,7 @@ const LeftButtonGroup = ({ children, className }: LeftButtonGroupProps) => {
           name="Github Organization"
         />
       </NavSection>
-    </div>
+    </>
   );
 };
 
