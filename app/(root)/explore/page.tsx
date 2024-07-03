@@ -10,17 +10,16 @@ const ExplorePage = async () => {
   if (session) {
     posts = await getAllPosts({ filter: "new" });
   }
-  const cleanPosts = JSON.parse(JSON.stringify(posts));
-  console.log(cleanPosts);
+  // const cleanPosts = JSON.parse(JSON.stringify(posts));
   return (
     <div className="">
       <span className="display-2-bold">Posts</span>
       <div className="grid grid-cols-2">
-        {cleanPosts?.posts.map((post: any, idx: AnyExpression) => (
-          <div key={idx}>
-            <PostCard post={post} />
+        {/* {cleanPosts?.posts.map((post: any, idx: AnyExpression) => (
+          <div key={idx} className="flex flex-row">
+            <PostCard post={post} type={post.postType} />
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

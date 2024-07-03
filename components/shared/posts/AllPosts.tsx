@@ -2,6 +2,7 @@
 import { IPost } from "@/database/models/post.model";
 import React from "react";
 import PostCard from "./PostCard";
+import { ResourceTagType } from "../ResourceTag";
 
 interface AllPostsProps {
   posts: IPost[];
@@ -13,7 +14,7 @@ const AllPosts = ({ posts }: AllPostsProps) => {
       <div className="grid  grid-cols-2">
         {posts.map((post, idx) => (
           <React.Fragment key={idx}>
-            <PostCard post={post} />
+            <PostCard post={post} type={post.postType as ResourceTagType} />
           </React.Fragment>
         ))}
       </div>

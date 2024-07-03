@@ -4,11 +4,11 @@ import knowledgeBadge from "@/public/icons/greenbubble.svg";
 import componentBadge from "@/public/icons/numberlist.svg";
 import Image from "next/image";
 
-type ResourceTagType = "knowledge" | "component" | "workflow" | "plain";
+export type ResourceTagType = "knowledge" | "component" | "workflow" | "plain";
 interface ResourceTagProps extends React.PropsWithChildren {
   type: ResourceTagType;
   icon?: React.JSX.Element;
-  text?: string;
+  text?: string | "knowledge" | "component" | "workflow" | "plain";
   className?: string;
   onClick?: () => void;
 }
