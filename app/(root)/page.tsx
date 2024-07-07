@@ -1,5 +1,6 @@
-import ResourceTag from "@/components/shared/ResourceTag";
+import { ResourceTagType } from "@/components/shared/ResourceTag";
 import PostCard from "@/components/shared/posts/PostCard";
+import PostsHeader from "@/components/shared/posts/PostsHeader";
 import { IPost } from "@/database/models/post.model";
 import { getRecentPosts } from "@/lib/actions/post.actions";
 
@@ -13,19 +14,24 @@ export default async function Home() {
     redirect("/sign-in");
   }
   const posts = await getRecentPosts();
-  console.log(posts);
+
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
 
   return (
     <main className="flex min-h-screen w-full flex-col text-white-300">
       <div className="flex items-center justify-between p-14">
-        <span className="display-2-bold text-white-100">Recent Posts</span>
-        <ResourceTag type="workflow" />
+        <PostsHeader />
       </div>
-      <div className="flex w-full columns-2 flex-col max-md:columns-1">
-        {cleanPosts.map((post) => (
-          <PostCard key={post._id} post={post} type={post?.postType!} />
-        ))}
+      <div className="flex w-full  flex-col gap-4 px-12   max-md:columns-1">
+        <div className="columns-2 space-y-[18px]">
+          {cleanPosts.map((post) => (
+            <PostCard
+              key={post._id}
+              post={post}
+              type={post?.postType! as ResourceTagType}
+            />
+          ))}
+        </div>
       </div>
     </main>
   );

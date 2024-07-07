@@ -8,21 +8,20 @@ interface PostCardProps {
   type: ResourceTagType;
 }
 const PostCard = async ({ post, type }: PostCardProps) => {
-  console.log(post);
   return (
     <Link
       href={`/posts/${post?._id!}`}
-      className="py-7.5 col-span-1 flex h-[184px] flex-col gap-4 rounded-[8px] bg-black-800 px-6 "
+      className="flex h-[184px] break-inside-avoid-column  flex-col gap-y-4 rounded-[8px] bg-black-800 px-9 py-6 "
     >
-      <div>
+      <div className="p-2">
         <ResourceTag type={type} />
       </div>
 
-      <span className="display-2-bold gap-[14px] text-white-100">
+      <span className="display-2-bold line-clamp-2 gap-[14px] text-white-100">
         {post?.title}
       </span>
 
-      <div className="flex flex-row">
+      <div className="flex  gap-x-3">
         {post.tags &&
           post.tags.map((tag, idx) => (
             <div key={idx}>
