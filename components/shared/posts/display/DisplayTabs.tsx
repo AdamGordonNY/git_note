@@ -1,6 +1,6 @@
 "use client";
 import { IPost } from "@/database/models/post.model";
-import React, { useEffect } from "react";
+import React from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-java";
@@ -11,6 +11,7 @@ import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 import "prismjs/themes/prism-dark.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// eslint-disable-next-line no-unused-vars
 import { Textarea } from "@/components/ui/textarea";
 import { CodeIcon, Eye } from "lucide-react";
 
@@ -20,7 +21,9 @@ interface TabsProps {
 const DisplayTabs = ({ post }: TabsProps) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const code = post.code;
-  React.useEffect(() => {}, [code]);
+  React.useEffect(() => {
+    Prism.highlightAll();
+  }, [code]);
   if (post.postType !== "component") {
     return null;
   }
