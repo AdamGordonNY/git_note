@@ -1,8 +1,9 @@
 import { fetchPost } from "@/lib/actions/post.actions";
 import React from "react";
-import DisplayPost from "@/components/shared/posts/display/DisplayPost";
+
 import { notFound } from "next/navigation";
 import DisplayPostHeader from "@/components/shared/posts/display/DisplayPostHeader";
+import { IPost } from "@/database/models/post.model";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const fetchedPost = await fetchPost(params.id);
@@ -13,8 +14,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
   console.log({ cleanPost });
 
   return (
-    <section className="py-7.5 h-[248px] w-full gap-[20px] pl-[40px] pr-[32px]">
+    <section className=" w-full gap-[20px]">
       <DisplayPostHeader
+        post={cleanPost as IPost}
         title={cleanPost.title}
         description={cleanPost.description}
         postType={cleanPost.postTyoe}

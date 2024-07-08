@@ -31,10 +31,12 @@ export const onboardingSchema = z.object({
   onboardingSchemaFour,
 });
 export const ResourceLinkSchema = z.array(
-  z.object({
-    title: z.string().min(4).max(50),
-    url: z.string().url(),
-  })
+  z
+    .object({
+      title: z.string().min(4).max(50),
+      url: z.string().url(),
+    })
+    .optional()
 );
 const ExperiencesSchema = z.array(
   z.object({

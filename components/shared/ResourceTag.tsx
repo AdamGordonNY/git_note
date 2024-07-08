@@ -18,7 +18,7 @@ const ResourceTag = ({ type, text, onClick, ...props }: ResourceTagProps) => {
 
   const badgeType = type || "knowledge";
   const baseClass =
-    "inline-flex pl-1 pr-2 py-0.5 gap-1 rounded-[3px] items-center justify-center rounded-[3px]";
+    "inline-flex pl-1 pr-2 py-0.5 gap-1 rounded-[3px] items-center justify-center rounded-[3px] h-fit";
 
   const label = {
     component: "Component",
