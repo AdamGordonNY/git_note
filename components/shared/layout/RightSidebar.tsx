@@ -4,7 +4,7 @@ import { IUser } from "@/database/models/user.model";
 import { getSession } from "@/lib/authOptions";
 import { getOneUser } from "@/lib/actions/user.actions";
 
-const RightSidebar = async () => {
+const RightSidebar = async ({ params }: { params: string[] }) => {
   const session = await getSession();
   let user;
 

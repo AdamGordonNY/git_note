@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import DisplayPostHeader from "@/components/shared/posts/display/DisplayPostHeader";
 import { IPost } from "@/database/models/post.model";
 import Takeaways from "@/components/shared/posts/display/Takeaways";
+import Steps from "@/components/shared/posts/Steps";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const fetchedPost = await fetchPost(params.id);
@@ -31,6 +32,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </div>
         </>
       )}
+      {/* {cleanPost.postType === "workflow" && (
+        <>
+        
+        </>
+      )} */}
     </section>
   );
 };

@@ -3,7 +3,8 @@ import { format } from "date-fns";
 import { IPost } from "@/database/models/post.model";
 import { Calendar, Eye, Star } from "lucide-react";
 import ResourceTag from "../../ResourceTag";
-import PostMenu from "./PostMenu";
+
+import { EditOrDeletePopover } from "./EditOrDelete";
 
 interface DisplayPostHeaderProps {
   post: Partial<IPost>;
@@ -30,7 +31,7 @@ const DisplayPostHeader = async ({
           <h1 className="display-1-bold line-clamp-1 w-4/5 text-white-100">
             {title}
           </h1>
-          <PostMenu postType={postType} />
+          <EditOrDeletePopover postId={post.id} postType={post.postType!} />
         </div>
         <div className="mt-3 flex w-full flex-col gap-4 text-white-300">
           <span className="paragraph-3-regular text-white-300">
