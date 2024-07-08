@@ -24,7 +24,7 @@ const DisplayPostHeader = async ({
   postType,
 }: DisplayPostHeaderProps) => {
   return (
-    <section className="flex h-[248px] w-full items-center justify-between px-[30px] pb-[32px] pt-[40px] ">
+    <section className="flex h-[248px] w-full items-center justify-between gap-x-5 px-[30px] pb-[32px] pt-[40px] ">
       <div className="flex w-full flex-col  gap-x-5    ">
         <div className="flex items-center justify-between">
           <h1 className="display-1-bold line-clamp-1 w-4/5 text-white-100">
@@ -36,7 +36,7 @@ const DisplayPostHeader = async ({
           <span className="paragraph-3-regular text-white-300">
             {description}
           </span>
-          <div className="flex items-center gap-3.5 px-2">
+          <div className="paragraph-3-regular flex items-center gap-3.5 ">
             <span className="flex items-center gap-1">
               <Calendar size={16} className="" />
               {format(createdAt!, "MM dd, yyyy")}{" "}

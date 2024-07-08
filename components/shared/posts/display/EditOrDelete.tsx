@@ -19,10 +19,15 @@ const EditOrDelete = ({ action, postId }: EditOrDeleteProps) => {
       }
     });
   };
+  const className = ` flex absolute  mt-2 w-[175px] justify-between rounded-[5px]  text-white-100`;
   return (
     <Button
       onClick={handleAction}
-      className={action === "edit" ? ` bg-black-700` : `bg-black-600`}
+      className={
+        action === "edit"
+          ? ` ${className} bg-black-700`
+          : `${className} bg-black-600`
+      }
     >
       <Edit size={14} />
       {action === "edit" ? "Edit" : "Delete"}
