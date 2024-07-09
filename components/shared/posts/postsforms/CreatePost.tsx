@@ -9,7 +9,7 @@ import {
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import CustomButton from "../CustomButton";
+import CustomButton from "../../CustomButton";
 
 import { z } from "zod";
 import { createNewPost } from "@/lib/actions/post.actions";
@@ -18,7 +18,7 @@ import NewResourceLink from "./NewResourceLink";
 import NewContent from "./NewContent";
 
 import NewExperience from "./NewExperience";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../../LoadingSpinner";
 import { toast } from "@/components/ui/use-toast";
 import NewTitle from "./NewTitle";
 import NewPostType from "./NewPostType";

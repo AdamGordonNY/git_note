@@ -6,7 +6,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import React, { useEffect, useState } from "react";
-import ResourceTag from "../ResourceTag";
+import ResourceTag from "../../ResourceTag";
 import { ErrorMessage } from "@hookform/error-message";
 interface AddNewTagProps {
   postTags: string[];

@@ -1,4 +1,4 @@
-import CreatePost from "@/components/shared/posts/CreatePost";
+import CreatePost from "@/components/shared/posts/postsforms/CreatePost";
 import { IPost } from "@/database/models/post.model";
 import { getPostById, getUniqueTags } from "@/lib/actions/post.actions";
 import React from "react";

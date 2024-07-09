@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import React from "react";
 import { Controller } from "react-hook-form";
-import ResourceTag from "../ResourceTag";
+import ResourceTag from "../../ResourceTag";
 interface NewPostTypeProps {
   control: any;
 }

@@ -3,7 +3,7 @@
 @tailwind utilities;
 @import "../styles/day-picker.css";
 @import "../styles/theme.css";
-
+@import "react-calendar-heatmap/dist/styles.css";
 body {
   font-family: "Inter", sans-serif;
 }

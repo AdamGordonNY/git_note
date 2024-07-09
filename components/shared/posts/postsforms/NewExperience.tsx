@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import React from "react";
-import CustomButton from "../CustomButton";
+import CustomButton from "../../CustomButton";
 import Image from "next/image";
 import blueCheck from "@/public/icons/checksquare.svg";
 
