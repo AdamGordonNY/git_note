@@ -8,7 +8,7 @@ import { CiCalendar } from "react-icons/ci";
 import { redirect } from "next/navigation";
 import { IUser } from "@/database/models/user.model";
 import { format } from "date-fns";
-import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
 import icnEdit from "@/public/icons/icn-edit.svg";
 interface ProfileHeaderProps {
@@ -64,13 +64,13 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
 
         <section className="flex shrink-0">
           <Link href={`/profile/edit`}>
-            <Button
+            <button
               className="social-login-shadow paragraph-3-bold h-[40px] min-w-[140px] items-center  justify-center gap-1 bg-black-700 align-middle text-primary-500  "
               type="button"
             >
               <Image src={icnEdit} alt="userCheck" height={16} width={16} />
               Edit Profile
-            </Button>
+            </button>
           </Link>
         </section>
       </div>
