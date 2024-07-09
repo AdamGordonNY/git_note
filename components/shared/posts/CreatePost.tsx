@@ -27,11 +27,13 @@ import NewDescription from "./NewDescription";
 import { ErrorMessage } from "@hookform/error-message";
 import AddNewTag from "./AddNewTag";
 import { Separator } from "@/components/ui/separator";
+import { IPost } from "@/database/models/post.model";
 
 interface CreatePostProps {
   uniqueTags: string[];
+  post?: IPost;
 }
-const CreatePost = ({ uniqueTags }: CreatePostProps) => {
+const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
   const [pending, startTransition] = useTransition();
   const {
     handleSubmit,
@@ -46,15 +48,17 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
     shouldFocusError: true,
     criteriaMode: "all",
     defaultValues: {
-      title: "",
-      postType: "knowledge",
-      description: "",
-      content: "",
-      tags: [],
-      code: "",
-      experiences: [{ name: "" }],
-      resourceLinks: [],
-      image: "",
+      title: post?.title || "",
+      postType: post?.postType || "knowledge",
+      description: post?.description || "",
+      content: post?.content || "",
+      tags: post?.tags || [],
+      code: post?.code || "",
+      experiences: post?.experiences?.map((experience) => ({
+        name: experience,
+      })) || [{ name: "" }],
+      resourceLinks: post?.resourceLinks || [],
+      image: post?.image || "",
     },
   });
 
@@ -161,7 +165,6 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           />
         )}
         <NewPostType control={control} />
-
         <AddNewTag
           setPostTags={handleTagChange}
           postTags={postTags}
@@ -179,6 +182,21 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
           name="description"
           as="p"
           render={({ message }) => <p className="text-red-500">{message}</p>}
+        />{" "}
+        {postType && (
+          <NewExperience
+            experienceFields={experience}
+            appendExperience={appendExperience}
+            removeExperience={removeExperience}
+            register={register}
+            postType={postType!}
+          />
+        )}
+        <ErrorMessage
+          errors={errors}
+          name="experiences"
+          as="p"
+          render={({ message }) => <p className="text-red-500">{message}</p>}
         />
         {postType === "component" ? (
           <CodeEditor
@@ -186,14 +204,6 @@ const CreatePost = ({ uniqueTags }: CreatePostProps) => {
             watch={watch}
             errors={errors}
             setValue={setValue}
-          />
-        ) : null}
-        {postType !== "component" ? (
-          <NewExperience
-            experienceFields={experience}
-            appendExperience={appendExperience}
-            removeExperience={removeExperience}
-            register={register}
           />
         ) : null}
         <ErrorMessage

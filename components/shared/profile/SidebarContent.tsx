@@ -14,6 +14,7 @@ interface ProfileSidebarContentProps {
 }
 const SidebarContent = ({ user }: ProfileSidebarContentProps) => {
   const pathName = usePathname();
+  console.log(pathName);
   const paths = [
     {
       path: `/profile`,

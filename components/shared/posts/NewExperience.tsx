@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CustomButton from "../CustomButton";
 import Image from "next/image";
 import blueCheck from "@/public/icons/checksquare.svg";
@@ -23,24 +23,26 @@ const NewExperience = ({
   errors,
   postType,
 }: NewExperienceProps) => {
-  const [label, setLabel] = useState("");
-  const [type, setType] = useState(postType);
-  useEffect(() => {
-    if (type === "knowledge") {
-      setLabel("Key Takeaways");
-      setType("knowledge");
-    } else if (type === "workflow") {
-      setLabel("Task Checklist");
-      setType("workflow");
-    } else {
-      setType("component");
-    }
-  }, [type]);
+  let label = postType!;
+  switch (postType) {
+    case "knowledge":
+      label = "Key Takeaways";
+      break;
+    case "workflow":
+      label = "Steps";
+      break;
+    case "component":
+      label = "What You Learned ";
+      break;
+    default:
+      label = "Knowledge";
+      break;
+  }
   return (
     <>
-      <section className="flex w-full flex-col gap-2 ">
+      <section className="mt-10 flex w-full flex-col gap-2 ">
         <label
-          className="paragraph-3-regular align-top text-white-300"
+          className="paragraph-3-regular align-top capitalize text-white-300"
           htmlFor="experiences"
         >
           {label}

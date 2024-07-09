@@ -5,8 +5,7 @@ import { notFound } from "next/navigation";
 import DisplayPostHeader from "@/components/shared/posts/display/DisplayPostHeader";
 import { IPost } from "@/database/models/post.model";
 import Takeaways from "@/components/shared/posts/display/Takeaways";
-import Steps from "@/components/shared/posts/Steps";
-
+import parse from "html-react-parser";
 const Page = async ({ params }: { params: { id: string } }) => {
   const fetchedPost = await fetchPost(params.id);
   if (!fetchedPost) {
@@ -28,7 +27,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <>
           <Takeaways experiences={cleanPost.experiences!} />
           <div className="gap-x-30 flex p-[30px] text-white-100">
-            {cleanPost.content}
+            {parse(cleanPost.content)}
           </div>
         </>
       )}

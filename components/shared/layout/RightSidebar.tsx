@@ -4,7 +4,7 @@ import { IUser } from "@/database/models/user.model";
 import { getSession } from "@/lib/authOptions";
 import { getOneUser } from "@/lib/actions/user.actions";
 
-const RightSidebar = async ({ params }: { params: string[] }) => {
+const RightSidebar = async ({ params }: { params?: string[] }) => {
   const session = await getSession();
   let user;
 
@@ -14,7 +14,7 @@ const RightSidebar = async ({ params }: { params: string[] }) => {
   const cleanUser: IUser = JSON.parse(JSON.stringify(user));
 
   return (
-    <section className=" border-l-[1.5px] bg-black-800 text-white-100 max-lg:hidden">
+    <section className=" border-l-[1.5px] bg-black-800 text-white-100 max-xl:hidden">
       <SidebarContent user={cleanUser} />
     </section>
   );
