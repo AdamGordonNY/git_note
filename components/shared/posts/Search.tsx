@@ -14,6 +14,8 @@ import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
 import ComponentIcon from "@/components/ui/icons/ComponentIcon";
 import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
 import { IPost } from "@/database/models/post.model";
+import { getAllPosts } from "@/lib/actions/post.actions";
+import urlManager from "@/lib/utils";
 
 const Search = () => {
   const searchParams = useSearchParams();
@@ -22,27 +24,27 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [posts, setPosts] = useState<IPost[]>();
 
-  // useEffect(() => {
-  //   const getPosts = async () => {
-  //     const posts = await getAllPosts({ searchQuery: searchTerm });
-  //     if (posts) setPosts(posts as IPost[]);
-  //   };
+  useEffect(() => {
+    const getPosts = async () => {
+      const posts = await getAllPosts({ searchQuery: searchTerm });
+      if (posts) setPosts(posts as unknown as IPost[]);
+    };
 
-  //   const setParams = async () => {
-  //     const newParams = urlManager(searchParams.toString(), {
-  //       page: "1",
-  //       term: searchTerm,
-  //     });
-  //     router.push(`?${newParams}`);
-  //   };
+    const setParams = async () => {
+      const newParams = urlManager(searchParams.toString(), {
+        page: "1",
+        term: searchTerm,
+      });
+      router.push(`?${newParams}`);
+    };
 
-  //   const timeout = setTimeout(() => {
-  //     setParams();
-  //     getPosts();
-  //   }, 250);
+    const timeout = setTimeout(() => {
+      setParams();
+      getPosts();
+    }, 250);
 
-  //   return () => clearTimeout(timeout);
-  // }, [searchTerm]);
+    return () => clearTimeout(timeout);
+  }, [router, searchParams, searchTerm]);
 
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {

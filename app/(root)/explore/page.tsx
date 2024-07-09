@@ -1,14 +1,14 @@
-import PostCard from "@/components/shared/posts/PostCard";
-import { getAllPosts } from "@/lib/actions/post.actions";
+// import PostCard from "@/components/shared/posts/PostCard";
+// import { getAllPosts } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
-import { AnyExpression } from "mongoose";
+
 import React from "react";
 // this page will have all the posts of all types
 const ExplorePage = async () => {
   const session = await getSession();
-  let posts = null;
+  // let posts = null;
   if (session) {
-    posts = await getAllPosts({ filter: "new" });
+    // posts = await getAllPosts({ filter: "new" });
   }
   // const cleanPosts = JSON.parse(JSON.stringify(posts));
   return (

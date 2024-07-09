@@ -12,7 +12,7 @@ interface DisplayPostHeaderProps {
   description: string;
   postType: string;
   tags: string[];
-  createdAt: string;
+  createdAt: Date;
   views?: number;
 }
 const DisplayPostHeader = async ({

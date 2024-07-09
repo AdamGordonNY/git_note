@@ -10,9 +10,10 @@ const DisplayPost = async ({ post }: DisplayPostProps) => {
   return (
     <>
       <DisplayPostHeader
+        post={post}
         title={post.title!}
         description={post.description!}
-        createdAt={post.createdAt!}
+        createdAt={new Date(post.createdAt!)}
         postType={post.postType! as string}
         tags={post.tags!}
       />

@@ -20,7 +20,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         title={cleanPost.title}
         description={cleanPost.description}
         postType={cleanPost.postType}
-        createdAt={cleanPost?.createdAt?.toString()!}
+        createdAt={cleanPost?.createdAt!}
         tags={cleanPost.tags!}
       />
       {cleanPost.postType === "knowledge" && (

@@ -19,7 +19,7 @@ interface TabsProps {
   post: Partial<IPost>;
 }
 const DisplayTabs = ({ post }: TabsProps) => {
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
+  // const inputRef = React.useRef<HTMLInputElement | null>(null);
   const code = post.code;
   React.useEffect(() => {
     Prism.highlightAll();

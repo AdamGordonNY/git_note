@@ -1,5 +1,5 @@
 import React from "react";
-import CreatePost from "@/components/shared/posts/CreatePost";
+import CreatePost from "@/components/shared/posts/postsforms/CreatePost";
 import { getUniqueTags } from "@/lib/actions/post.actions";
 import dbConnect from "@/database/dbConnect";
 const Page = async () => {
