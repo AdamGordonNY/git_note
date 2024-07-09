@@ -5,7 +5,6 @@ interface ExperienceProps {
 }
 
 const Experience = async ({ experiences }: ExperienceProps) => {
-  console.log(experiences);
   return (
     <div className="py-7.5 flex w-full gap-2.5 px-6">
       <span className="paragraph-1-bold text-white-100">

@@ -208,4 +208,7 @@
   .tab-container {
     @apply w-full px-3.5 gap-6 flex h-[64px];
   }
+  .Popover-Content > [data-side="left"] {
+    left: 0;
+  }
 }

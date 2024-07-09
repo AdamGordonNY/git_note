@@ -2,7 +2,7 @@
 import Post, { IPost } from "@/database/models/post.model";
 
 import dbConnect from "@/database/dbConnect";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
 import {
   CreateNewPostParams,
@@ -97,7 +97,7 @@ export const fetchPost = async (_id: string) => {
 export const getRecentPosts = async () => {
   try {
     await dbConnect();
-    const posts = await Post.find({}).sort({ createdAt: -1 }).limit(5);
+    const posts = await Post.find({}).sort({ createdAt: -1 }).limit(10);
     return posts as IPost[];
   } catch (error) {
     console.log(error);
@@ -174,13 +174,20 @@ export const updatePost = async ({ _id, updateData }: UpdatePostParams) => {
   }
 };
 
-export const deletePostById = async (_id: DeletePostParams) => {
+export const deletePostById = async ({
+  _id,
+}: DeletePostParams): Promise<IPost | null> => {
+  console.log(_id);
   try {
     await dbConnect();
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      throw new Error("Invalid ObjectId");
+    }
     const deletedPost = await Post.findByIdAndDelete(_id);
-    return deletedPost as IPost;
+    return deletedPost;
   } catch (error) {
-    console.log(error);
+    console.error("Error deleting post:", error);
+    return null;
   }
 };
 export const getAllPostTypes = async (params: GetPostParams) => {

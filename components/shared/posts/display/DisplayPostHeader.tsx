@@ -24,6 +24,7 @@ const DisplayPostHeader = async ({
   tags,
   postType,
 }: DisplayPostHeaderProps) => {
+  console.log({ post });
   return (
     <section className="flex h-[248px] w-full items-center justify-between gap-x-5 px-[30px] pb-[32px] pt-[40px] ">
       <div className="flex w-full flex-col  gap-x-5    ">
@@ -31,7 +32,7 @@ const DisplayPostHeader = async ({
           <h1 className="display-1-bold line-clamp-1 w-4/5 text-white-100">
             {title}
           </h1>
-          <EditOrDeletePopover postId={post.id} postType={post.postType!} />
+          <EditOrDeletePopover postId={post._id!} postType={post.postType!} />
         </div>
         <div className="mt-3 flex w-full flex-col gap-4 text-white-300">
           <span className="paragraph-3-regular text-white-300">
