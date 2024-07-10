@@ -2,7 +2,6 @@
 import React from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 const HeatMap = ({ values }: { values: any[] }) => {
-  console.log(values);
   return (
     <div className="flex w-full">
       <CalendarHeatmap

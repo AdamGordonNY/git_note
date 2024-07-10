@@ -14,7 +14,7 @@ const Content = ({
       <h3 className="paragraph-3-medium mb-6 text-white-500">CONTENT</h3>
       <Editor
         id="editor_content"
-        apiKey="91tfu23es3ds7f3oxa0tfujm9otbwas6fvtv714eitd41uln"
+        apiKey="2799b9gk2hf8hje8k7kp1bri4nhcuw8jj5w4b49drfj6pg9a"
         init={{
           menubar: false,
           content_style: `body { background-color: #1D2032; color: #ADB3CC; border: none; line-height: 1.25} a { color: #11b7ff } p { margin-top: 10px; margin-bottom: 10px }`,

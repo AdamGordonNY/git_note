@@ -25,7 +25,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
       />
       {cleanPost.postType === "knowledge" && (
         <>
-          <Takeaways experiences={cleanPost.experiences!} />
+          <Takeaways
+            experiences={cleanPost.experiences!}
+            postType={cleanPost.postType}
+          />
           <div className="gap-x-30 flex p-[30px] text-white-100">
             {parse(cleanPost.content)}
           </div>

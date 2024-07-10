@@ -2,7 +2,13 @@ import React from "react";
 
 import { CheckSquare } from "lucide-react";
 
-const Takeaways = ({ experiences }: { experiences: string[] }) => {
+const Takeaways = ({
+  experiences,
+  postType,
+}: {
+  experiences: string[];
+  postType: "knowledge" | "component" | "workflow";
+}) => {
   return (
     <div className="paragraph-1-bold flex w-full flex-col gap-y-2.5 px-[30px] py-6 text-white-100">
       <span className="">Takeaways</span>

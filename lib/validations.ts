@@ -53,7 +53,7 @@ export const CreatePostSchema = z.object({
   title: z
     .string()
     .min(4, { message: "Input must be minimum 4 characters" })
-    .max(50, { message: "Input must be maximum 50 characters" }),
+    .max(40, { message: "Input must be maximum 40 characters" }),
   postType: z.string(),
   description: z
     .string()
