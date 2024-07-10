@@ -1,16 +1,17 @@
 import { withAuth } from "next-auth/middleware";
-// middleware.ts
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(req: NextRequest) {
-  // Skip middleware for static files and API routes
+  console.log("Middleware invoked for:", req.nextUrl.pathname);
 
   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  // Redirect to sign-up if there's no session
+  console.log("Session:", session);
+
   if (!session) {
     const url = req.nextUrl.clone();
     url.pathname = "/sign-up";
+    console.log("No session found, redirecting to /sign-up");
     return NextResponse.redirect(url);
   }
 
@@ -23,7 +24,6 @@ export default withAuth({
       if (req.nextUrl.pathname === "/admin") {
         return token?.userRole === "admin";
       }
-
       return !!token;
     },
   },

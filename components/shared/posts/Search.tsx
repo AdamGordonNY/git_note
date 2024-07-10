@@ -8,7 +8,7 @@ import searchIcon from "@/public/searchIcon.svg";
 import { Layers } from "lucide-react";
 import shortcutIcon from "@/public/shortcutIcon.svg";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
 import ComponentIcon from "@/components/ui/icons/ComponentIcon";
@@ -19,6 +19,7 @@ import urlManager from "@/lib/utils";
 
 const Search = () => {
   const searchParams = useSearchParams();
+  const pathName = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,6 +40,7 @@ const Search = () => {
     };
 
     const timeout = setTimeout(() => {
+      if (pathName !== "/posts") return;
       setParams();
       getPosts();
     }, 250);
@@ -114,7 +116,7 @@ const Search = () => {
         open={open}
         onOpenChange={setOpen}
         label="Global Command Menu"
-        className="fixed inset-0 z-50 flex size-full items-center justify-center backdrop-blur"
+        className="fixed inset-0 z-50 flex w-[%0%] items-center justify-center backdrop-blur"
         onClick={(e) => {
           if (e.target === e.currentTarget) setOpen(false);
         }}
