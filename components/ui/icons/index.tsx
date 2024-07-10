@@ -1,2 +1,1 @@
-export * from './tech';
-export * from './socialMedia';
+export * from "./tech";
