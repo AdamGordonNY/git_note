@@ -6,6 +6,7 @@ import DisplayPostHeader from "@/components/shared/posts/display/DisplayPostHead
 import { IPost } from "@/database/models/post.model";
 import Takeaways from "@/components/shared/posts/display/Takeaways";
 import parse from "html-react-parser";
+import { CreateType } from "@/types";
 const Page = async ({ params }: { params: { id: string } }) => {
   const fetchedPost = await fetchPost(params.id);
   if (!fetchedPost) {
@@ -23,22 +24,16 @@ const Page = async ({ params }: { params: { id: string } }) => {
         createdAt={cleanPost?.createdAt!}
         tags={cleanPost.tags!}
       />
-      {cleanPost.postType === "knowledge" && (
-        <>
-          <Takeaways
-            experiences={cleanPost.experiences!}
-            postType={cleanPost.postType}
-          />
-          <div className="gap-x-30 flex p-[30px] text-white-100">
-            {parse(cleanPost.content)}
-          </div>
-        </>
-      )}
-      {/* {cleanPost.postType === "workflow" && (
-        <>
-        
-        </>
-      )} */}
+
+      <>
+        <Takeaways
+          experiences={cleanPost.experiences!}
+          postType={cleanPost.postType as CreateType}
+        />
+        <div className="gap-x-30 flex p-[30px] text-white-100">
+          {parse(cleanPost.content)}
+        </div>
+      </>
     </section>
   );
 };
