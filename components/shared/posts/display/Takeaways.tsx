@@ -9,9 +9,24 @@ const Takeaways = ({
   experiences: string[];
   postType: "knowledge" | "component" | "workflow";
 }) => {
+  let label;
+  switch (postType) {
+    case "knowledge":
+      label = "Takeaways";
+      break;
+    case "component":
+      label = "Features";
+      break;
+    case "workflow":
+      label = "Steps";
+      break;
+    default:
+      label = "Takeaways";
+      break;
+  }
   return (
     <div className="paragraph-1-bold flex w-full flex-col gap-y-2.5 px-[30px] py-6 text-white-100">
-      <span className="">Takeaways</span>
+      <span className="">{label}</span>
       {experiences.length > 0
         ? experiences.map((experience, index) => (
             <>

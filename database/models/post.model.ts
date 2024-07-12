@@ -12,6 +12,11 @@ export interface IPost extends Document {
     title: string;
     url: string;
   }[];
+  steps?: {
+    stepName: string;
+    stepContent: string;
+  }[];
+
   experiences?: string[];
   image?: string;
   code?: string;
@@ -50,6 +55,16 @@ const PostSchema = new Schema({
     type: String,
     required: false,
   },
+  steps: [
+    {
+      stepName: {
+        type: String,
+        required: false,
+      },
+      stepContent: { type: String, required: false },
+    },
+  ],
+
   resourceLinks: [
     {
       title: {

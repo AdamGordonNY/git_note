@@ -14,9 +14,9 @@ interface NewPostTypeProps {
 const NewPostType = ({ control }: NewPostTypeProps) => {
   return (
     <div className="flex flex-col justify-between gap-2">
-      <label className="paragraph-3-regular text-white-300" htmlFor="postType">
+      <p className="paragraph-3-regular text-white-300" id="postType">
         Select Post Type
-      </label>
+      </p>
       <Controller
         control={control}
         name="postType"

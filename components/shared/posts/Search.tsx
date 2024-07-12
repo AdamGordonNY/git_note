@@ -25,28 +25,28 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [posts, setPosts] = useState<IPost[]>();
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const posts = await getAllPosts({ searchQuery: searchTerm });
-      if (posts) setPosts(posts as unknown as IPost[]);
-    };
+  // useEffect(() => {
+  //   const getPosts = async () => {
+  //     const posts = await getAllPosts({ searchQuery: searchTerm });
+  //     if (posts) setPosts(posts as unknown as IPost[]);
+  //   };
 
-    const setParams = async () => {
-      const newParams = urlManager(searchParams.toString(), {
-        page: "1",
-        term: searchTerm,
-      });
-      router.push(`?${newParams}`);
-    };
+  //   const setParams = async () => {
+  //     const newParams = urlManager(searchParams.toString(), {
+  //       page: "1",
+  //       term: searchTerm,
+  //     });
+  //     router.push(`?${newParams}`);
+  //   };
 
-    const timeout = setTimeout(() => {
-      if (pathName !== "/posts") return;
-      setParams();
-      getPosts();
-    }, 250);
+  //   const timeout = setTimeout(() => {
+  //     if (pathName !== "/posts") return;
+  //     setParams();
+  //     getPosts();
+  //   }, 250);
 
-    return () => clearTimeout(timeout);
-  }, [router, searchParams, searchTerm]);
+  //   return () => clearTimeout(timeout);
+  // }, [router, searchParams, searchTerm]);
 
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {

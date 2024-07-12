@@ -5,6 +5,7 @@ import {
   useForm,
   useFieldArray,
   useWatch,
+  Controller,
 } from "react-hook-form";
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +29,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import AddNewTag from "./AddNewTag";
 import { Separator } from "@/components/ui/separator";
 import { IPost } from "@/database/models/post.model";
+import PostImage from "./PostImage";
 
 interface CreatePostProps {
   uniqueTags: string[];
@@ -54,6 +56,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
       content: post?.content || "",
       tags: post?.tags || [],
       code: post?.code || "",
+
       experiences: post?.experiences?.map((experience) => ({
         name: experience,
       })) || [{ name: "" }],
@@ -199,11 +202,12 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
           render={({ message }) => <p className="text-red-500">{message}</p>}
         />
         {postType === "component" ? (
-          <CodeEditor
-            register={register}
-            watch={watch}
-            errors={errors}
-            setValue={setValue}
+          <Controller
+            control={control}
+            name="code"
+            render={({ field: { onChange, value } }) => (
+              <CodeEditor onChange={onChange} codeContent={value!} />
+            )}
           />
         ) : null}
         <ErrorMessage
@@ -219,6 +223,12 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
           name="content"
           as="p"
           render={({ message }) => <p className="text-red-500">{message}</p>}
+        />
+        <PostImage
+          register={register}
+          watch={image}
+          setValue={setValue}
+          errors={errors.image}
         />
         <NewResourceLink
           resourceLinks={resourceLinks}

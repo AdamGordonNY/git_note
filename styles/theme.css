@@ -211,16 +211,16 @@
   .Popover-Content > [data-side="left"] {
     left: 0;
   }
-  .react-calendar-heatmap .color-scale-1 {
-    fill: #d6e685;
+  .color-scale-1 {
+    @apply bg-white-100;
   }
-  .react-calendar-heatmap .color-scale-2 {
-    fill: #8cc665;
+  .color-scale-2 {
+    @apply bg-green-200;
   }
-  .react-calendar-heatmap .color-scale-3 {
-    fill: #44a340;
+  .color-scale-3 {
+    @apply bg-green-500;
   }
-  .react-calendar-heatmap .color-scale-4 {
-    fill: #1e6823;
+  .color-scale-4 {
+    @apply bg-green-900;
   }
 }

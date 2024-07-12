@@ -1,183 +1,79 @@
 "use client";
-import { Textarea } from "@/components/ui/textarea";
 
-import { CodeIcon, Eye } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ErrorMessage } from "@hookform/error-message";
-import { uploadImage } from "@/lib/actions/cloudinary.actions";
-import { LuUploadCloud } from "react-icons/lu";
-import { toast } from "@/components/ui/use-toast";
-import Image from "next/image";
-interface CodeEditorProps {
-  register: any;
-  watch: any;
-  errors?: any;
-  className?: string;
-  setValue: any;
-  postType?: string;
-}
+import EyeIcon from "@/components/ui/icons/EyeIcon";
+import CodeIcon from "@/components/ui/icons/CodeIcon";
+
 const CodeEditor = ({
-  register,
-  watch,
-  errors,
-  className,
-  setValue,
-  postType,
-}: CodeEditorProps) => {
-  const code = watch("code");
-  const watchInput = watch("image");
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(
-    watchInput
-  );
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
-  const { ref, ...rest } = register("image");
+  onChange,
+  codeContent,
+}: {
+  onChange: (value: string) => void;
+  codeContent: string;
+}) => {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [numberOfEditorLines, setNumberOfEditorLines] = useState(0);
+  const [isPreview, setIsPreview] = useState(false);
 
-  const generateLineNumbers = () => {
-    const lines = code.split("\n");
-    return lines.map((_: string, idx: number) => (
-      <div key={idx}>{idx + 1}</div>
-    ));
-  };
-  const readFileAsDataURL = (file: Blob) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
+  useEffect(() => {
+    Prism.highlightAll();
+    setNumberOfEditorLines(codeContent.split("\n").length);
 
-  const handleFileChange = async (event: any) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const fileData = await readFileAsDataURL(file);
-
-    try {
-      const uploadResult = await uploadImage(fileData, {
-        action: "postCreation",
-      });
-      setUploadedImageUrl(uploadResult);
-      if (uploadResult) {
-        setValue("image", uploadResult);
-      }
-      toast({
-        type: "foreground",
-        variant: "default",
-        title: "Image Uploaded Successfully",
-      });
-    } catch (error) {
-      console.log(error);
-      toast({
-        type: "foreground",
-        variant: "destructive",
-        title: "Error Uploading Image",
-      });
-    }
-  };
+    if (!textAreaRef.current) return;
+    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+  }, [codeContent, isPreview]);
 
   return (
-    <>
-      <Tabs
-        defaultValue="code"
-        className={` w-full space-y-2 text-white-300  ${className} `}
-      >
-        {" "}
-        <TabsList className="tabs-shadow  bg-black-600  ">
-          <TabsTrigger
-            value="code"
-            className="paragraph-3-medium flex w-[111px] gap-x-2  rounded-[5px] bg-black-600 px-1.5 py-4"
-          >
-            <CodeIcon size={16} /> Code
-          </TabsTrigger>
+    <section className="flex flex-col space-y-2 text-white-300">
+      <div className="paragraph-3-medium flex rounded-md border-none">
+        <button
+          type="button"
+          className={`${
+            isPreview ? "bg-black-800" : "bg-black-700"
+          } flex items-center gap-x-2 rounded p-3`}
+          onClick={() => setIsPreview(false)}
+        >
+          <CodeIcon size={20} />
+          Code
+        </button>
 
-          <TabsTrigger
-            className="paragraph-3-medium flex w-[111px] gap-x-2 rounded-[5px] bg-black-700 px-1.5 py-4"
-            value="preview"
-          >
-            <Eye size={16} /> Preview
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="code" className="mt-10">
-          <div className="code-editor-container">
-            <Textarea
-              contentEditable
-              id="code"
-              className="code-editor-textarea bg-black-700 px-3.5 py-3"
-              spellCheck={false}
-              placeholder="Write your code here"
-              {...register("code")}
-            />
+        <button
+          type="button"
+          className={`${
+            isPreview ? "bg-black-700" : "bg-black-800"
+          } flex items-center gap-x-2 rounded p-3`}
+          onClick={() => setIsPreview(true)}
+        >
+          <EyeIcon size={20} />
+          Preview
+        </button>
+      </div>
 
-            <div className="code-editor-line-numbers">
-              {postType === "component" && generateLineNumbers()}
-            </div>
+      {isPreview ? (
+        <pre className="language-javascript !h-96 !overflow-y-auto !rounded !bg-[#21212c] !text-[14px]">
+          <code className="!text-wrap">{codeContent}</code>
+        </pre>
+      ) : (
+        <div className="relative flex h-96 overflow-y-auto bg-black-700">
+          <div className="editorLineNumbers absolute left-0 top-0 flex flex-col pt-2">
+            {[...Array(numberOfEditorLines)].map((_, idx) => (
+              <span key={idx}>{idx + 1}</span>
+            ))}
           </div>
-          {errors && (
-            <ErrorMessage
-              errors={errors}
-              name="code"
-              as="p"
-              render={({ message }) => (
-                <p className="text-red-500">{message}</p>
-              )}
-            />
-          )}
-        </TabsContent>
-        <TabsContent value="preview">
-          <div className="gap-7.5 relative flex h-[361px] w-full flex-col content-center items-center justify-center space-y-2 bg-black-800 ">
-            <div
-              style={{ backgroundImage: ` "url('/images/placeholder.png')"` }}
-            >
-              {uploadedImageUrl && (
-                <Image
-                  src={uploadedImageUrl}
-                  alt="uploaded image"
-                  className=" object-cover"
-                  height={200}
-                  width={200}
-                  sizes="200px"
-                />
-              )}
-            </div>
-            <input
-              type="hidden"
-              {...rest}
-              ref={(e) => {
-                ref(e);
-                inputRef.current = e;
-              }}
-            />
-            <input
-              type="file"
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-              ref={inputRef}
-            />
-            <button
-              type="button"
-              onClick={() =>
-                inputRef.current !== null && inputRef.current.click()
-              }
-              className="paragraph-3-medium r flex h-[40px] w-[250px] flex-row items-center justify-between gap-2 rounded-[5px] bg-black-700 px-3.5 py-2 align-middle text-white-300  shadow shadow-gray-800/10 "
-            >
-              {" "}
-              <LuUploadCloud size={32} />
-              <span className="text-nowrap">Upload Component Preview</span>
-            </button>
-          </div>
-        </TabsContent>
-      </Tabs>
-      {errors && (
-        <ErrorMessage
-          errors={errors}
-          name="image"
-          render={({ message }) => <p className="text-red-500">{message}</p>}
-        />
+          <textarea
+            id="code-text-area"
+            spellCheck={false}
+            ref={textAreaRef}
+            className="codeTextArea no-scrollbar w-full rounded-md border-none bg-black-700 pt-2 focus:ring-0"
+            onChange={(e) => onChange(e.target.value)}
+            value={codeContent}
+          />
+        </div>
       )}
-    </>
+    </section>
   );
 };
 
