@@ -1,14 +1,16 @@
+"use client";
 import React from "react";
 import DisplayPostHeader from "./DisplayPostHeader";
 import { IPost } from "@/database/models/post.model";
 import Experience from "./Experience";
 import RenderedCodeEditor from "./RenderedCodeEditor";
+import Takeaways from "./Takeaways";
+import { CreateType } from "@/types";
 
 interface DisplayPostProps {
   post: Partial<IPost>;
 }
-const DisplayPost = async ({ post }: DisplayPostProps) => {
-  console.log(post);
+const DisplayPost = ({ post }: DisplayPostProps) => {
   return (
     <>
       <DisplayPostHeader
@@ -19,9 +21,12 @@ const DisplayPost = async ({ post }: DisplayPostProps) => {
         postType={post.postType! as string}
         tags={post.tags!}
       />
-      <Experience experiences={post?.experiences!} />
+      <Takeaways
+        experiences={post.experiences!}
+        postType={post.postType! as CreateType}
+      />
       {post.postType! === "component" && post.code! && (
-        <RenderedCodeEditor code={post.code!} />
+        <RenderedCodeEditor code={post?.code!} />
       )}
     </>
   );

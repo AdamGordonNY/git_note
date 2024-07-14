@@ -29,17 +29,42 @@ interface EditOrDeleteProps {
 }
 
 const EditOrDelete = ({ action, postId, onClick }: EditOrDeleteProps) => {
+  const className = `flex w-full justify-start gap-x-1 rounded-[5px] text-white-100`;
+  return (
+    <>
+      {" "}
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button
+            onClick={onClick}
+            className={
+              action === "edit"
+                ? `${className} bg-black-700`
+                : `${className} bg-black-600`
+            }
+          >
+            <Edit size={14} />
+            {action === "edit" ? "Edit Post" : "Delete Post"}
+          </Button>
+        </DialogTrigger>
+      </Dialog>
+    </>
+  );
+};
+export const ConfirmationModal = ({ postId }: { postId: string }) => {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const handleDelete = async () => {
     try {
-      await deletePostById({ _id: postId });
-      toast({
-        itemID: postId,
-        title: "Post deleted successfully!",
-        variant: "destructive",
+      startTransition(async () => {
+        await deletePostById({ _id: postId });
+        toast({
+          itemID: postId,
+          title: "Post deleted successfully!",
+          variant: "destructive",
+        });
+        router.push("/");
       });
-      router.push("/");
     } catch (error) {
       console.log("error in catch", error);
       toast({
@@ -49,27 +74,9 @@ const EditOrDelete = ({ action, postId, onClick }: EditOrDeleteProps) => {
       });
     }
   };
-
-  const className = `flex w-full justify-start gap-x-1 rounded-[5px] text-white-100`;
   return (
     <>
-      {" "}
       <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            onClick={onClick}
-            disabled={pending}
-            className={
-              action === "edit"
-                ? `${className} bg-black-700`
-                : `${className} bg-black-600`
-            }
-          >
-            <Edit size={14} />
-            {action === "edit" ? "Edit Post" : "Delete Post"}
-            {pending && <Loader2 />}
-          </Button>
-        </DialogTrigger>
         <DialogContent className="flex flex-col space-y-8 rounded-md bg-black-800 p-8">
           <DialogClose asChild>
             <Button type="button">
@@ -100,7 +107,6 @@ const EditOrDelete = ({ action, postId, onClick }: EditOrDeleteProps) => {
     </>
   );
 };
-
 export const EditOrDeletePopover = ({
   postId,
   postType,
@@ -120,29 +126,6 @@ export const EditOrDeletePopover = ({
 
   const handleEditClick = () => {
     router.push(`/posts/${postId}/edit`);
-  };
-
-  const handleDelete = async () => {
-    try {
-      startTransition(async () => {
-        await deletePostById({ _id: postId });
-        toast({
-          itemID: postId,
-          title: "Post deleted successfully!",
-          variant: "destructive",
-        });
-        router.push("/");
-      });
-    } catch (error) {
-      console.log("error in catch", error);
-      toast({
-        itemID: postId,
-        title: "Error deleting post",
-        variant: "destructive",
-      });
-    } finally {
-      setModalIsOpen(false);
-    }
   };
 
   return (
@@ -168,34 +151,7 @@ export const EditOrDeletePopover = ({
           />
         </PopoverContent>
       </div>
-      {modalIsOpen && (
-        <Dialog open={modalIsOpen} onOpenChange={setModalIsOpen}>
-          <DialogContent className="flex flex-col space-y-8 rounded-md bg-black-800 p-8">
-            <DialogClose asChild>
-              <Button type="button">
-                <X fill="white" />
-              </Button>
-            </DialogClose>
-            <p className="text-white-300">
-              Are you sure you&apos;d like to delete this post?
-            </p>
-            <div className="flex justify-between gap-x-4">
-              <Button
-                className="text-red-500"
-                type="submit"
-                onClick={handleDelete}
-              >
-                {pending ? <Loader2 className="animate-spin" /> : "Delete"}
-              </Button>
-              <DialogClose asChild>
-                <Button type="button">
-                  <X fill="white" />
-                </Button>
-              </DialogClose>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
+      {modalIsOpen && <ConfirmationModal postId={postId} />}
     </Popover>
   );
 };
