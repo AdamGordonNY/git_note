@@ -2,7 +2,7 @@
 import React from "react";
 import DisplayPostHeader from "./DisplayPostHeader";
 import { IPost } from "@/database/models/post.model";
-import Experience from "./Experience";
+
 import RenderedCodeEditor from "./RenderedCodeEditor";
 import Takeaways from "./Takeaways";
 import { CreateType } from "@/types";

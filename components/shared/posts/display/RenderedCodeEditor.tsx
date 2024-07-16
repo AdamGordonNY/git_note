@@ -1,35 +1,51 @@
 "use client";
-import Prism from "prismjs";
-import "prismjs/themes/prism-dark.css";
-import { useEffect, useRef, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
+import { monokai } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import Image from "next/image";
+const RenderedCodeEditor = ({ code }: { code: string }) => {
+  const { toast } = useToast();
 
-const RenderedCodeEditor = ({
-  code,
-  active,
-}: {
-  code: string;
-  active: boolean;
-}) => {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [codeView, setCodeView] = useState<string | null>(null);
-  useEffect(() => {
-    if (code) {
-      setCodeView(code);
-    }
-    Prism.highlightAll(true);
-    console.log(code);
-    if (!textAreaRef.current) return;
-    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-  }, [code]);
+  const copyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    toast({
+      title: "Copied to clipboard",
+    });
+  };
 
   return (
     <section className="flex w-[80%] items-center justify-center">
-      <pre className="language-javascript line-numbers !h-auto !overflow-y-auto !rounded-lg !border-white-500 !bg-black-800 !p-4 !text-[14px]">
-        <code
-          className="!text-wrap"
-          dangerouslySetInnerHTML={{ __html: codeView! }}
-        />
-      </pre>
+      <SyntaxHighlighter
+        wrapLongLines
+        customStyle={{
+          border: "1px solid #1D2032",
+          backgroundColor: "#131625",
+          borderRadius: "5px",
+        }}
+        language="typescript"
+        style={monokai}
+        PreTag={(props) => <pre {...props} className="relative" />}
+        CodeTag={(props) => {
+          return (
+            <>
+              <code {...props} />
+              <button
+                onClick={() => copyCode(code)}
+                className="absolute right-0 top-0 rounded-sm bg-black-800 p-4"
+              >
+                <Image
+                  src="/assets/icons/copy.svg"
+                  alt="Copy Code Block"
+                  width={16}
+                  height={16}
+                />
+              </button>
+            </>
+          );
+        }}
+      >
+        {code}
+      </SyntaxHighlighter>
     </section>
   );
 };
