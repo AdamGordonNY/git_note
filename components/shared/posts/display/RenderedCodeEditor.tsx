@@ -1,8 +1,9 @@
 "use client";
 import { useToast } from "@/components/ui/use-toast";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
-import { monokai } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import Image from "next/image";
+import { Copy } from "lucide-react";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
 const RenderedCodeEditor = ({ code }: { code: string }) => {
   const { toast } = useToast();
 
@@ -14,7 +15,7 @@ const RenderedCodeEditor = ({ code }: { code: string }) => {
   };
 
   return (
-    <section className="flex w-[80%] items-center justify-center">
+    <div className="flex w-full">
       <SyntaxHighlighter
         wrapLongLines
         customStyle={{
@@ -23,7 +24,7 @@ const RenderedCodeEditor = ({ code }: { code: string }) => {
           borderRadius: "5px",
         }}
         language="typescript"
-        style={monokai}
+        style={tomorrow}
         PreTag={(props) => <pre {...props} className="relative" />}
         CodeTag={(props) => {
           return (
@@ -33,12 +34,7 @@ const RenderedCodeEditor = ({ code }: { code: string }) => {
                 onClick={() => copyCode(code)}
                 className="absolute right-0 top-0 rounded-sm bg-black-800 p-4"
               >
-                <Image
-                  src="/assets/icons/copy.svg"
-                  alt="Copy Code Block"
-                  width={16}
-                  height={16}
-                />
+                <Copy size={24} />
               </button>
             </>
           );
@@ -46,7 +42,7 @@ const RenderedCodeEditor = ({ code }: { code: string }) => {
       >
         {code}
       </SyntaxHighlighter>
-    </section>
+    </div>
   );
 };
 
