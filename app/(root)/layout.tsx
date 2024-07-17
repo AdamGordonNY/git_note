@@ -12,7 +12,6 @@ const MainLayout = ({
   children: React.ReactNode;
   params: { slug: string[] };
 }) => {
-  console.log(params.slug);
   return (
     <main className="flex min-h-screen w-full bg-black-900">
       <LeftSidebar />

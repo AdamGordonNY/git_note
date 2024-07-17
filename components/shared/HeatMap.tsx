@@ -30,8 +30,12 @@ const HeatMap = ({ values }: { values: any[] }) => {
         }}
         weekdayLabels={["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]}
         showMonthLabels
+        showWeekdayLabels
         gutterSize={4}
       />
+      <div className="">
+        <p className="paragraph-4-medium text-white-100"></p>
+      </div>
     </div>
   );
 };

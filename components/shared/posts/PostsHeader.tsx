@@ -1,15 +1,12 @@
 import React from "react";
-import ResourceTag from "../ResourceTag";
+
+import PostFilter from "./PostFilter";
 
 const PostsHeader = () => {
   return (
     <div className="flex w-full justify-between">
       <span className="display-2-bold text-white-100">Recent Posts</span>
-      <div className="flex justify-end gap-x-3.5">
-        <ResourceTag type="knowledge" text="Knowledge" className="" />
-        <ResourceTag type="workflow" text="Workflow" />
-        <ResourceTag type="component" text="Component" />
-      </div>
+      <PostFilter />
     </div>
   );
 };

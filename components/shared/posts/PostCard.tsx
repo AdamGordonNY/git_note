@@ -11,7 +11,7 @@ const PostCard = async ({ post, type }: PostCardProps) => {
   return (
     <Link
       href={`/posts/${post?._id!}`}
-      className="flex h-[184px] break-inside-avoid-column  flex-col gap-y-4 rounded-[8px] bg-black-800 px-9 py-6 "
+      className="flex h-[184px] cursor-pointer  break-inside-avoid-column flex-col space-y-4 rounded-[8px] bg-black-800 px-9 py-6 "
     >
       <div className="p-2">
         <ResourceTag type={type} />

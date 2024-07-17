@@ -1,10 +1,11 @@
 "use client";
-import React, { useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   SubmitHandler,
   useForm,
   useFieldArray,
   useWatch,
+  Controller,
 } from "react-hook-form";
 import { CreatePostSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomButton from "../../CustomButton";
 
 import { z } from "zod";
-import { createNewPost } from "@/lib/actions/post.actions";
+import { createNewPost, updatePost } from "@/lib/actions/post.actions";
 
 import NewResourceLink from "./NewResourceLink";
 import NewContent from "./NewContent";
@@ -28,12 +29,16 @@ import { ErrorMessage } from "@hookform/error-message";
 import AddNewTag from "./AddNewTag";
 import { Separator } from "@/components/ui/separator";
 import { IPost } from "@/database/models/post.model";
+import PostImage from "./PostImage";
+import { useRouter } from "next/navigation";
 
 interface CreatePostProps {
   uniqueTags: string[];
   post?: IPost;
 }
 const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
+  const [edit, setEdit] = useState(false);
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const {
     handleSubmit,
@@ -54,6 +59,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
       content: post?.content || "",
       tags: post?.tags || [],
       code: post?.code || "",
+
       experiences: post?.experiences?.map((experience) => ({
         name: experience,
       })) || [{ name: "" }],
@@ -105,6 +111,23 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
       })) || [];
 
     try {
+      if (edit) {
+        startTransition(async () => {
+          if (post?._id) {
+            const result = await updatePost({
+              _id: post._id,
+              updateData: post,
+            });
+            if (result) {
+              toast({ title: "Post Updated Successfully" });
+              setTimeout(() => router.push(`/posts/${post.id}`), 1000);
+            }
+          } else {
+            // Handle the case where post._id is undefined
+            console.error("Post ID is undefined");
+          }
+        });
+      }
       startTransition(async () => {
         const result = await createNewPost({
           post: {
@@ -142,7 +165,11 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
     } catch (error) {}
   };
   const image = watch("image");
-
+  useEffect(() => {
+    if (post) {
+      setEdit(true);
+    }
+  }, [post]);
   return (
     <>
       <form
@@ -150,7 +177,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
         className="py-7.5 flex w-full flex-1 flex-col gap-6"
       >
         <span className="display-1-bold pt-10 text-white-100">
-          Create a Post
+          {edit ? "Edit Post" : "Create a Post"}
         </span>
         <span className="paragraph-3-regular text-white-500">
           Basic Information
@@ -199,11 +226,12 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
           render={({ message }) => <p className="text-red-500">{message}</p>}
         />
         {postType === "component" ? (
-          <CodeEditor
-            register={register}
-            watch={watch}
-            errors={errors}
-            setValue={setValue}
+          <Controller
+            control={control}
+            name="code"
+            render={({ field: { onChange, value } }) => (
+              <CodeEditor onChange={onChange} codeContent={value!} />
+            )}
           />
         ) : null}
         <ErrorMessage
@@ -219,6 +247,12 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
           name="content"
           as="p"
           render={({ message }) => <p className="text-red-500">{message}</p>}
+        />
+        <PostImage
+          register={register}
+          watch={image}
+          setValue={setValue}
+          errors={errors.image}
         />
         <NewResourceLink
           resourceLinks={resourceLinks}

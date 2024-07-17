@@ -24,7 +24,6 @@ const DisplayPostHeader = async ({
   tags,
   postType,
 }: DisplayPostHeaderProps) => {
-  console.log({ post });
   return (
     <section className="flex h-[248px] w-full items-center justify-between gap-x-5 px-[30px] pb-[32px] pt-[40px] ">
       <div className="flex w-full flex-col  gap-x-5    ">

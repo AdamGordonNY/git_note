@@ -6,7 +6,6 @@ export async function middleware(req: NextRequest) {
   console.log("Middleware invoked for:", req.nextUrl.pathname);
 
   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  console.log("Session:", session);
 
   if (!session) {
     const url = req.nextUrl.clone();

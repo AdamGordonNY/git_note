@@ -6,6 +6,7 @@ import LeftButtonGroup from "./LeftButtonGroup";
 import { Separator } from "@/components/ui/separator";
 import SignOutButton from "@/components/auth/SignOutButon";
 import { getRecentPosts } from "@/lib/actions/post.actions";
+import Link from "next/link";
 
 const LeftSidebar = async () => {
   const posts = await getRecentPosts();
@@ -13,11 +14,13 @@ const LeftSidebar = async () => {
 
   return (
     <section className="flex min-h-screen w-[292px] flex-col border-r-[1.5px] bg-black-700">
-      <Image
-        src={siteLogo}
-        alt="logo"
-        className="ml-[28px] mt-[40px] h-[24px] w-[102px]"
-      />
+      <Link href={"/"}>
+        <Image
+          src={siteLogo}
+          alt="logo"
+          className="ml-[28px] mt-[40px] h-[24px] w-[102px]"
+        />
+      </Link>
       <LeftButtonGroup posts={cleanPosts} />
 
       <div className="ml-4 flex flex-col  justify-end align-bottom">

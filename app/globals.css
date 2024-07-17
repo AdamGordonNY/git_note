@@ -4,6 +4,10 @@
 @import "../styles/day-picker.css";
 @import "../styles/theme.css";
 @import "react-calendar-heatmap/dist/styles.css";
+@import "prismjs/themes/prism-tomorrow.css";
+@import "../styles/prism.css";
+@import "prismjs/themes/prism-dark.css";
+
 body {
   font-family: "Inter", sans-serif;
 }

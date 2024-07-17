@@ -88,7 +88,7 @@ export const fetchPost = async (_id: string) => {
   try {
     await dbConnect();
     const post = await Post.findOne({ _id });
-    console.log(post, "fetch post");
+
     return post as IPost;
   } catch (error) {
     console.log(error);
@@ -160,6 +160,20 @@ export const createNewPost = async ({ post }: CreateNewPostParams) => {
     return false;
   }
 };
+export const filterPostsByType = async ({
+  postType,
+}: {
+  postType: "knowledge" | "component" | "workflow";
+}) => {
+  try {
+    await dbConnect();
+    const posts = await Post.find({ postType });
+    return posts as IPost[];
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error fetching knowledge posts");
+  }
+};
 
 export const updatePost = async ({ _id, updateData }: UpdatePostParams) => {
   try {
@@ -174,17 +188,15 @@ export const updatePost = async ({ _id, updateData }: UpdatePostParams) => {
   }
 };
 
-export const deletePostById = async ({
-  _id,
-}: DeletePostParams): Promise<IPost | null> => {
+export const deletePostById = async ({ _id }: DeletePostParams) => {
   console.log(_id);
   try {
     await dbConnect();
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       throw new Error("Invalid ObjectId");
     }
-    const deletedPost = await Post.findByIdAndDelete(_id);
-    return deletedPost;
+    const deletedPost = await Post.deleteOne({ _id });
+    if (deletedPost) return true;
   } catch (error) {
     console.error("Error deleting post:", error);
     return null;

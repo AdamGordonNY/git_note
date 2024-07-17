@@ -1,5 +1,8 @@
-import AllPosts from "@/components/shared/posts/AllPosts";
-import { getAllPosts } from "@/lib/actions/post.actions";
+import PostCard from "@/components/shared/posts/PostCard";
+import PostsHeader from "@/components/shared/posts/PostsHeader";
+import { ResourceTagType } from "@/components/shared/ResourceTag";
+import { IPost } from "@/database/models/post.model";
+import { getRecentPosts } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
 import React from "react";
 
@@ -7,13 +10,25 @@ const AllPostsPage = async () => {
   const session = await getSession();
   let posts = null;
   if (session) {
-    posts = await getAllPosts({ filter: "new", pageSize: 20 });
+    posts = await getRecentPosts();
   }
-  const cleanPosts = JSON.parse(JSON.stringify(posts));
+  const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
 
   return (
     <section className="flex w-full flex-col">
-      <AllPosts posts={cleanPosts?.posts!} />
+      <div className="flex items-center justify-between p-14">
+        <PostsHeader />
+      </div>
+      <div className="columns-2 space-y-[18px] px-4">
+        {cleanPosts &&
+          cleanPosts.map((post) => (
+            <PostCard
+              key={post._id}
+              post={post}
+              type={post?.postType! as ResourceTagType}
+            />
+          ))}
+      </div>
     </section>
   );
 };

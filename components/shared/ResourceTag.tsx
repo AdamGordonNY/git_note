@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import workflowBadge from "@/public/icons/monitor.svg";
 import knowledgeBadge from "@/public/icons/greenbubble.svg";
