@@ -2,7 +2,7 @@
 import { useToast } from "@/components/ui/use-toast";
 import { PrismAsyncLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { Copy } from "lucide-react";
-import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const RenderedCodeEditor = ({ code }: { code: string }) => {
   const { toast } = useToast();
@@ -18,15 +18,15 @@ const RenderedCodeEditor = ({ code }: { code: string }) => {
     <div className="flex w-full items-center justify-center px-10">
       <SyntaxHighlighter
         wrapLongLines
-        showInlineLineNumbers
+        showLineNumbers
         customStyle={{
           border: "1px solid #1D2032",
           backgroundColor: "#131625",
           borderRadius: "5px",
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "JetBrains Mono",
         }}
         language="typescript"
-        style={tomorrow}
+        style={materialDark}
         PreTag={(props) => <pre {...props} className="relative" />}
         CodeTag={(props) => {
           return (

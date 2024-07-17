@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import EyeIcon from "@/components/ui/icons/EyeIcon";
 import CodeIcon from "@/components/ui/icons/CodeIcon";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/prism-async-light";
@@ -52,34 +52,30 @@ const CodeEditor = ({
       </div>
 
       {isPreview ? (
-        <pre className="language-javascript ">
-          <SyntaxHighlighter
-            wrapLongLines
-            showLineNumbers
-            customStyle={{
-              border: "1px solid #1D2032",
-              backgroundColor: "#131625",
-              borderRadius: "5px",
-              fontFamily: "JetBrains Mono",
-              height: "384px",
-              fontSize: "14px",
-              overflowY: "hidden",
-              padding: "0px",
-            }}
-            language="typescript"
-            style={tomorrow}
-            PreTag={(props) => <pre {...props} className="relative" />}
-            CodeTag={(props) => {
-              return (
-                <>
-                  <code {...props} key={1} />
-                </>
-              );
-            }}
-          >
-            {codeContent}
-          </SyntaxHighlighter>
-        </pre>
+        <SyntaxHighlighter
+          wrapLongLines
+          showLineNumbers
+          customStyle={{
+            border: "1px solid #1D2032",
+            backgroundColor: "#131625",
+            borderRadius: "5px",
+            fontFamily: "JetBrains Mono",
+            height: "384px",
+            fontSize: "14px",
+          }}
+          language="typescript"
+          style={materialDark}
+          PreTag={(props) => <pre {...props} className="relative" />}
+          CodeTag={(props) => {
+            return (
+              <>
+                <code {...props} key={1} />
+              </>
+            );
+          }}
+        >
+          {codeContent}
+        </SyntaxHighlighter>
       ) : (
         <div className="relative flex h-96 overflow-y-auto bg-black-700">
           <div className="editorLineNumbers absolute left-0 top-0 flex flex-col pt-2">
