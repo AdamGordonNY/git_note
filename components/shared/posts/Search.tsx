@@ -8,22 +8,16 @@ import searchIcon from "@/public/searchIcon.svg";
 import { Layers } from "lucide-react";
 import shortcutIcon from "@/public/shortcutIcon.svg";
 import Image from "next/image";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
-import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
-import ComponentIcon from "@/components/ui/icons/ComponentIcon";
-import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
-import { IPost } from "@/database/models/post.model";
-import { getAllPosts } from "@/lib/actions/post.actions";
-import urlManager from "@/lib/utils";
+// import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
+// import ComponentIcon from "@/components/ui/icons/ComponentIcon";
+// import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
+// import { IPost } from "@/database/models/post.model";
 
 const Search = () => {
-  const searchParams = useSearchParams();
-  const pathName = usePathname();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [posts, setPosts] = useState<IPost[]>();
+  // const [posts, setPosts] = useState<IPost[]>();
 
   // useEffect(() => {
   //   const getPosts = async () => {
@@ -66,31 +60,31 @@ const Search = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const iconMatch = (post: IPost) => {
-    switch (post.postType) {
-      case "component":
-        return (
-          <>
-            <ComponentIcon className="text-purple-500" size={18} />
-            <span>{post.title}</span>
-          </>
-        );
-      case "workflow":
-        return (
-          <>
-            <WorkflowIcon className="text-primary-500" size={18} />
-            <span>{post.title}</span>
-          </>
-        );
-      case "knowledge":
-        return (
-          <>
-            <KnowledgeIcon className="text-green-500" size={18} />
-            <span>{post.title}</span>
-          </>
-        );
-    }
-  };
+  // const iconMatch = (post: IPost) => {
+  //   switch (post.postType) {
+  //     case "component":
+  //       return (
+  //         <>
+  //           <ComponentIcon className="text-purple-500" size={18} />
+  //           <span>{post.title}</span>
+  //         </>
+  //       );
+  //     case "workflow":
+  //       return (
+  //         <>
+  //           <WorkflowIcon className="text-primary-500" size={18} />
+  //           <span>{post.title}</span>
+  //         </>
+  //       );
+  //     case "knowledge":
+  //       return (
+  //         <>
+  //           <KnowledgeIcon className="text-green-500" size={18} />
+  //           <span>{post.title}</span>
+  //         </>
+  //       );
+  //   }
+  // };
   return (
     <>
       <div
@@ -116,17 +110,17 @@ const Search = () => {
         open={open}
         onOpenChange={setOpen}
         label="Global Command Menu"
-        className="fixed inset-0 z-50 flex w-[%0%] items-center justify-center backdrop-blur"
+        className="fixed inset-0 z-40 flex w-[%0%] items-center justify-center backdrop-blur"
         onClick={(e) => {
           if (e.target === e.currentTarget) setOpen(false);
         }}
       >
-        <div className="flex w-full flex-col bg-black-800">
+        <div className="z-50 flex w-full flex-col rounded-xl border border-white-100 bg-black-800 max-lg:w-full lg:w-[75%]">
           <div className="flex w-full items-center gap-x-2 border-none bg-black-700 p-4  py-3">
             <Command.Input
               value={searchTerm}
               onValueChange={setSearchTerm}
-              className="paragraph-3-regular w-full border-none bg-black-700 p-0 py-1 text-white-300 placeholder:text-white-300"
+              className="paragraph-3-regular border-none bg-black-700 p-0 py-1 text-white-300 placeholder:text-white-300 max-lg:w-full"
               placeholder="Type a command or search..."
             />
             <div className="paragraph-4-regular rounded bg-black-800 p-1 text-white-300">
@@ -142,7 +136,7 @@ const Search = () => {
                   Explore all posts
                 </Command.Item>
               </Link>
-              {posts &&
+              {/* {posts &&
                 posts.length > 0 &&
                 posts.map((post) => {
                   return (
@@ -159,7 +153,7 @@ const Search = () => {
                       </Command.Item>
                     </Link>
                   );
-                })}
+                })} */}
             </Command.Group>
           </Command.List>
         </div>

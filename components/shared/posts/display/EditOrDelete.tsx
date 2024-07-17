@@ -26,17 +26,24 @@ interface EditOrDeleteProps {
   action: "edit" | "delete";
   postId: string;
   onClick: () => void;
+  disabled: boolean;
 }
 
-const EditOrDelete = ({ action, postId, onClick }: EditOrDeleteProps) => {
+const EditOrDelete = ({
+  action,
+  postId,
+  onClick,
+  disabled,
+}: EditOrDeleteProps) => {
   const className = `flex w-full justify-start gap-x-1 rounded-[5px] text-white-100`;
   return (
     <>
       {" "}
       <Dialog>
-        <DialogTrigger asChild>
+        <DialogTrigger asChild className="  bg-black-800">
           <Button
             onClick={onClick}
+            disabled={disabled}
             className={
               action === "edit"
                 ? `${className} bg-black-700`
@@ -76,7 +83,7 @@ export const ConfirmationModal = ({ postId }: { postId: string }) => {
   };
   return (
     <>
-      <Dialog>
+      <Dialog modal>
         <DialogContent className="flex flex-col space-y-8 rounded-md bg-black-800 p-8">
           <DialogClose asChild>
             <Button type="button">
@@ -124,8 +131,8 @@ export const EditOrDeletePopover = ({
     setModalIsOpen(true);
   };
 
-  const handleEditClick = () => {
-    router.push(`/posts/${postId}/edit`);
+  const handleEditClick = async () => {
+    startTransition(async () => await router.push(`/posts/${postId}/edit`));
   };
 
   return (
@@ -140,11 +147,13 @@ export const EditOrDeletePopover = ({
           className="Popover-Content absolute left-0 top-full mt-2 flex w-[175px] flex-col gap-y-1 bg-transparent p-2"
         >
           <EditOrDelete
+            disabled={pending}
             action="edit"
             postId={postId}
             onClick={handleEditClick}
           />
           <EditOrDelete
+            disabled={pending}
             action="delete"
             postId={postId}
             onClick={handleDeleteClick}

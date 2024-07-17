@@ -55,15 +55,16 @@ const CodeEditor = ({
         <pre className="language-javascript ">
           <SyntaxHighlighter
             wrapLongLines
-            showInlineLineNumbers
+            showLineNumbers
             customStyle={{
               border: "1px solid #1D2032",
               backgroundColor: "#131625",
               borderRadius: "5px",
-              fontFamily: "'JetBrains Mono'",
+              fontFamily: "JetBrains Mono",
               height: "384px",
               fontSize: "14px",
-              overflowY: "auto",
+              overflowY: "hidden",
+              padding: "0px",
             }}
             language="typescript"
             style={tomorrow}
