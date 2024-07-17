@@ -1,8 +1,8 @@
 "use client";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import ResourceTag from "../ResourceTag";
-import { filterPostsByType } from "@/lib/actions/post.actions";
+
 const PostFilter = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -12,7 +12,10 @@ const PostFilter = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("filter", item.toLowerCase());
     params.set("page", "1");
-    router.push(`${window.location.pathname}?${params.toString()}`, undefined);
+    router.push(
+      `${window.location.pathname}/${active}/?${params.toString()}`,
+      undefined
+    );
   };
   return (
     <div className="flex justify-end gap-x-3.5">

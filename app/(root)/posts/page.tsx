@@ -19,7 +19,7 @@ const AllPostsPage = async () => {
       <div className="flex items-center justify-between p-14">
         <PostsHeader />
       </div>
-      <div className="columns-2 space-y-[18px]">
+      <div className="columns-2 space-y-[18px] px-4">
         {cleanPosts &&
           cleanPosts.map((post) => (
             <PostCard
