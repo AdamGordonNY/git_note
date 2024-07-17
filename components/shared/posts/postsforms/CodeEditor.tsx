@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.css";
 
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import EyeIcon from "@/components/ui/icons/EyeIcon";
 import CodeIcon from "@/components/ui/icons/CodeIcon";
+import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/prism-async-light";
 
 const CodeEditor = ({
   onChange,
@@ -19,7 +19,6 @@ const CodeEditor = ({
   const [isPreview, setIsPreview] = useState(false);
 
   useEffect(() => {
-    Prism.highlightAll();
     setNumberOfEditorLines(codeContent.split("\n").length);
 
     if (!textAreaRef.current) return;
@@ -53,21 +52,47 @@ const CodeEditor = ({
       </div>
 
       {isPreview ? (
-        <pre className="language-javascript !h-96 !overflow-y-auto !rounded !bg-[#21212c] !text-[14px]">
-          <code className="!text-wrap">{codeContent}</code>
+        <pre className="language-javascript ">
+          <SyntaxHighlighter
+            wrapLongLines
+            showInlineLineNumbers
+            customStyle={{
+              border: "1px solid #1D2032",
+              backgroundColor: "#131625",
+              borderRadius: "5px",
+              fontFamily: "'JetBrains Mono'",
+              height: "384px",
+              fontSize: "14px",
+              overflowY: "auto",
+            }}
+            language="typescript"
+            style={tomorrow}
+            PreTag={(props) => <pre {...props} className="relative" />}
+            CodeTag={(props) => {
+              return (
+                <>
+                  <code {...props} key={1} />
+                </>
+              );
+            }}
+          >
+            {codeContent}
+          </SyntaxHighlighter>
         </pre>
       ) : (
         <div className="relative flex h-96 overflow-y-auto bg-black-700">
           <div className="editorLineNumbers absolute left-0 top-0 flex flex-col pt-2">
             {[...Array(numberOfEditorLines)].map((_, idx) => (
-              <span key={idx}>{idx + 1}</span>
+              <span className="p" key={idx}>
+                {idx + 1}
+              </span>
             ))}
           </div>
           <textarea
             id="code-text-area"
             spellCheck={false}
             ref={textAreaRef}
-            className="codeTextArea no-scrollbar w-full rounded-md border-none bg-black-700 pt-2 focus:ring-0"
+            className="codeTextArea no-scrollbar w-full rounded-md border-none bg-black-700 pl-4 pt-2 focus:ring-0"
             onChange={(e) => onChange(e.target.value)}
             value={codeContent}
           />

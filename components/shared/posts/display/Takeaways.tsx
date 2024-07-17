@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import { CheckSquare } from "lucide-react";
 import RenderedCodeEditor from "./RenderedCodeEditor";
-import "prismjs/themes/prism.css";
 
 const Takeaways = ({
   experiences,
@@ -41,13 +40,17 @@ const Takeaways = ({
       <span className="">{label}</span>
       {experiences.length > 0
         ? experiences.map((experience, index) => (
-            <>
+            <div
+              className="gap-x-1.6 inline-flex  flex-row items-center align-middle"
+              key={index}
+            >
               <CheckSquare
+                key={index}
                 size={16}
                 className="mr-[8px] mt-[2px] stroke-green-400"
               />{" "}
-              {experience}{" "}
-            </>
+              <span className="paragraph-2-regular"> {experience} </span>
+            </div>
           ))
         : null}
       {code && <RenderedCodeEditor code={code} />}
