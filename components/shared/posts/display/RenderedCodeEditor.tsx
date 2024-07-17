@@ -15,7 +15,7 @@ const RenderedCodeEditor = ({ code }: { code: string }) => {
   };
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full items-center justify-center px-10">
       <SyntaxHighlighter
         wrapLongLines
         customStyle={{
