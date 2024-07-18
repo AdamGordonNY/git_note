@@ -7,6 +7,9 @@ import RenderedCodeEditor from "./RenderedCodeEditor";
 import Takeaways from "./Takeaways";
 import { CreateType } from "@/types";
 
+import DisplayPostContent from "./DisplayPostContent";
+import DisplayPostResources from "./DisplayPostResources";
+
 interface DisplayPostProps {
   post: Partial<IPost>;
 }
@@ -28,6 +31,10 @@ const DisplayPost = ({ post }: DisplayPostProps) => {
       {post.postType! === "component" && post.code! && (
         <RenderedCodeEditor code={post?.code!} />
       )}
+      <hr className="text-white-300" />
+      <h1 className="display-2-bold pl-[30px] text-white-100">Post Content </h1>
+      <DisplayPostContent content={post?.content!} image={post?.image!} />
+      <DisplayPostResources resources={post?.resourceLinks!} />
     </>
   );
 };

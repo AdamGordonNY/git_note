@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
+
 import {
   Tooltip,
   TooltipContent,
@@ -23,7 +23,7 @@ const TechBadge = ({ technology }: TechBadgesProps) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button className="cursor-pointer ">{icon && icon(size)}</Button>
+          <button className="cursor-pointer ">{icon && icon(size)}</button>
         </TooltipTrigger>
         <TooltipContent className=" gap-2.5 text-nowrap rounded-[4px] bg-black-700 px-1 py-2.5 capitalize text-white-300">
           <p>{displayName}</p>
