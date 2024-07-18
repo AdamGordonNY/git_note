@@ -22,14 +22,12 @@ const AllPosts = async ({ posts, filter }: AllPostsProps) => {
       break;
   }
   return (
-    <section className="flex flex-col">
-      <div className="columns-1">
-        {posts.map((post, idx) => (
-          <React.Fragment key={idx}>
-            <PostCard post={post} type={post.postType as ResourceTagType} />
-          </React.Fragment>
-        ))}
-      </div>
+    <section className="flex columns-1 flex-col gap-y-5">
+      {posts.map((post, idx) => (
+        <React.Fragment key={idx}>
+          <PostCard post={post} type={post.postType as ResourceTagType} />
+        </React.Fragment>
+      ))}
     </section>
   );
 };

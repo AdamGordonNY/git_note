@@ -62,6 +62,7 @@ const PostSchema = new Schema({
         required: false,
       },
       stepContent: { type: String, required: false },
+      completed: { type: Boolean, default: false },
     },
   ],
 
