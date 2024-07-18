@@ -15,6 +15,7 @@ export default async function Home() {
   if (!session) {
     redirect("/sign-in");
   }
+  const user = session.user?.name!;
   const posts = await getRecentPosts();
 
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
@@ -35,7 +36,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen w-full flex-col text-white-300">
       <div className="flex items-center justify-between p-14">
-        <PostsHeader />
+        <PostsHeader name={user} />
       </div>
       <div className="flex w-full  flex-col gap-4 px-12   max-md:columns-1">
         <HeatMap values={commits} />
