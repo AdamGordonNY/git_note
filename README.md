@@ -2,6 +2,10 @@
 
 GitNote is a dedicated hub designed for learners and educators alike, offering a seamless experience for storing insights, guiding learning journeys, and tracking progress. Built with Next.js, GitNote emphasizes clean code, best practices, and a user-centric design. Whether you're jotting down quick notes, tracking your learning goals, or sharing insights with the community, GitNote is your go-to platform.
 
+## Thumbnail
+
+<img src="https://gitnote.s3.us-east-2.amazonaws.com/GitNote.png" alt="gitnote" />
+
 ## Table of Contents
 
 - [Features](#features)
@@ -44,8 +48,6 @@ GitNote is a dedicated hub designed for learners and educators alike, offering a
 <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="typescript" />
 
 <img src="https://img.shields.io/badge/-Tailwind_CSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=06B6D4" alt="tailwindcss" />
-
-<img src="https://img.shields.io/badge/-Appwrite-black?style=for-the-badge&logoColor=white&logo=appwrite&color=FD366E" alt="appwrite" />
 
 ### ⚒️ How to Contribute
 
