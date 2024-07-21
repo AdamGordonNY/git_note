@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-
+const plugin = require("tailwindcss/plugin");
 const config = {
   darkMode: ["class"],
   content: [
@@ -121,7 +121,26 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({
+      addUtilities,
+      theme,
+    }: {
+      addUtilities: any;
+      theme: any;
+    }) {
+      const newUtilities = {
+        ".text-gradient": {
+          background: `linear-gradient(to right, ${theme("colors.gradient.start")}, ${theme("colors.gradient.end")})`,
+          "-webkit-background-clip": "text",
+          "-webkit-text-fill-color": "transparent",
+        },
+      };
+
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    }),
+  ],
 } satisfies Config;
 
 export default config;
