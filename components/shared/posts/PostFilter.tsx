@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-import ResourceTag from "../ResourceTag";
+
 import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
 const PostFilter = () => {
   // const router = useRouter();
