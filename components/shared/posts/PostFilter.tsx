@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import ResourceTag from "../ResourceTag";
-
+import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
 const PostFilter = () => {
   // const router = useRouter();
   const searchParams = useSearchParams();
@@ -21,20 +21,17 @@ const PostFilter = () => {
   };
   return (
     <div className="flex justify-end gap-x-3.5">
-      <ResourceTag
-        type="knowledge"
-        text="Knowledge"
+      <CreateTypeBadge
+        variant="knowledge"
         onClick={() => handleSelectButton("knowledge")}
         className={active === "knowledge" ? "active" : ""}
       />
-      <ResourceTag
-        type="workflow"
-        text="Workflow"
+      <CreateTypeBadge
+        variant="workflow"
         onClick={() => handleSelectButton("workflow")}
       />
-      <ResourceTag
-        type="component"
-        text="Component"
+      <CreateTypeBadge
+        variant="component"
         onClick={() => handleSelectButton("component")}
       />
     </div>
