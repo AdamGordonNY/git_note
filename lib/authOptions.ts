@@ -6,7 +6,7 @@ import dbConnect from "@/database/dbConnect";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/database/clientPromise";
 import { getOneUser } from "./actions/user.actions";
-import { validatePassword } from "./utils";
+import { validatePassword } from "./utilities";
 
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise!, { databaseName: "git_note" }),
