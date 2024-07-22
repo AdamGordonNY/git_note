@@ -37,7 +37,7 @@ interface CreatePostProps {
   post?: IPost;
 }
 const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState<boolean | null>(false);
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const {
@@ -59,7 +59,6 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
       content: post?.content || "",
       tags: post?.tags || [],
       code: post?.code || "",
-
       experiences: post?.experiences?.map((experience) => ({
         name: experience,
       })) || [{ name: "" }],
@@ -76,6 +75,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
     control,
     name: "experiences",
   });
+
   const {
     fields: resourceLinks,
     append: appendResourceLink,
@@ -89,7 +89,9 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
   const handleTagChange = (tags: any) => {
     setValue("tags", tags);
   };
+
   const postType = watch("postType");
+
   const onSubmit: SubmitHandler<z.infer<typeof CreatePostSchema>> = async (
     data
   ) => {
@@ -102,6 +104,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
       code,
       experiences,
       resourceLinks,
+      image,
     } = data;
 
     const dbResources =
@@ -111,65 +114,84 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
       })) || [];
 
     try {
-      if (edit) {
+      if (edit && post?._id) {
         startTransition(async () => {
-          if (post?._id) {
-            const result = await updatePost({
-              _id: post._id,
-              updateData: post,
-            });
-            if (result) {
-              toast({ title: "Post Updated Successfully" });
-              setTimeout(() => router.push(`/posts/${post.id}`), 1000);
-            }
+          const result = await updatePost({
+            _id: post._id,
+            updateData: {
+              title,
+              postType,
+              content,
+              tags,
+              code,
+              description,
+              image,
+              experiences: experiences?.map((experience) => experience.name),
+              resourceLinks: dbResources.map((link) => ({
+                title: link?.title || "",
+                url: link?.url || "",
+              })),
+            },
+          });
+
+          if (result) {
+            toast({ title: "Post Updated Successfully" });
+            setEdit(false);
+            setTimeout(() => router.push(`/posts/${post._id}`), 1000);
           } else {
-            // Handle the case where post._id is undefined
-            console.error("Post ID is undefined");
+            toast({ title: "Failed to update post", variant: "destructive" });
+          }
+        });
+      } else {
+        startTransition(async () => {
+          const result = await createNewPost({
+            post: {
+              title,
+              postType,
+              content,
+              tags,
+              code,
+              description,
+              image,
+              experiences: experiences?.map((experience) => experience.name),
+              resourceLinks: dbResources.map((link) => ({
+                title: link?.title || "",
+                url: link?.url || "",
+              })),
+            },
+          });
+
+          if (result) {
+            toast({ title: "Post Created Successfully" });
+            reset({
+              title: "",
+              postType: "knowledge",
+              description: "",
+              content: "",
+              tags: [],
+              code: "",
+              experiences: [],
+              resourceLinks: [],
+              image: "",
+            });
+          } else {
+            toast({ title: "Failed to create post", variant: "destructive" });
           }
         });
       }
-      startTransition(async () => {
-        const result = await createNewPost({
-          post: {
-            title,
-            postType,
-            content,
-            tags,
-            code,
-            description,
-            image,
-            experiences: experiences?.map((experience) => experience.name),
-            resourceLinks: dbResources.map((link) => ({
-              title: link?.title || "",
-              url: link?.url || "",
-            })),
-          },
-        });
-        if (result) {
-          toast({ title: "Post Created Successfully" });
-          reset({
-            title: "",
-            postType: "knowledge",
-            description: "",
-            content: "",
-            tags: [],
-            code: "",
-            experiences: [],
-            resourceLinks: [],
-            image,
-          });
-        } else {
-          toast({ title: "Failed to create post", variant: "destructive" });
-        }
-      });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+      toast({ title: "An error occurred", variant: "destructive" });
+    }
   };
+
   const image = watch("image");
+
   useEffect(() => {
     if (post) {
       setEdit(true);
     }
-  }, [post]);
+  }, []);
   return (
     <>
       <form
@@ -267,7 +289,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
           render={({ message }) => <p className="text-red-500">{message}</p>}
         />
         <CustomButton buttonType="primary" type="submit" disabled={pending}>
-          Create Post {pending && <LoadingSpinner />}
+          {edit ? "Edit Post" : "Create Post"} {pending && <LoadingSpinner />}
         </CustomButton>
       </form>
     </>

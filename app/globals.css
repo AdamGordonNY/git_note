@@ -250,17 +250,21 @@ rdp {
 
 .react-calendar-heatmap text {
   font-family: "Inter", sans-serif;
-  font-size: 10px;
+  font-size: 16px;
   fill: #55597d;
 }
 
 .react-calendar-heatmap .react-calendar-heatmap-small-text {
-  font-size: 5px;
+  font-size: 8px;
+}
+.react-calendar-heatmap rect {
+  width: 10px;
+  height: 10px;
 }
 
 .react-calendar-heatmap rect:hover {
   stroke: #555;
-  stroke-width: 1px;
+  stroke-width: 5px;
 }
 /* 
 .react-calendar-heatmap-weekday-labels {

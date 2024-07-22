@@ -12,6 +12,7 @@ import {
 } from "./shared.types";
 import { getSession } from "../authOptions";
 import { getOneUser } from "./user.actions";
+import { revalidatePath } from "next/cache";
 
 export const getUniqueTags = async () => {
   try {
@@ -182,6 +183,8 @@ export const updatePost = async ({ _id, updateData }: UpdatePostParams) => {
     const post = await Post.findByIdAndUpdate(_id, updateData, {
       new: true,
     });
+    console.log(post);
+    revalidatePath(`/posts/${_id}`);
     return post as IPost;
   } catch (error) {
     console.log(error);

@@ -1,13 +1,45 @@
 "use client";
 import { IUser } from "@/database/models/user.model";
-import React from "react";
+import React, { useEffect } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
-const HeatMap = ({ values, user }: { values: any[]; user: Partial<IUser> }) => {
+import { Tooltip } from "react-tooltip";
+import { formatDate } from "date-fns";
+type mapValue = {
+  date: string;
+  count: number;
+};
+
+export const dynamic = "force-dynamic";
+const HeatMap = ({
+  values,
+  user,
+}: {
+  values: mapValue[];
+  user: Partial<IUser>;
+}) => {
+  const [mapValues, setMapValues] = React.useState<any[]>([]);
+  const earliestPost = values.reduce((earliest, current) => {
+    return new Date(current.date) < new Date(earliest.date)
+      ? current
+      : earliest;
+  }, values[0]);
+
+  const earliestDate = new Date(earliestPost.date);
+  useEffect(() => {
+    if (values) {
+      const map: any[] = Array.from(values, (val, idx) => ({
+        date: val.date,
+        count: val.count,
+      }));
+      map !== null && setMapValues(map);
+    }
+  }, [values]);
+
   return (
     <>
       <CalendarHeatmap
-        startDate={new Date("07/01/2024")}
-        endDate={"6/01/2025"}
+        startDate={earliestDate}
+        endDate={new Date(earliestDate).getFullYear()}
         showWeekdayLabels={false}
         showOutOfRangeDays={false}
         gutterSize={5}
@@ -18,7 +50,7 @@ const HeatMap = ({ values, user }: { values: any[]; user: Partial<IUser> }) => {
 
           return {
             "data-tooltip-id": "my-tooltip",
-            "data-tooltip-content": `${value.date} has count: ${value.count}`,
+            "data-tooltip-content": `${formatDate(value.date, "MMM do")} Contributions: ${value.count}`,
           };
         }}
         classForValue={(value) => {
@@ -26,7 +58,7 @@ const HeatMap = ({ values, user }: { values: any[]; user: Partial<IUser> }) => {
             return "color-github-0";
           }
 
-          const thresholds = [1, 5, 10, 15];
+          const thresholds = [1, 3, 5, 10];
 
           let className = "color-github-";
           if (value.count >= thresholds[3]) {
@@ -43,8 +75,10 @@ const HeatMap = ({ values, user }: { values: any[]; user: Partial<IUser> }) => {
 
           return className;
         }}
-        values={values}
+        values={mapValues}
       />
+      <Tooltip id="my-tooltip" />
+
       <span className="text-white-300">Learn how we count contributions</span>
     </>
   );

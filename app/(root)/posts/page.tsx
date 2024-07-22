@@ -4,7 +4,7 @@ import { ResourceTagType } from "@/components/shared/ResourceTag";
 import { IPost } from "@/database/models/post.model";
 import { getRecentPosts } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
-import React from "react";
+import React, { Suspense } from "react";
 
 const AllPostsPage = async ({
   searchParams,
@@ -24,17 +24,21 @@ const AllPostsPage = async ({
   return (
     <section className="flex w-full flex-col">
       <div className="flex items-center justify-between p-14">
-        <PostsHeader page={page.toString()} filter={filter} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <PostsHeader page={page.toString()} filter={filter} />
+        </Suspense>
       </div>
       <div className="columns-2 space-y-[18px] px-4">
-        {cleanPosts &&
-          cleanPosts.map((post) => (
-            <PostCard
-              key={post._id}
-              post={post}
-              type={post?.postType! as ResourceTagType}
-            />
-          ))}
+        <Suspense fallback={<div>Loading...</div>}>
+          {cleanPosts &&
+            cleanPosts.map((post) => (
+              <PostCard
+                key={post._id}
+                post={post}
+                type={post?.postType! as ResourceTagType}
+              />
+            ))}
+        </Suspense>
       </div>
     </section>
   );

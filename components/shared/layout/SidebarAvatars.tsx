@@ -14,14 +14,11 @@ const SidebarAvatars = ({ user }: { user: Partial<IUser> }) => {
   return (
     <Link
       href={`/profile`}
-      className="mx-[60px] flex-1 flex-col items-center justify-center "
+      className="mx-[30px] flex-1 flex-col items-center justify-center "
     >
-      <div className=" mt-[50px] flex w-full justify-between gap-[6px]">
-        <div className="ml-4">
-          {" "}
-          <AnimatedTooltip items={avatar} />
-        </div>
-
+      <div className=" mt-[50px] flex w-full justify-between gap-x-4">
+        {" "}
+        <AnimatedTooltip items={avatar} />
         <div className="ml-4 flex flex-col">
           <span className="paragraph-3-medium text-white-100">
             {user.fullname}

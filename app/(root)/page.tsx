@@ -9,6 +9,7 @@ import { getOneUser } from "@/lib/actions/user.actions";
 
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function Home({
   searchParams,
@@ -42,15 +43,23 @@ export default async function Home({
   return (
     <main className="flex min-h-screen w-full flex-col text-white-300">
       <div className="flex items-center justify-between ">
-        <PostsHeader name={user} page="/" filter={searchParams.filter!} />
+        <Suspense fallback={"Loading..."}>
+          <PostsHeader name={user} page="/" filter={searchParams.filter!} />
+        </Suspense>
       </div>
       <div className="flex w-full flex-col px-10">
-        <HeatMap values={commits} user={cleanUser} />
+        <Suspense fallback={"Loading..."}>
+          <HeatMap values={commits} user={cleanUser} />
+        </Suspense>
       </div>
-      <PostsHeader filter="" />
+      <Suspense fallback={"Loading..."}>
+        <PostsHeader filter="" />
+      </Suspense>
       <div className="flex w-full  flex-col gap-4 px-12   max-md:columns-1">
         <div className="columns-1 space-y-[18px]">
-          <AllPosts posts={cleanPosts} searchParams={searchParams} />
+          <Suspense fallback={"Loading..."}>
+            <AllPosts posts={cleanPosts} searchParams={searchParams} />
+          </Suspense>
         </div>
       </div>
     </main>
