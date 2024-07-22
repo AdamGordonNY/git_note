@@ -21,7 +21,10 @@ const NewPostType = ({ control }: NewPostTypeProps) => {
         control={control}
         name="postType"
         render={({ field }) => (
-          <Select onValueChange={(value) => field.onChange(value)} {...field}>
+          <Select
+            onValueChange={(value) => field.onChange(value)}
+            defaultValue={field.value}
+          >
             <SelectTrigger
               className="flex w-full flex-1 bg-black-800 text-white-100 hover:bg-transparent"
               id="postType"
