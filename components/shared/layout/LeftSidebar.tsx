@@ -23,9 +23,9 @@ const LeftSidebar = async () => {
       </Link>
       <LeftButtonGroup posts={cleanPosts} />
 
-      <div className="ml-4 flex flex-col  justify-end align-bottom">
+      <div className="ml-4 mt-10 flex flex-col ">
         <Separator />
-        <SignOutButton />
+        <SignOutButton />{" "}
       </div>
     </section>
   );

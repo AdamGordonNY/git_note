@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import SidebarContent from "../profile/SidebarContent";
 import { IUser } from "@/database/models/user.model";
 import { getSession } from "@/lib/authOptions";
 import { getOneUser } from "@/lib/actions/user.actions";
+import RightSidebarSkeleton from "../RightSidebarSkeleton";
 
 const RightSidebar = async ({ params }: { params?: string[] }) => {
   const session = await getSession();
@@ -15,7 +16,9 @@ const RightSidebar = async ({ params }: { params?: string[] }) => {
 
   return (
     <section className=" max-w-[292px] border-l-[1.5px] bg-black-800 text-white-100 max-xl:hidden">
-      <SidebarContent user={cleanUser} />
+      <Suspense fallback={<RightSidebarSkeleton />}>
+        <SidebarContent user={cleanUser} />
+      </Suspense>
     </section>
   );
 };

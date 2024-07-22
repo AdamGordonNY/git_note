@@ -1,12 +1,8 @@
 import HeatMap from "@/components/shared/HeatMap";
-
 import AllPosts from "@/components/shared/posts/AllPosts";
-
 import PostsHeader from "@/components/shared/posts/PostsHeader";
 import { IPost } from "@/database/models/post.model";
 import { getRecentPosts } from "@/lib/actions/post.actions";
-import { getOneUser } from "@/lib/actions/user.actions";
-
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -23,23 +19,13 @@ export default async function Home({
   }
   const user = session.user?.name!;
   const posts = await getRecentPosts();
-
+  const commitArray: Date[] = [];
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
-  const cleanUser = JSON.parse(JSON.stringify(await getOneUser(user)));
-  const dateCountMap = new Map();
-  cleanPosts.forEach((post) => {
-    const date = post.createdAt;
-    if (dateCountMap.has(date)) {
-      dateCountMap.set(date, dateCountMap.get(date) + 1);
-    } else {
-      dateCountMap.set(date, 1);
-    }
-  });
-  const commits = Array.from(dateCountMap, ([date, count]) => ({
-    date,
-    count,
-  }));
 
+  // eslint-disable-next-line array-callback-return
+  const commits = cleanPosts.map((post, idx) => {
+    commitArray.push(new Date(post?.createdAt!));
+  });
   return (
     <main className="flex min-h-screen w-full flex-col text-white-300">
       <div className="flex items-center justify-between ">
@@ -49,7 +35,7 @@ export default async function Home({
       </div>
       <div className="flex w-full flex-col px-10">
         <Suspense fallback={"Loading..."}>
-          <HeatMap values={commits} user={cleanUser} />
+          <HeatMap values={commits && commitArray} />
         </Suspense>
       </div>
       <Suspense fallback={"Loading..."}>
