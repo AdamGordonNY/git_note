@@ -10,7 +10,11 @@ import { getOneUser } from "@/lib/actions/user.actions";
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
   const session = await getSession();
 
   if (!session) {
@@ -38,15 +42,15 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen w-full flex-col text-white-300">
       <div className="flex items-center justify-between ">
-        <PostsHeader name={user} page="/" />
+        <PostsHeader name={user} page="/" filter={searchParams.filter!} />
       </div>
       <div className="flex w-full flex-col px-10">
         <HeatMap values={commits} user={cleanUser} />
       </div>
-      <PostsHeader />
+      <PostsHeader filter="" />
       <div className="flex w-full  flex-col gap-4 px-12   max-md:columns-1">
         <div className="columns-1 space-y-[18px]">
-          <AllPosts posts={cleanPosts} />
+          <AllPosts posts={cleanPosts} searchParams={searchParams} />
         </div>
       </div>
     </main>

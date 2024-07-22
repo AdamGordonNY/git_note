@@ -2,7 +2,15 @@ import React from "react";
 
 import PostFilter from "./PostFilter";
 
-const PostsHeader = ({ name, page }: { name?: string; page?: string }) => {
+const PostsHeader = ({
+  name,
+  page,
+  filter,
+}: {
+  name?: string;
+  page?: string;
+  filter: string;
+}) => {
   return (
     <div className="flex w-full justify-between px-9 py-5">
       <div className="flex flex-col">
@@ -15,7 +23,7 @@ const PostsHeader = ({ name, page }: { name?: string; page?: string }) => {
           )}
         </span>
       </div>
-      {page !== "/" && <PostFilter />}
+      {page !== "/" && <PostFilter postType={filter} />}
     </div>
   );
 };

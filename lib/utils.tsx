@@ -16,10 +16,10 @@ import {
   DiPython,
   DiReact,
 } from "react-icons/di";
-import { SearchParams } from "@/types";
+
 import { BiLogoTailwindCss, BiLogoTypescript } from "react-icons/bi";
 import queryString from "query-string";
-import { RefObject, useEffect } from "react";
+import React, { RefObject, useEffect } from "react";
 
 export const useOutsideClickHandler = (
   ref: RefObject<HTMLDivElement>,
@@ -137,7 +137,7 @@ export const turnNameToIcon = (iconName: string) => {
   }
 };
 
-const urlManager = (params: string, change: Partial<SearchParams>) => {
+const urlManager = (params: string, change: Partial<URLSearchParams>) => {
   const param = queryString.parse(params);
   Object.assign(param, change);
   return queryString.stringify(param, {
