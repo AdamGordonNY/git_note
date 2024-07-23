@@ -21,12 +21,21 @@ const NewPostType = ({ control }: NewPostTypeProps) => {
         control={control}
         name="postType"
         render={({ field }) => (
-          <Select onValueChange={field.onChange} {...field}>
+          <Select
+            onValueChange={(value) => field.onChange(value)}
+            defaultValue={field.value}
+          >
             <SelectTrigger
-              className=" flex w-full flex-1 bg-black-800 text-white-100 hover:bg-transparent"
+              className="flex w-full flex-1 bg-black-800 text-white-100 hover:bg-transparent"
               id="postType"
             >
-              <SelectValue defaultValue="knowledge" ref={field.ref} />
+              <SelectValue>
+                {field.value ? (
+                  <ResourceTag type={field.value} />
+                ) : (
+                  <ResourceTag type="knowledge" />
+                )}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent className="flex w-full bg-black-700 group-focus-within:fill-mode-forwards data-[state=open]:bg-black-700">
               <SelectItem
@@ -36,11 +45,9 @@ const NewPostType = ({ control }: NewPostTypeProps) => {
                 <ResourceTag type="knowledge" />
               </SelectItem>
               <SelectItem value="component">
-                {" "}
                 <ResourceTag type="component" />
               </SelectItem>
               <SelectItem value="workflow">
-                {" "}
                 <ResourceTag type="workflow" />
               </SelectItem>
             </SelectContent>

@@ -2,9 +2,9 @@
 // eslint-disable-next-line no-unused-vars
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-import ResourceTag from "../ResourceTag";
 
-const PostFilter = () => {
+import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
+const PostFilter = ({ postType }: { postType: string }) => {
   // const router = useRouter();
   const searchParams = useSearchParams();
   const active = searchParams.get("filter");
@@ -13,7 +13,9 @@ const PostFilter = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("filter", item.toLowerCase());
     params.set("page", "1");
-    console.log(`${window.location.origin}/${active}/?${params.toString()}`);
+    console.log(
+      `${window.location?.origin}}/?${params.get("filter")?.toString()}?`
+    );
     // router.push(
     //   `${window.location.pathname}/${active}/?${params.toString()}`,
     //   undefined
@@ -21,20 +23,17 @@ const PostFilter = () => {
   };
   return (
     <div className="flex justify-end gap-x-3.5">
-      <ResourceTag
-        type="knowledge"
-        text="Knowledge"
+      <CreateTypeBadge
+        variant="knowledge"
         onClick={() => handleSelectButton("knowledge")}
         className={active === "knowledge" ? "active" : ""}
       />
-      <ResourceTag
-        type="workflow"
-        text="Workflow"
+      <CreateTypeBadge
+        variant="workflow"
         onClick={() => handleSelectButton("workflow")}
       />
-      <ResourceTag
-        type="component"
-        text="Component"
+      <CreateTypeBadge
+        variant="component"
         onClick={() => handleSelectButton("component")}
       />
     </div>

@@ -65,10 +65,16 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
         <section className="flex shrink-0">
           <Link href={`/profile/edit`}>
             <button
-              className="social-login-shadow paragraph-3-bold h-[40px] min-w-[140px] items-center  justify-center gap-1 bg-black-700 align-middle text-primary-500  "
+              className="flex h-[38px] w-[235px] items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] px-1.5 py-3 text-white-100"
               type="button"
             >
-              <Image src={icnEdit} alt="userCheck" height={16} width={16} />
+              <Image
+                src={icnEdit}
+                alt="userCheck"
+                height={16}
+                width={16}
+                className="stroke-white-500"
+              />
               Edit Profile
             </button>
           </Link>

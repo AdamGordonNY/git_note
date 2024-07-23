@@ -19,7 +19,7 @@ export interface CreateNewTagParams {
 export interface GetPostParams {
   page?: number;
   pageSize?: number;
-  filter?: "knowledge" | "component" | "workflow";
+  filter?: "knowledge" | "component" | "workflow" | string;
   searchQuery?: string;
 }
 export interface GetTagParams {

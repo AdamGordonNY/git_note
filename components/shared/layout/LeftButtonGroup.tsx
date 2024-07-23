@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import jsmProLogo from "@/public/jsmProLogo.svg";
 import githubOutline from "@/public/githubOutline.svg";
@@ -18,7 +17,8 @@ interface LeftButtonGroupProps {
   posts: IPost[];
 }
 
-const LeftButtonGroup = ({ posts }: LeftButtonGroupProps) => {
+const LeftButtonGroup = async ({ posts }: LeftButtonGroupProps) => {
+  // server component
   return (
     <>
       <div className="mt-20 flex  flex-col items-center justify-center space-y-2 border-b border-white-500">

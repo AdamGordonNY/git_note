@@ -79,8 +79,8 @@ export const AnimatedTooltip = ({
           </AnimatePresence>
           <Image
             onMouseMove={handleMouseMove}
-            height={100}
-            width={100}
+            height={36}
+            width={36}
             src={item.image}
             alt={item.name}
             className="border-white relative !m-0 size-14 rounded-full border-2 object-cover object-top !p-0 transition duration-500  group-hover:z-30 group-hover:scale-105"

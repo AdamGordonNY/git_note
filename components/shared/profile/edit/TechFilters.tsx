@@ -1,4 +1,4 @@
-import { formUrlQuery } from "@/lib/utils";
+import { formUrlQuery } from "@/lib/utilities";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 

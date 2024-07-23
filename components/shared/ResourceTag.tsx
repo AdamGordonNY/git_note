@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import workflowBadge from "@/public/icons/monitor.svg";
-import knowledgeBadge from "@/public/icons/greenbubble.svg";
-import componentBadge from "@/public/icons/numberlist.svg";
+import workflowBadge from "@/public/icons/workflow.svg";
+import knowledgeBadge from "@/public/icons/knowledge.svg";
+import componentBadge from "@/public/icons/component.svg";
 import Image from "next/image";
 
 export type ResourceTagType = "knowledge" | "component" | "workflow" | "plain";

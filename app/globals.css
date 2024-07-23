@@ -80,6 +80,9 @@ body {
   }
 }
 @layer utilities {
+  .less {
+    @apply fill-contribution-500;
+  }
 }
 /* Path: app/styles/day-picker.css */
 
@@ -154,42 +157,175 @@ rdp {
 .code-editor-container::-webkit-scrollbar-thumb {
   background-color: white;
 }
-.tox-editor-container {
-  @apply !bg-black-700;
-}
-.tox-editor-header {
-  @apply !bg-black-700;
-}
-.tox-toolbar-overlord {
-  @apply !bg-black-700;
-}
-.tox-toolbar__primary {
-  @apply !bg-black-600;
-}
-.tox-toolbar__group > button {
-  @apply !bg-black-600 !text-white-300;
-}
-.tox-toolbar__group > button > span > svg {
-  @apply fill-black-700 stroke-white-300;
-}
-.tox-split-button > span {
-  @apply !bg-black-600 !text-white-300;
-}
-.tox-split-button > span > span > svg {
-  @apply !fill-black-700 !stroke-white-300;
-}
 .tox-statusbar {
-  @apply !hidden;
+  display: none !important;
 }
+
+.tox-toolbar__primary {
+  background-color: #2e3757 !important;
+}
+
+.tox-editor-header {
+  background-color: #2e3757 !important;
+  border-bottom: 0 !important;
+}
+
 .tox-tinymce {
-  @apply !border-black-700;
+  border: 1px solid #131625 !important;
 }
-.mce-content-body {
-  @apply !bg-black-700 border-none;
+
+.tox-edit-area__iframe {
+  background-color: #131625 !important;
 }
-.tox .tox-edit-area::before {
-  @apply border-none;
+
+.warning-box a {
+  color: #42bbff;
+  text-decoration: underline;
+  font-weight: 500;
 }
+
+.warning-box::before {
+  content: "";
+  background: url("/assets/icons/warning.svg");
+  background-size: contain;
+  background-position: center;
+  color: white;
+  margin-left: 8px;
+  margin-right: 14px;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.error-box a {
+  color: #ff4c3f;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.error-box::before {
+  content: "";
+  background: url("/assets/icons/red-x.svg");
+  background-size: contain;
+  background-position: center;
+  color: white;
+  margin-left: 8px;
+  margin-right: 14px;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.information-box a {
+  color: #2e3757;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.information-box::before {
+  content: "";
+  background: url("/assets/icons/information.svg");
+  background-size: contain;
+  background-position: center;
+  color: white;
+  margin-left: 8px;
+  margin-right: 14px;
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/*
+ * react-calendar-heatmap styles
+ *
+ * All of the styles in this file are optional and configurable!
+ * The github and gitlab color scales are provided for reference.
+ */
+
+.react-calendar-heatmap {
+  border: 1px solid #1d2032;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.react-calendar-heatmap text {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  fill: #55597d;
+}
+
+.react-calendar-heatmap .react-calendar-heatmap-small-text {
+  font-size: 8px;
+}
+.react-calendar-heatmap rect {
+  width: 10px;
+  height: 10px;
+}
+
+.react-calendar-heatmap rect:hover {
+  stroke: #555;
+  stroke-width: 5px;
+}
+/* 
+.react-calendar-heatmap-weekday-labels {
+  transform: translate(-10px, 14);
+} */
+
+/*
+ * Default color scale
+ */
+
+.react-calendar-heatmap .color-empty {
+  fill: #1d2032;
+}
+
+.react-calendar-heatmap .color-filled {
+  fill: #8cc665;
+}
+
+/*
+ * Github color scale
+ */
+
+.react-calendar-heatmap .color-github-0 {
+  fill: #1d2032;
+}
+.react-calendar-heatmap .color-github-1 {
+  fill: #0e4429;
+}
+.react-calendar-heatmap .color-github-2 {
+  fill: #006d32;
+}
+.react-calendar-heatmap .color-github-3 {
+  fill: #26a641;
+}
+.react-calendar-heatmap .color-github-4 {
+  fill: #39d353;
+}
+
+/*
+ * Gitlab color scale
+ */
+
+.react-calendar-heatmap .color-gitlab-0 {
+  fill: #ededed;
+}
+.react-calendar-heatmap .color-gitlab-1 {
+  fill: #acd5f2;
+}
+.react-calendar-heatmap .color-gitlab-2 {
+  fill: #7fa8d1;
+}
+.react-calendar-heatmap .color-gitlab-3 {
+  fill: #49729b;
+}
+.react-calendar-heatmap .color-gitlab-4 {
+  fill: #254e77;
+}
+
 .tabs-shadow {
   box-shadow: 0px 1px 3px 0px #0b13241a;
 
