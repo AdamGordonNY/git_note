@@ -1,5 +1,5 @@
 "use client";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utilities";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Input } from "../../ui/input";
