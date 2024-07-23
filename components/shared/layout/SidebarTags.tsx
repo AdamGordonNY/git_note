@@ -6,7 +6,7 @@ import { IPost } from "@/database/models/post.model";
 import Link from "next/link";
 const SidebarTag = ({ post }: { post: IPost }) => {
   return (
-    <Link href={`/posts/${post._id}`}>
+    <Link href={`/posts/${post.postType}/${post._id}`}>
       <div className="flex items-center justify-start gap-x-3 ">
         {post.postType === "component" && (
           <ComponentIcon className="stroke-purple-500" size={16} />
