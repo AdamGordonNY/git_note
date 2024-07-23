@@ -38,10 +38,11 @@ GitNote is a dedicated hub designed for learners and educators alike, offering a
 - Tailwind CSS
 - MongoDB & Mongoose
 - NextAuth.js
-- react-hook-form
-- zod validation
+- React-hook-form
+- Zod validation
 - shadcn-ui components
 - CMD+K
+- Cloudinary Image Storage
 
 <img src="https://img.shields.io/badge/-Next_JS-black?style=for-the-badge&logoColor=white&logo=nextdotjs&color=000000" alt="nextdotjs" />
 
