@@ -53,7 +53,7 @@ export const useEscapeHandler = (onClick: () => void) => {
     return () => {
       window.removeEventListener("keydown", handleEsc);
     };
-  }, []);
+  }, [onClick]);
 };
 
 export function cn(...inputs: ClassValue[]) {
