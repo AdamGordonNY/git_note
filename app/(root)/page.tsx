@@ -1,9 +1,11 @@
 import HeatMap from "@/components/shared/HeatMap";
 import AllPosts from "@/components/shared/posts/AllPosts";
 import PostsHeader from "@/components/shared/posts/PostsHeader";
+
 import { IPost } from "@/database/models/post.model";
 import { getRecentPosts } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
+
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 

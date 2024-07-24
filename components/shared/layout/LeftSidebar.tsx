@@ -10,6 +10,7 @@ import Link from "next/link";
 
 const LeftSidebar = async () => {
   const posts = await getRecentPosts();
+  // everytime we revalidate a tag, we fetch new data
   const cleanPosts = JSON.parse(JSON.stringify(posts));
 
   return (

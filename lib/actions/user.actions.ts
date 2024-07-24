@@ -22,6 +22,7 @@ export const _getOneUser = async (email: string) => {
     console.log(error);
   }
 };
+// dont revalidate middle tag
 export const getOneUser = cache(_getOneUser, ["getOneUser"], {
   tags: ["user"],
 });

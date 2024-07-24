@@ -1,8 +1,8 @@
 import { IPost } from "@/database/models/post.model";
 import React from "react";
 import PostCard from "./PostCard";
-import { ResourceTagType } from "../ResourceTag";
 import { getAllPosts } from "@/lib/actions/post.actions";
+import { CreateType } from "@/types";
 
 interface AllPostsProps {
   posts: IPost[];
@@ -24,9 +24,11 @@ const AllPosts = async ({ posts, searchParams }: AllPostsProps) => {
         <>
           {knowledgePosts.map((post, idx) => {
             return (
-              <React.Fragment key={idx}>
-                <PostCard post={post} type={post.postType as ResourceTagType} />
-              </React.Fragment>
+              <PostCard
+                key={post.id}
+                post={post}
+                type={post.postType as CreateType}
+              />
             );
           })}
         </>
@@ -46,9 +48,11 @@ const AllPosts = async ({ posts, searchParams }: AllPostsProps) => {
         <>
           {componentPosts.map((post, idx) => {
             return (
-              <React.Fragment key={idx}>
-                <PostCard post={post} type={post.postType as ResourceTagType} />
-              </React.Fragment>
+              <PostCard
+                post={post}
+                key={post.id}
+                type={post.postType as CreateType}
+              />
             );
           })}
         </>
@@ -68,9 +72,11 @@ const AllPosts = async ({ posts, searchParams }: AllPostsProps) => {
         <>
           {workflowPosts.map((post, idx) => {
             return (
-              <React.Fragment key={idx}>
-                <PostCard post={post} type={post.postType as ResourceTagType} />
-              </React.Fragment>
+              <PostCard
+                key={post.id}
+                post={post}
+                type={post.postType as CreateType}
+              />
             );
           })}
         </>
@@ -80,19 +86,21 @@ const AllPosts = async ({ posts, searchParams }: AllPostsProps) => {
         <>
           {posts.map((post, idx) => {
             return (
-              <React.Fragment key={idx}>
-                <PostCard post={post} type={post.postType as ResourceTagType} />
-              </React.Fragment>
+              <PostCard
+                key={post.id}
+                post={post}
+                type={post.postType as CreateType}
+              />
             );
           })}
         </>
       );
     }
   };
-
+  const data = await renderContent();
   return (
     <section className="flex columns-1 flex-col gap-y-5">
-      {renderContent()}
+      {data && data}
     </section>
   );
 };
