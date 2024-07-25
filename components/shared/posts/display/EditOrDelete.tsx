@@ -132,7 +132,9 @@ export const EditOrDeletePopover = ({
   };
 
   const handleEditClick = async () => {
-    startTransition(async () => await router.push(`/posts/${postId}/edit`));
+    startTransition(
+      async () => await router.push(`/posts/${postType}/${postId}/edit`)
+    );
   };
 
   return (
@@ -144,7 +146,7 @@ export const EditOrDeletePopover = ({
         </PopoverTrigger>
         <PopoverContent
           ref={ref}
-          className="Popover-Content absolute left-0 top-full mt-2 flex w-[175px] flex-col gap-y-1 bg-transparent p-2"
+          className="Popover-Content absolute left-0 top-full mt-2 flex w-[175px] flex-col gap-y-1 bg-transparent p-2 backdrop:blur"
         >
           <EditOrDelete
             disabled={pending}

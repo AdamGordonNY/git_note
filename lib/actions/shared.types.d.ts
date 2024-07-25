@@ -60,6 +60,7 @@ export interface SearchParams {
 export interface UpdatePostParams {
   _id: string;
   updateData: Partial<IPost>;
+  path: string;
 }
 export interface UpdateTagParams {
   _id: string;

@@ -1,9 +1,7 @@
 "use server";
 import Post, { IPost } from "@/database/models/post.model";
-
 import dbConnect from "@/database/dbConnect";
 import mongoose, { FilterQuery } from "mongoose";
-
 import {
   CreateNewPostParams,
   DeletePostParams,
@@ -12,8 +10,8 @@ import {
 } from "./shared.types";
 import { getSession } from "../authOptions";
 import { getOneUser } from "./user.actions";
-import { revalidatePath } from "next/cache";
 
+import { unstable_cache as cache, revalidatePath } from "next/cache";
 export const getUniqueTags = async () => {
   try {
     const uniqueTags = await Post.aggregate([
@@ -22,7 +20,7 @@ export const getUniqueTags = async () => {
       { $project: { tags: 1, _id: 0 } },
     ]);
     if (uniqueTags.length > 0) {
-      return uniqueTags[0].tags;
+      return uniqueTags[0].tags as string[];
     } else {
       return [];
     }
@@ -31,7 +29,7 @@ export const getUniqueTags = async () => {
   }
 };
 // just using basic crud funcitons for now
-export const getAllPosts = async (params: GetPostParams) => {
+export const _getAllPosts = async (params: GetPostParams) => {
   try {
     await dbConnect();
     const { searchQuery, filter, page = 1, pageSize = 10 } = params;
@@ -75,8 +73,11 @@ export const getAllPosts = async (params: GetPostParams) => {
     console.log(error);
   }
 };
+export const getAllPosts = cache(_getAllPosts, ["getAllPosts"], {
+  tags: ["posts"],
+});
 
-export const getPostById = async (_id: string) => {
+export const _getPostById = async (_id: string) => {
   try {
     await dbConnect();
     const post = await Post.findById(_id);
@@ -85,6 +86,10 @@ export const getPostById = async (_id: string) => {
     console.log(error);
   }
 };
+export const getPostById = cache(_getPostById, ["post"], {
+  revalidate: 5,
+  tags: ["post"],
+});
 export const fetchPost = async (_id: string) => {
   try {
     await dbConnect();
@@ -127,7 +132,7 @@ export const createNewPost = async ({ post }: CreateNewPostParams) => {
       image,
     } = post;
     if (postType === undefined) {
-      return false;
+      return { result: false, id: null };
     }
     if (postType === "component") {
       const post = await Post.create({
@@ -142,7 +147,7 @@ export const createNewPost = async ({ post }: CreateNewPostParams) => {
         experiences,
         image,
       });
-      if (post) return true;
+      if (post) return { result: true, post };
     } else {
       const post = await Post.create({
         title,
@@ -154,7 +159,9 @@ export const createNewPost = async ({ post }: CreateNewPostParams) => {
         resourceLinks,
         experiences,
       });
-      if (post) return true;
+      if (post) {
+        return { result: true, post };
+      }
     }
   } catch (error) {
     console.log(error);
@@ -176,15 +183,22 @@ export const filterPostsByType = async ({
   }
 };
 
-export const updatePost = async ({ _id, updateData }: UpdatePostParams) => {
+export const updatePost = async ({
+  _id,
+  updateData,
+  path,
+}: UpdatePostParams) => {
   try {
     await dbConnect();
 
     const post = await Post.findByIdAndUpdate(_id, updateData, {
       new: true,
     });
-    console.log(post);
-    revalidatePath(`/posts/${_id}`);
+    if (post) {
+      revalidatePath(path);
+      return true;
+    }
+
     return post as IPost;
   } catch (error) {
     console.log(error);

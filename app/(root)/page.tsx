@@ -11,8 +11,10 @@ import { Suspense } from "react";
 
 export default async function Home({
   searchParams,
+  params,
 }: {
   searchParams: { [key: string]: string | undefined };
+  params: string[];
 }) {
   const session = await getSession();
 

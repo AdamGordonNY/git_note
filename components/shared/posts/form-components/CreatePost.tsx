@@ -30,7 +30,7 @@ import AddNewTag from "./AddNewTag";
 import { Separator } from "@/components/ui/separator";
 import { IPost } from "@/database/models/post.model";
 import PostImage from "./PostImage";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface CreatePostProps {
   uniqueTags: string[];
@@ -39,13 +39,14 @@ interface CreatePostProps {
 const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
   const [edit, setEdit] = useState<boolean | null>(false);
   const router = useRouter();
+  const pathname = usePathname();
   const [pending, startTransition] = useTransition();
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
-    reset,
+
     register,
     watch,
   } = useForm<z.infer<typeof CreatePostSchema>>({
@@ -132,12 +133,16 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
                 url: link?.url || "",
               })),
             },
+            path: pathname,
           });
 
           if (result) {
             toast({ title: "Post Updated Successfully" });
             setEdit(false);
-            setTimeout(() => router.push(`/posts/${post._id}`), 1000);
+            setTimeout(
+              () => router.push(`/posts/${post.postType}/${post._id}`),
+              1000
+            );
           } else {
             toast({ title: "Failed to update post", variant: "destructive" });
           }
@@ -161,19 +166,12 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
             },
           });
 
-          if (result) {
-            toast({ title: "Post Created Successfully" });
-            reset({
-              title: "",
-              postType: "knowledge",
-              description: "",
-              content: "",
-              tags: [],
-              code: "",
-              experiences: [],
-              resourceLinks: [],
-              image: "",
-            });
+          if (result && result.post) {
+            setTimeout(
+              () => toast({ title: "Post Created Successfully" }),
+              1000
+            );
+            router.push(`/`);
           } else {
             toast({ title: "Failed to create post", variant: "destructive" });
           }

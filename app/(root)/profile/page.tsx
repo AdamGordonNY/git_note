@@ -9,15 +9,18 @@ import { IUser } from "@/database/models/user.model";
 import { Separator } from "@/components/ui/separator";
 import Schedule from "@/components/shared/profile/Schedule";
 
-const ProfilePage = async () => {
+const ProfilePage = async ({ params }: { params: string[] }) => {
   const session = await getSession();
   let user;
 
   if (session) {
     user = await getOneUser(session?.user?.email!);
   }
+  console.log(params);
   const cleanUser: IUser = JSON.parse(JSON.stringify(user));
-
+  // const isProfile = params.slug[0] === "profile";
+  // // eslint-disable-next-line no-unused-expressions
+  // tags && isProfile ? tags.slice(0, 10) : [];
   return (
     <section className="mb-10 box-border flex min-h-[screen] w-full flex-col gap-8 bg-black-900 px-[30px] pt-[40px] ">
       {user && <ProfileHeader user={cleanUser} />}

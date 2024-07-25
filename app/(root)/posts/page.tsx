@@ -4,6 +4,7 @@ import { ResourceTagType } from "@/components/shared/ResourceTag";
 import { IPost } from "@/database/models/post.model";
 import { getRecentPosts } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
+import { CreateType } from "@/types";
 import React, { Suspense } from "react";
 
 const AllPostsPage = async ({
@@ -35,7 +36,7 @@ const AllPostsPage = async ({
               <PostCard
                 key={post._id}
                 post={post}
-                type={post?.postType! as ResourceTagType}
+                type={post?.postType! as CreateType}
               />
             ))}
         </Suspense>
