@@ -8,18 +8,19 @@ const PostFilter = ({ postType }: { postType: string }) => {
   // const router = useRouter();
   const searchParams = useSearchParams();
   const active = searchParams.get("filter");
-
+  const router = useRouter();
   const handleSelectButton = (item: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("filter", item.toLowerCase());
+    console.log(params);
+    params.set("postType", item.toLowerCase());
     params.set("page", "1");
     console.log(
-      `${window.location?.origin}}/?${params.get("filter")?.toString()}?`
+      `${window.location?.origin}/posts/?${params.get(postType)?.toString()}`
     );
-    // router.push(
-    //   `${window.location.pathname}/${active}/?${params.toString()}`,
-    //   undefined
-    // );
+    router.push(
+      `${window.location?.origin}/posts/?${params.get("filter")?.toString()}`,
+      undefined
+    );
   };
   return (
     <div className="flex justify-end gap-x-3.5">

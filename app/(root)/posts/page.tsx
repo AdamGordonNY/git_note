@@ -1,35 +1,39 @@
+import AllPosts from "@/components/shared/posts/AllPosts";
 import PostCard from "@/components/shared/posts/PostCard";
-import PostsHeader from "@/components/shared/posts/PostsHeader";
 import { ResourceTagType } from "@/components/shared/ResourceTag";
 import { IPost } from "@/database/models/post.model";
-import { getRecentPosts } from "@/lib/actions/post.actions";
-import { getSession } from "@/lib/authOptions";
+import { getFilteredPosts } from "@/lib/actions/post.actions";
+
 import React, { Suspense } from "react";
 
 const AllPostsPage = async ({
   searchParams,
+  params,
 }: {
   searchParams: { [key: string]: string | undefined };
+  params: string[];
 }) => {
-  const session = await getSession();
-  let posts = null;
-  if (session) {
-    posts = await getRecentPosts();
-  }
-  const filter = searchParams.filter as "knowledge" | "workflow" | "component";
+  console.log(params);
+  const filter = searchParams.filter as
+    | "knowledge"
+    | "workflow"
+    | "component"
+    | "all";
   const page = Number(searchParams.page) || 1;
 
+  const result = await getFilteredPosts({
+    createType: filter,
+    page,
+    postsPerPage: 10,
+  });
+  const posts = result?.posts || [];
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
 
   return (
     <section className="flex w-full flex-col">
-      <div className="flex items-center justify-between p-14">
-        <Suspense fallback={<div>Loading...</div>}>
-          <PostsHeader page={page.toString()} filter={filter} />
-        </Suspense>
-      </div>
       <div className="columns-2 space-y-[18px] px-4">
         <Suspense fallback={<div>Loading...</div>}>
+          <AllPosts posts={posts} filter={filter || "all"} />
           {cleanPosts &&
             cleanPosts.map((post) => (
               <PostCard

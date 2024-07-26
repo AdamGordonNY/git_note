@@ -8,6 +8,13 @@ import searchIcon from "@/public/searchIcon.svg";
 import { Layers } from "lucide-react";
 import shortcutIcon from "@/public/shortcutIcon.svg";
 import Image from "next/image";
+import { IPost } from "@/database/models/post.model";
+import ComponentIcon from "@/components/ui/icons/ComponentIcon";
+import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
+import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
+import { getAllPosts } from "@/lib/actions/post.actions";
+import urlManager from "@/lib/utilities";
+import { usePathname, useRouter } from "next/navigation";
 
 // import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
 // import ComponentIcon from "@/components/ui/icons/ComponentIcon";
@@ -17,30 +24,30 @@ import Image from "next/image";
 const Search = () => {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  // const [posts, setPosts] = useState<IPost[]>();
+  const [posts, setPosts] = useState<IPost[]>();
+  const router = useRouter();
+  const pathName = usePathname();
+  useEffect(() => {
+    const getPosts = async () => {
+      const posts = await getAllPosts({ searchQuery: searchTerm });
+      if (posts) setPosts(posts as unknown as IPost[]);
+    };
 
-  // useEffect(() => {
-  //   const getPosts = async () => {
-  //     const posts = await getAllPosts({ searchQuery: searchTerm });
-  //     if (posts) setPosts(posts as unknown as IPost[]);
-  //   };
+    const setParams = async () => {
+      const newParams = urlManager(URLSearchParams.toString(), {
+        set: { search: searchTerm },
+      });
+      router.push(`?${newParams}`);
+    };
 
-  //   const setParams = async () => {
-  //     const newParams = urlManager(searchParams.toString(), {
-  //       page: "1",
-  //       term: searchTerm,
-  //     });
-  //     router.push(`?${newParams}`);
-  //   };
+    const timeout = setTimeout(() => {
+      if (pathName !== "/posts") return;
+      setParams();
+      getPosts();
+    }, 250);
 
-  //   const timeout = setTimeout(() => {
-  //     if (pathName !== "/posts") return;
-  //     setParams();
-  //     getPosts();
-  //   }, 250);
-
-  //   return () => clearTimeout(timeout);
-  // }, [router, searchParams, searchTerm]);
+    return () => clearTimeout(timeout);
+  }, [pathName, router, searchTerm]);
 
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {
@@ -60,31 +67,31 @@ const Search = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  // const iconMatch = (post: IPost) => {
-  //   switch (post.postType) {
-  //     case "component":
-  //       return (
-  //         <>
-  //           <ComponentIcon className="text-purple-500" size={18} />
-  //           <span>{post.title}</span>
-  //         </>
-  //       );
-  //     case "workflow":
-  //       return (
-  //         <>
-  //           <WorkflowIcon className="text-primary-500" size={18} />
-  //           <span>{post.title}</span>
-  //         </>
-  //       );
-  //     case "knowledge":
-  //       return (
-  //         <>
-  //           <KnowledgeIcon className="text-green-500" size={18} />
-  //           <span>{post.title}</span>
-  //         </>
-  //       );
-  //   }
-  // };
+  const iconMatch = (post: IPost) => {
+    switch (post.postType) {
+      case "component":
+        return (
+          <>
+            <ComponentIcon className="text-purple-500" size={18} />
+            <span>{post.title}</span>
+          </>
+        );
+      case "workflow":
+        return (
+          <>
+            <WorkflowIcon className="text-primary-500" size={18} />
+            <span>{post.title}</span>
+          </>
+        );
+      case "knowledge":
+        return (
+          <>
+            <KnowledgeIcon className="text-green-500" size={18} />
+            <span>{post.title}</span>
+          </>
+        );
+    }
+  };
   return (
     <>
       <div
@@ -136,7 +143,7 @@ const Search = () => {
                   Explore all posts
                 </Command.Item>
               </Link>
-              {/* {posts &&
+              {posts &&
                 posts.length > 0 &&
                 posts.map((post) => {
                   return (
@@ -153,7 +160,7 @@ const Search = () => {
                       </Command.Item>
                     </Link>
                   );
-                })} */}
+                })}
             </Command.Group>
           </Command.List>
         </div>

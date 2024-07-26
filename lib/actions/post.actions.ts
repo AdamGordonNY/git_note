@@ -205,11 +205,105 @@ export const deletePostById = async ({ _id }: DeletePostParams) => {
     return null;
   }
 };
-export const getAllPostTypes = async (params: GetPostParams) => {
+// export const searchPosts = async (params: GetPostParams) => {
+//   try {
+//     await dbConnect();
+//     const session =await getSession()
+//      const user = await getOneUser(session?.user?.email!);
+//     const { searchQuery, filter, page = 1, pageSize = 10 } = params;
+//     const filterObject: FilterQuery<IPost> = { author: user?.id };
+//     const skipAmount = (page - 1) * pageSize;
+//        if (searchQuery) {
+//          filterObject.$or = [
+//            { title: { $regex: new RegExp(searchQuery, "i") } },
+//            { content: { $regex: new RegExp(searchQuery, "i") } },
+//            { postType: { $regex: new RegExp(searchQuery, "i") } },
+//          ];
+//        }
+//     let sortOptions = {};
+//     switch (filter) {
+//       case "knowledge":
+//         sortOptions = {createdAt: -1};
+//         break;
+//       case "component":
+//         sortOptions = { views: -1 };
+//         break;
+//       case "workflow":
+//        sortOptions = { $size: 0 };
+//         break;
+//       default:
+//         break;
+//     }
+//     const posts = await Post.find(filterObject).populate("tags").populate('author').sort(sortOptions).skip(skipAmount).limit(pageSize);
+//     const totalPosts = await Post.countDocuments(filterObject);
+//     const isNext = totalPosts > skipAmount + posts.length;
+//     return {
+//       posts: JSON.parse(JSON.stringify(posts)) as IPost[],
+//       isNext,
+//     };
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+export async function getFilteredPosts({
+  tag,
+  createType,
+  page = 1,
+  postsPerPage = 10,
+}: {
+  tag?: string;
+  createType?: string;
+  page: number;
+  postsPerPage: number;
+}) {
   try {
     await dbConnect();
-    //   const { posts } = params;
+    const session = await getSession();
+
+    const skipAmount = (page - 1) * postsPerPage;
+    const dbUser = await getOneUser(session?.user?.email!);
+    const filterObject: FilterQuery<IPost> = { author: dbUser?.id };
+    if (tag) {
+      const tagToUse = (await Post.find(filterObject.tags)) as string[];
+      if (tagToUse) {
+        filterObject.tags = tagToUse.filter((t) => t === tag);
+      }
+    }
+
+    if (createType) {
+      filterObject.createType = createType;
+    }
+
+    const posts = await Post.find(filterObject)
+      .populate("tags")
+      .skip(skipAmount)
+      .limit(postsPerPage);
+
+    const itemCount = await Post.countDocuments(filterObject);
+
+    return {
+      posts: posts as IPost[],
+      pageCount: Math.ceil(itemCount / postsPerPage),
+    };
   } catch (error) {
-    console.log(error);
+    console.log("Error getting posts with tag", error);
   }
+}
+export const findPostByTag = async (tag: string) => {
+  const tagsArray: string[] = [];
+  try {
+    await dbConnect();
+    const session = await getSession();
+    const dbUser = await getOneUser(session?.user?.email!);
+    const filterObject: FilterQuery<IPost> = {
+      author: dbUser?.id,
+      tags: { $elemMatch: { $eq: tag } },
+    };
+    const posts = (await Post.find(filterObject)) as IPost[];
+
+    return JSON.parse(JSON.stringify(posts)) as IPost[];
+  } catch (error) {
+    console.log("Error querying tags", error);
+  }
+  return tagsArray;
 };
