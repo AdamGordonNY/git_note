@@ -127,7 +127,7 @@ export async function getCommitCount() {
     throw error;
   }
 }
-export const getRecentPosts = async (pathname: string) => {
+export const getRecentPosts = async (pathname?: string) => {
   try {
     let limit;
     if (pathname === "/") {

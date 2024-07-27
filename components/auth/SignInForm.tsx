@@ -30,7 +30,7 @@ const SignInForm = () => {
       redirect: true,
       email,
       password,
-      callbackUrl: "/",
+      callbackUrl: "/dashboard",
     });
   };
   return (

@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise!, { databaseName: "git_note" }),
   secret: process.env.NEXTAUTH_SECRET!,
   pages: {
-    signIn: "/dashboard",
+    signIn: "/sign-in",
     signOut: "/sign-up",
     newUser: "/onboarding/1",
   },

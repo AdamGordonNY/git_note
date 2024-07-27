@@ -21,7 +21,6 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   );
   const posts = await getRecentPosts();
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
-  // eslint-disable-next-line array-callback-return
 
   const postTags: string[] = await getUniqueTags();
 
@@ -29,7 +28,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
     <main className="flex min-h-screen w-full bg-black-900">
       <LeftSidebar posts={cleanPosts} />
 
-      <section className="flex w-fit flex-1">{children}</section>
+      <section className="flex w-fit flex-1 px-[292px]">{children}</section>
       <Suspense fallback={<RightSidebarSkeleton />}>
         <RightSidebar postTags={postTags.slice(0, 12)!} user={user} />
       </Suspense>

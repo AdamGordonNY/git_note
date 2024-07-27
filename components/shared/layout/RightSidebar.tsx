@@ -45,7 +45,7 @@ const RightSidebar = ({
     }
   });
   return (
-    <section className=" max-w-[292px] border-l-[1.5px] bg-black-800 text-white-100 max-xl:hidden">
+    <section className=" fixed inset-y-0 right-0 max-w-[292px] border-l-[1.5px] bg-black-800 text-white-100 max-xl:hidden">
       <Suspense fallback={<RightSidebarSkeleton />}>
         <div className="flex flex-col items-center justify-center">
           <div className="mt-10 flex justify-center">
