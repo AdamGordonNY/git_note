@@ -7,12 +7,12 @@ import mongoose, { FilterQuery } from "mongoose";
 import {
   CreateNewPostParams,
   DeletePostParams,
-  GetPostParams,
   UpdatePostParams,
 } from "./shared.types";
 import { getSession } from "../authOptions";
 import { getOneUser } from "./user.actions";
 import { revalidatePath } from "next/cache";
+import { PostReturnType, PostFetchType, CommitReturnType } from "@/types";
 
 export const getUniqueTags = async () => {
   try {
@@ -30,11 +30,26 @@ export const getUniqueTags = async () => {
     console.error("Error retrieving tags", error);
   }
 };
-// just using basic crud funcitons for now
-export const getAllPosts = async (params: GetPostParams) => {
+export const getPostCount = async () => {
   try {
     await dbConnect();
-    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
+    const postCount = await Post.countDocuments();
+    const postDates: Date[] = await Post.find().select("createdAt");
+    return { commits: [postCount], dates: postDates } as CommitReturnType;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllPosts = async ({
+  searchQuery,
+  page,
+  pageSize,
+  path,
+  filter,
+}: PostFetchType): Promise<PostReturnType[]> => {
+  try {
+    await dbConnect();
 
     const skipAmount = (page - 1) * pageSize;
 
@@ -62,7 +77,6 @@ export const getAllPosts = async (params: GetPostParams) => {
         sortOptions = { createdAt: -1 };
         break;
     }
-    // const totalPosts = await Post.countDocuments(query);
 
     const filteredPosts = await Post.find(query)
       .sort(sortOptions)
@@ -70,21 +84,15 @@ export const getAllPosts = async (params: GetPostParams) => {
       .limit(pageSize);
     // const isNext = totalPosts > skipAmount + Post.length;
 
-    return { posts: filteredPosts as IPost[] };
+    return [
+      { posts: filteredPosts as IPost[], totalPosts: filteredPosts.length },
+    ];
   } catch (error) {
     console.log(error);
+    return []; // Add a return statement here
   }
 };
 
-export const getPostById = async (_id: string) => {
-  try {
-    await dbConnect();
-    const post = await Post.findById(_id);
-    return post as IPost;
-  } catch (error) {
-    console.log(error);
-  }
-};
 export const fetchPost = async (_id: string) => {
   try {
     await dbConnect();
@@ -95,10 +103,40 @@ export const fetchPost = async (_id: string) => {
     console.log(error);
   }
 };
-export const getRecentPosts = async () => {
+export async function getCommitCount() {
   try {
     await dbConnect();
-    const posts = await Post.find({}).sort({ createdAt: -1 }).limit(10);
+    const session = await getSession();
+    const user = await getOneUser(session?.user?.email!);
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+    const posts = (await Post.find({
+      author: user?.id!,
+      createdAt: { $gte: oneYearAgo, $lte: new Date() },
+    }).select("createdAt")) as IPost[];
+    const postsCountPerDay: Date[] = [];
+    posts.forEach((post) => {
+      const date = post?.createdAt!;
+
+      postsCountPerDay.push(date);
+    });
+    return postsCountPerDay;
+  } catch (error) {
+    console.error("Error getting posts count per day for user", error);
+    throw error;
+  }
+}
+export const getRecentPosts = async (pathname: string) => {
+  try {
+    let limit;
+    if (pathname === "/") {
+      limit = 5;
+    } else {
+      limit = 10;
+    }
+    await dbConnect();
+    const posts = await Post.find({}).sort({ createdAt: -1 }).limit(limit);
     return posts as IPost[];
   } catch (error) {
     console.log(error);
@@ -159,20 +197,6 @@ export const createNewPost = async ({ post }: CreateNewPostParams) => {
   } catch (error) {
     console.log(error);
     return false;
-  }
-};
-export const filterPostsByType = async ({
-  postType,
-}: {
-  postType: "knowledge" | "component" | "workflow";
-}) => {
-  try {
-    await dbConnect();
-    const posts = await Post.find({ postType });
-    return posts as IPost[];
-  } catch (error) {
-    console.log(error);
-    throw new Error("Error fetching knowledge posts");
   }
 };
 

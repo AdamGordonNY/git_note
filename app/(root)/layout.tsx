@@ -9,6 +9,7 @@ import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 import { IPost } from "@/database/models/post.model";
 import { getOneUser } from "@/lib/actions/user.actions";
+import RightSidebarSkeleton from "@/components/shared/RightSidebarSkeleton";
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getSession();
 
@@ -29,7 +30,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
       <LeftSidebar posts={cleanPosts} />
 
       <section className="flex w-fit flex-1">{children}</section>
-      <Suspense>
+      <Suspense fallback={<RightSidebarSkeleton />}>
         <RightSidebar postTags={postTags.slice(0, 12)!} user={user} />
       </Suspense>
     </main>

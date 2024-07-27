@@ -28,7 +28,12 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function CreateTypeBadge({ className, variant, ...props }: BadgeProps) {
+function CreateTypeBadge({
+  className,
+  variant,
+
+  ...props
+}: BadgeProps) {
   if (!variant) return <span className="text-3xl text-[red]">BROKEN TAG</span>;
 
   return (

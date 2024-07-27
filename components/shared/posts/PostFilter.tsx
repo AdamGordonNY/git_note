@@ -4,30 +4,45 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
-const PostFilter = ({ postType }: { postType: string }) => {
-  // const router = useRouter();
-  const searchParams = useSearchParams();
-  const active = searchParams.get("filter");
+import { removeKeysFromQuery } from "@/lib/utilities";
+const PostFilter = () => {
+  // const searchParams = useSearchParams();
+  const [active, setActive] = React.useState<string | null>(null);
   const router = useRouter();
+  // useEffect(() => {
+  //   const postType = searchParams.get("postType");
+  //   setActive(postType);
+  // }, [searchParams]);
   const handleSelectButton = (item: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    console.log(params);
-    params.set("postType", item.toLowerCase());
-    params.set("page", "1");
-    console.log(
-      `${window.location?.origin}/posts/?${params.get(postType)?.toString()}`
-    );
-    router.push(
-      `${window.location?.origin}/posts/?${params.get("filter")?.toString()}`,
-      undefined
-    );
+    // const mySearchParams = new URLSearchParams(searchParams.toString());
+    // mySearchParams.set("postType", item.toLowerCase());
+    // mySearchParams.set("page", "1");
+    // formUrlQuery({ params: active!, key: mySearchParams.keys(), value });
+    // router.push(
+    //   `${window.location?.origin}/posts/?${mySearchParams.get("postType")?.toString()}`,
+    //   undefined
+    // );
   };
+  const handleRemoveFilter = () => {
+    const currentQuery = window.location.search;
+    const newQuery = removeKeysFromQuery({
+      params: currentQuery,
+      keysToRemove: ["postType", "page", "pageSize"],
+    });
+
+    setActive(null);
+    router.push(newQuery);
+  };
+
   return (
     <div className="flex justify-end gap-x-3.5">
       <CreateTypeBadge
         variant="knowledge"
-        onClick={() => handleSelectButton("knowledge")}
-        className={active === "knowledge" ? "active" : ""}
+        onClick={() =>
+          active === "knowledge"
+            ? handleRemoveFilter()
+            : handleSelectButton("knowledge")
+        }
       />
       <CreateTypeBadge
         variant="workflow"
