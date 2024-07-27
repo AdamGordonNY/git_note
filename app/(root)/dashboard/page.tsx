@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { IPost } from "@/database/models/post.model";
-import { getCommitCount, getRecentPosts } from "@/lib/actions/post.actions";
+import { getPostCount, getRecentPosts } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
 import { CreateType } from "@/types";
 import { redirect } from "next/navigation";
@@ -23,13 +23,12 @@ export default async function Home({
   }
   const user = session.user?.name!;
 
-  const pathName = "/";
+  const pathName = "/dashboard";
   const posts = await getRecentPosts(pathName);
 
-  const commitArray: Date[] = await getCommitCount();
+  const commitArray = await getPostCount();
 
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
-  console.log(cleanPosts);
 
   return (
     <main className="flex min-h-screen w-full flex-col text-white-300">
@@ -40,7 +39,9 @@ export default async function Home({
       </div>
       <div className="flex w-full flex-col px-10">
         <Suspense fallback={<Skeleton className="flex w-full  px-10 " />}>
-          <HeatMap values={commitArray && commitArray} />
+          <HeatMap
+            values={commitArray && JSON.parse(JSON.stringify(commitArray))}
+          />
         </Suspense>
       </div>
 

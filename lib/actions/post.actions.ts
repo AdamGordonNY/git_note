@@ -12,7 +12,7 @@ import {
 import { getSession } from "../authOptions";
 import { getOneUser } from "./user.actions";
 import { revalidatePath } from "next/cache";
-import { PostReturnType, PostFetchType, CommitReturnType } from "@/types";
+import { PostReturnType, PostFetchType } from "@/types";
 
 export const getUniqueTags = async () => {
   try {
@@ -33,9 +33,8 @@ export const getUniqueTags = async () => {
 export const getPostCount = async () => {
   try {
     await dbConnect();
-    const postCount = await Post.countDocuments();
-    const postDates: Date[] = await Post.find().select("createdAt");
-    return { commits: [postCount], dates: postDates } as CommitReturnType;
+    const postDates = await Post.find().select("createdAt");
+    return postDates.map((post) => post.createdAt.toISOString());
   } catch (error) {
     console.log(error);
   }
@@ -103,34 +102,11 @@ export const fetchPost = async (_id: string) => {
     console.log(error);
   }
 };
-export async function getCommitCount() {
-  try {
-    await dbConnect();
-    const session = await getSession();
-    const user = await getOneUser(session?.user?.email!);
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-    const posts = (await Post.find({
-      author: user?.id!,
-      createdAt: { $gte: oneYearAgo, $lte: new Date() },
-    }).select("createdAt")) as IPost[];
-    const postsCountPerDay: Date[] = [];
-    posts.forEach((post) => {
-      const date = post?.createdAt!;
-
-      postsCountPerDay.push(date);
-    });
-    return postsCountPerDay;
-  } catch (error) {
-    console.error("Error getting posts count per day for user", error);
-    throw error;
-  }
-}
 export const getRecentPosts = async (pathname?: string) => {
   try {
     let limit;
-    if (pathname === "/") {
+    if (pathname === "/dashboard") {
       limit = 5;
     } else {
       limit = 10;

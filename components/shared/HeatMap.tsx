@@ -7,9 +7,9 @@ import { format } from "date-fns";
 import HeatmapLegend from "./HeatmapLegend";
 const HeatMap = ({ values }: { values: Date[] }) => {
   const dateCountMap = new Map<string, number>();
-
-  values.forEach((date) => {
-    const dateString = date.toISOString().split("T")[0]; // Extract date in YYYY-MM-DD format
+  console.log(values);
+  values.forEach((date: any) => {
+    const dateString = date.split("T")[0]; // Extract date in YYYY-MM-DD format
     if (dateCountMap.has(dateString)) {
       dateCountMap.set(dateString, dateCountMap.get(dateString)! + 1);
     } else {

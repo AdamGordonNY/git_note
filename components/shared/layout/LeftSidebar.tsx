@@ -16,7 +16,7 @@ import SidebarTag from "./SidebarTags";
 const LeftSidebar = async ({ posts }: { posts: IPost[] }) => {
   return (
     <section className="fixed inset-y-0 flex min-h-screen w-[292px] flex-col border-r-[1.5px] bg-black-700">
-      <Link href={"/"}>
+      <Link href={"/dashboard"}>
         <Image
           src={siteLogo}
           alt="logo"
