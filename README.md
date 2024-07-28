@@ -83,12 +83,12 @@ If you'd like to request a new function, feel free to do so by opening an issue 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/gitnote.git
+git clone https://github.com/agordon123/git_note.git
 ```
 
 2.Install NPM packages
 
-cd gitnote
+cd git_note
 npm install
 
 3. Set Up Environemnt Variables
