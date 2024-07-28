@@ -1,10 +1,10 @@
 import CreatePost from "@/components/shared/posts/form-components/CreatePost";
 import { IPost } from "@/database/models/post.model";
-import { getPostById, getUniqueTags } from "@/lib/actions/post.actions";
+import { fetchPost, getUniqueTags } from "@/lib/actions/post.actions";
 import React from "react";
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const post = await getPostById(params.id);
+  const post = await fetchPost(params.id);
   const uniqueTags = await getUniqueTags();
   const cleanPost = JSON.parse(JSON.stringify(post)) as IPost;
 

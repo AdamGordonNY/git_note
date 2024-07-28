@@ -4,18 +4,18 @@ import * as React from "react";
 import { cn } from "../../lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-between gap-x-2 rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center justify-between gap-1 rounded-md border px-2 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
         workflow:
-          "border-transparent bg-purple-500/10 px-3 py-1 text-purple-500 shadow hover:bg-purple-500/20",
+          "border-transparent bg-purple-500/10 text-purple-500 shadow hover:bg-purple-500/20",
         component:
-          "border-transparent bg-blue-500/10 px-3 py-1 text-blue-500 shadow hover:bg-blue-500/20",
+          "border-transparent bg-blue-500/10  text-blue-500 shadow hover:bg-blue-500/20",
         knowledge:
-          "border-transparent bg-green-500/10 px-3 py-1 text-green-500 shadow hover:bg-green-500/20",
+          "border-transparent bg-green-500/10  text-green-500 shadow hover:bg-green-500/20",
         regular:
-          "bg-dark-800/10 text-white-200 hover:bg-dark-800/20 border-transparent px-3 py-1 shadow",
+          "bg-dark-800/10 text-white-200 hover:bg-dark-800/20 border-transparent shadow",
       },
     },
     defaultVariants: {
@@ -28,7 +28,12 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function CreateTypeBadge({ className, variant, ...props }: BadgeProps) {
+function CreateTypeBadge({
+  className,
+  variant,
+
+  ...props
+}: BadgeProps) {
   if (!variant) return <span className="text-3xl text-[red]">BROKEN TAG</span>;
 
   return (

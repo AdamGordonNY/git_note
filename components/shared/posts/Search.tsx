@@ -18,17 +18,17 @@ const Search = () => {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   // const [posts, setPosts] = useState<IPost[]>();
-
+  // const router = useRouter();
+  // const pathName = usePathname();
   // useEffect(() => {
   //   const getPosts = async () => {
-  //     const posts = await getAllPosts({ searchQuery: searchTerm });
+  //     const posts = await getAllPosts({searchQuery: searchTerm });
   //     if (posts) setPosts(posts as unknown as IPost[]);
   //   };
 
   //   const setParams = async () => {
-  //     const newParams = urlManager(searchParams.toString(), {
-  //       page: "1",
-  //       term: searchTerm,
+  //     const newParams = urlManager(URLSearchParams.toString(), {
+  //       set: { search: searchTerm },
   //     });
   //     router.push(`?${newParams}`);
   //   };
@@ -40,7 +40,7 @@ const Search = () => {
   //   }, 250);
 
   //   return () => clearTimeout(timeout);
-  // }, [router, searchParams, searchTerm]);
+  // }, [pathName, router, searchTerm]);
 
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {
