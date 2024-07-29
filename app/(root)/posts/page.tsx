@@ -1,16 +1,40 @@
-import PostCard from "@/components/shared/posts/PostCard";
-import PostFilter from "@/components/shared/posts/PostFilter";
-import { ResourceTagType } from "@/components/shared/ResourceTag";
-import { IPost } from "@/database/models/post.model";
-import { getAllPosts } from "@/lib/actions/post.actions";
+import LeftSidebar from "@/components/shared/layout/LeftSidebar";
+import PostPage from "@/components/shared/layout/PostsPage";
+import RightSidebar from "@/components/shared/layout/RightSidebar";
+import ResourceTag from "@/components/shared/ResourceTag";
 
-import React, { Suspense } from "react";
+import { IPost } from "@/database/models/post.model";
+import {
+  getAllPosts,
+  getRecentPosts,
+  getUniqueTags,
+} from "@/lib/actions/post.actions";
+import { getOneUser } from "@/lib/actions/user.actions";
+import { getSession } from "@/lib/authOptions";
+import { redirect } from "next/navigation";
+
+import React from "react";
 
 const Page = async ({
   searchParams,
+  params,
 }: {
   searchParams: { [key: string]: string | undefined };
+  params: { id: string };
 }) => {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+  const user = JSON.parse(
+    JSON.stringify(await getOneUser(session.user?.email!))
+  );
+
+  const posts = await getRecentPosts(12);
+
+  const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
+  const postTags: string[] = await getUniqueTags();
   const page = Number(searchParams.page) || 1;
   const postType =
     searchParams.postType ||
@@ -20,33 +44,24 @@ const Page = async ({
     page,
     pageSize: 10,
     searchQuery: "",
-    path: "/posts", // Replace "/your/path" with the actual path value
+    path: "/posts",
   });
   const postArray: IPost[] = [];
   response.forEach((post) => {
     postArray.push(...post.posts);
   });
 
-  const cleanPosts = JSON.parse(JSON.stringify(postArray)) as IPost[];
-
   return (
-    <section className="flex w-full flex-col">
-      <div className="display-1-bold flex w-full flex-row justify-between px-10 py-5 text-white-100">
-        <span>Browse Posts</span> <PostFilter />
-      </div>
-      <div className="columns-2 space-y-[18px] px-4">
-        <Suspense fallback={JSON.stringify(searchParams)}>
-          {cleanPosts &&
-            cleanPosts.map((post) => (
-              <PostCard
-                key={post._id}
-                post={post}
-                type={post?.postType! as ResourceTagType}
-              />
-            ))}
-        </Suspense>
-      </div>
-    </section>
+    <>
+      <LeftSidebar posts={cleanPosts} />
+      <PostPage posts={postArray} />
+      <RightSidebar user={user!}>
+        {postTags &&
+          postTags.map((tag) => (
+            <ResourceTag type="plain" text={tag} key={tag} />
+          ))}
+      </RightSidebar>
+    </>
   );
 };
 

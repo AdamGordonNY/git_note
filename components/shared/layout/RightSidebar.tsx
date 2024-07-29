@@ -6,15 +6,13 @@ import SidebarAvatars from "./SidebarAvatars";
 import EditSocials from "../profile/edit/EditSocials";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import ResourceTag from "../ResourceTag";
-import SocialLinks from "../profile/SocialLinks";
 
 const RightSidebar = ({
-  postTags,
   user,
+  children,
 }: {
-  postTags?: string[];
   user: Partial<IUser>;
+  children: React.ReactNode;
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -40,29 +38,7 @@ const RightSidebar = ({
             {isProfile && <EditSocials user={user} />}
           </div>
           <Separator />
-          <div className="flex flex-col gap-3">
-            {!isProfile ? (
-              postTags?.length! > 0 &&
-              postTags?.map((tag) => (
-                <ResourceTag
-                  key={tag}
-                  type="plain"
-                  className="cursor-pointer p-2 text-sm font-medium hover:bg-black-900"
-                >
-                  {tag}
-                </ResourceTag>
-              ))
-            ) : (
-              <SocialLinks
-                github={user.socials?.github!}
-                instagram={user.socials?.instagram!}
-                twitter={user.socials?.dribbble!}
-                linkedin={user.socials?.linkedin!}
-                dribbble={user.socials?.dribbble!}
-                facebook={user.socials?.facebook!}
-              />
-            )}
-          </div>
+          <div className="flex flex-col gap-3">{children}</div>
         </div>
       </Suspense>
     </section>

@@ -103,14 +103,8 @@ export const fetchPost = async (_id: string) => {
   }
 };
 
-export const getRecentPosts = async (pathname?: string) => {
+export const getRecentPosts = async (limit: number) => {
   try {
-    let limit;
-    if (pathname === "/dashboard") {
-      limit = 5;
-    } else {
-      limit = 10;
-    }
     await dbConnect();
     const posts = await Post.find({}).sort({ createdAt: -1 }).limit(limit);
     return posts as IPost[];

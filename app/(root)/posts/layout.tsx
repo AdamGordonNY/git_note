@@ -4,7 +4,7 @@ import React from "react";
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 
-const MainLayout = async ({ children }: { children: React.ReactNode }) => {
+const PostLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getSession();
 
   if (!session) {
@@ -15,4 +15,4 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default MainLayout;
+export default PostLayout;
