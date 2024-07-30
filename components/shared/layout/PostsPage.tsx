@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const PostPage = ({ posts }: { posts: IPost[] }) => {
   const [cleanPosts, setCleanPosts] = useState(posts ?? []);
+  // eslint-disable-next-line no-unused-vars
   const searchParams = useSearchParams();
   useEffect(() => {
     if (posts) {
