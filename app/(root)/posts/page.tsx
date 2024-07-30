@@ -28,8 +28,9 @@ const Page = async ({
   const posts = await getRecentPosts(12);
 
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
-  console.log(cleanPosts);
+
   const postTags: string[] = await getUniqueTags();
+  postTags.slice(0, 12);
   // const page = Number(searchParams.page) || 1;
   // const postType =
   //   searchParams.postType ||

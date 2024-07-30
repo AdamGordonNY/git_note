@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import { IUser } from "@/database/models/user.model";
 import RightSidebarSkeleton from "../RightSidebarSkeleton";
 import SidebarAvatars from "./SidebarAvatars";
@@ -31,7 +31,7 @@ const RightSidebar = ({
           <div className="mt-10 flex justify-center">
             <SidebarAvatars user={user!} />
           </div>
-          <div className="mt-10 w-full gap-2 px-2 py-3.5">
+          <div className="mt-5 w-full gap-2 px-2 py-3.5">
             {isProfile && <EditSocials user={user} />}
           </div>
           <Separator />
