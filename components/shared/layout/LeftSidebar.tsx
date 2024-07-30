@@ -13,13 +13,7 @@ import Link from "next/link";
 import { IPost } from "@/database/models/post.model";
 import SidebarTag from "./SidebarTags";
 
-const LeftSidebar = async ({
-  posts,
-  path,
-}: {
-  posts: IPost[];
-  path: string;
-}) => {
+const LeftSidebar = async ({ posts }: { posts: IPost[] }) => {
   const tenMostRecentPosts = posts.slice(0, 10);
   if (tenMostRecentPosts.length === 10)
     return (
