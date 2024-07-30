@@ -33,6 +33,7 @@ export default async function Home({
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
   const postTags: string[] = await getUniqueTags();
   const postCardArray = cleanPosts.slice(0, 5);
+  const slicedTags = postTags.slice(0, 11);
   return (
     <main className="flex min-h-screen w-full flex-col text-white-300">
       <LeftSidebar posts={posts!} />
@@ -42,8 +43,8 @@ export default async function Home({
         user={user.name}
       />
       <RightSidebar user={user}>
-        {postTags &&
-          postTags.map((tag) => (
+        {slicedTags &&
+          slicedTags.map((tag) => (
             <ResourceTag type="plain" text={tag} key={tag} />
           ))}
       </RightSidebar>
