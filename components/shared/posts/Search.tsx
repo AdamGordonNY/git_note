@@ -115,19 +115,19 @@ const Search = () => {
           if (e.target === e.currentTarget) setOpen(false);
         }}
       >
-        <div className="z-50 flex w-full flex-col rounded-xl border border-white-100 bg-black-800 max-lg:w-full lg:w-[75%]">
+        <div className="z-50 flex w-full flex-col rounded-lg border border-white-100 bg-black-800 max-lg:w-full lg:w-[75%]">
           <div className="flex w-full items-center gap-x-2 border-none bg-black-700 p-4  py-3">
             <Command.Input
               value={searchTerm}
               onValueChange={setSearchTerm}
-              className="paragraph-3-regular border-none bg-black-700 p-0 py-1 text-white-300 placeholder:text-white-300 max-lg:w-full"
+              className="paragraph-3-regular w-full border-none bg-black-700 p-0 py-1 text-white-300 placeholder:text-white-300 max-lg:w-full"
               placeholder="Type a command or search..."
             />
             <div className="paragraph-4-regular rounded bg-black-800 p-1 text-white-300">
               ESC
             </div>
           </div>
-          <Command.List className="paragraph-3-regular h-fit max-h-64 overflow-auto p-4 text-white-300">
+          <Command.List className="paragraph-3-regular h-fit max-h-64 w-full overflow-auto p-4 text-white-300">
             <Command.Empty>No results found.</Command.Empty>
             <Command.Group>
               <Link href="/posts" onClick={() => setOpen((open) => !open)}>

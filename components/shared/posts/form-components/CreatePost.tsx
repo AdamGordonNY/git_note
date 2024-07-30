@@ -45,7 +45,6 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
     control,
     formState: { errors },
     setValue,
-    reset,
     register,
     watch,
   } = useForm<z.infer<typeof CreatePostSchema>>({
@@ -163,17 +162,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
 
           if (result) {
             toast({ title: "Post Created Successfully" });
-            reset({
-              title: "",
-              postType: "knowledge",
-              description: "",
-              content: "",
-              tags: [],
-              code: "",
-              experiences: [],
-              resourceLinks: [],
-              image: "",
-            });
+            setTimeout(() => router.push(`/dashboard`), 1000);
           } else {
             toast({ title: "Failed to create post", variant: "destructive" });
           }

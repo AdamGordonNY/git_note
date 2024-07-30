@@ -1,16 +1,10 @@
-import { IUser } from "@/database/models/user.model";
 import React from "react";
 import checkSquare from "@/public/icons/checksquare.svg";
 import Image from "next/image";
 interface ExperienceLevelsProps {
-  user?: IUser;
   experienceLevels: string[];
-  [key: string]: any;
 }
-const ExperienceLevels = ({
-  user,
-  experienceLevels,
-}: ExperienceLevelsProps) => {
+const ExperienceLevels = ({ experienceLevels }: ExperienceLevelsProps) => {
   return (
     <section className="flex w-full flex-col gap-7">
       <span className="paragraph-1-bold text-white-100">Knowledge Level</span>
