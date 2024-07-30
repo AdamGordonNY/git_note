@@ -17,7 +17,7 @@ const PostPage = ({ posts }: { posts: IPost[] }) => {
     }
   }, [cleanPosts, posts]);
   return (
-    <section className="flex w-full flex-col px-[292px]">
+    <>
       <div className="display-1-bold flex w-full flex-row justify-between px-10 py-5 text-white-100">
         <span>Browse Posts</span> <PostFilter />
       </div>
@@ -33,7 +33,7 @@ const PostPage = ({ posts }: { posts: IPost[] }) => {
             ))}
         </Suspense>
       </div>
-    </section>
+    </>
   );
 };
 

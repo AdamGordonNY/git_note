@@ -1,11 +1,7 @@
-import LeftSidebar from "@/components/shared/layout/LeftSidebar";
 import PostPage from "@/components/shared/layout/PostsPage";
-import RightSidebar from "@/components/shared/layout/RightSidebar";
-import ResourceTag from "@/components/shared/ResourceTag";
 
 import { IPost } from "@/database/models/post.model";
 import { getRecentPosts, getUniqueTags } from "@/lib/actions/post.actions";
-import { getOneUser } from "@/lib/actions/user.actions";
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 
@@ -21,9 +17,9 @@ const Page = async ({
   if (!session) {
     redirect("/sign-in");
   }
-  const user = JSON.parse(
-    JSON.stringify(await getOneUser(session.user?.email!))
-  );
+  // const user = JSON.parse(
+  //   JSON.stringify(await getOneUser(session.user?.email!))
+  // );
 
   const posts = await getRecentPosts(12);
 
@@ -49,14 +45,7 @@ const Page = async ({
 
   return (
     <>
-      <LeftSidebar posts={cleanPosts} />
       <PostPage posts={cleanPosts} />
-      <RightSidebar user={user!}>
-        {postTags &&
-          postTags.map((tag) => (
-            <ResourceTag type="plain" text={tag} key={tag} />
-          ))}
-      </RightSidebar>
     </>
   );
 };
