@@ -4,7 +4,7 @@ import { IUser } from "@/database/models/user.model";
 import RightSidebarSkeleton from "../RightSidebarSkeleton";
 import SidebarAvatars from "./SidebarAvatars";
 import EditSocials from "../profile/edit/EditSocials";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 
 const RightSidebar = ({
@@ -14,18 +14,15 @@ const RightSidebar = ({
   user: Partial<IUser>;
   children: React.ReactNode;
 }) => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const pathName = usePathname();
   const isProfile = pathName === "/profile" || pathName === "/profile/edit";
 
-  useEffect(() => {
-    if (pathName === "/posts") {
-      const mySearchParams = new URLSearchParams(searchParams.toString());
-      mySearchParams.delete("tag");
-      router.replace("/dashboard?" + mySearchParams.toString());
-    }
-  });
+  // useEffect(() => {
+  //   if (pathName === "/posts") {
+  //     const mySearchParams = new URLSearchParams(searchParams.toString());
+  //     mySearchParams.delete("tag");
+  //   }
+  // });
 
   return (
     <section className=" fixed inset-y-0 right-0 max-w-[292px] border-l-[1.5px] bg-black-800 text-white-100 max-xl:hidden">

@@ -21,7 +21,7 @@ const Dashboard = ({
 }) => {
   const searchParams = useSearchParams();
   return (
-    <section className="flex w-full flex-1 flex-col px-[292px]">
+    <section className="flex w-full flex-1 flex-col overflow-auto px-[292px]">
       <div className="mt-10 flex flex-col   px-10 py-5 ">
         <span className="display-2-bold text-white-100">Hello {user}!</span>{" "}
         <Separator />

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import PostCard from "../posts/PostCard";
 import { ResourceTagType } from "../ResourceTag";
 import { IPost } from "@/database/models/post.model";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PostPage = ({ posts }: { posts: IPost[] }) => {
   const [cleanPosts, setCleanPosts] = useState(posts ?? []);
@@ -15,12 +16,12 @@ const PostPage = ({ posts }: { posts: IPost[] }) => {
     }
   }, [cleanPosts, posts]);
   return (
-    <section className="flex w-full flex-col">
+    <section className="flex w-full flex-col px-[292px]">
       <div className="display-1-bold flex w-full flex-row justify-between px-10 py-5 text-white-100">
         <span>Browse Posts</span> <PostFilter />
       </div>
       <div className="columns-2 space-y-[18px] px-4">
-        <Suspense fallback={JSON.stringify(searchParams)}>
+        <Suspense fallback={<Skeleton />}>
           {cleanPosts &&
             cleanPosts.map((post) => (
               <PostCard

@@ -54,8 +54,8 @@ const LeftSidebar = async ({ posts }: { posts: IPost[] }) => {
           />
           <QuickLink
             icon={githubOutline}
-            href="https://github.com/"
-            name="Github Organization"
+            href="https://github.com/AdamGordonNY"
+            name="My Github Repositories"
           />
         </NavSection>
       </>

@@ -6,7 +6,6 @@ import TechBadge from "./TechBadge";
 
 interface TechStacksProps {
   user: IUser;
-  technologies: string[];
 }
 const TechStacks = async ({ user }: TechStacksProps) => {
   const tech = user.technologies;
