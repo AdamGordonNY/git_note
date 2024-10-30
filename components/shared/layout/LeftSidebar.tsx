@@ -17,7 +17,7 @@ const LeftSidebar = async ({ posts }: { posts: IPost[] }) => {
   const tenMostRecentPosts = posts.slice(0, 10);
   if (tenMostRecentPosts.length === 10)
     return (
-      <section className="fixed inset-y-0 flex min-h-screen w-[292px] flex-col border-r-[1.5px] bg-black-700">
+      <section className="flex min-h-screen w-72 flex-col content-center border-r-[1.5px] bg-black-800 text-white-300">
         <Link href={"/dashboard"}>
           <Image
             src={siteLogo}

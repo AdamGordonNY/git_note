@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description:
     "A platform for Software Developers to store information and knowledge.",
   icons: {
-    icon: "/assets/images/site-logo.png",
+    icon: "/images/site-logo.png",
   },
 };
 

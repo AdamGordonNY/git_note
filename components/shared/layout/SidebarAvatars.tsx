@@ -14,7 +14,7 @@ const SidebarAvatars = ({ user }: { user: Partial<IUser> }) => {
   return (
     <Link
       href={`/profile`}
-      className="mx-[30px] flex-1 flex-col items-center justify-center "
+      className="mx-[30px] flex flex-col  justify-center "
     >
       <div className=" mt-[50px] flex w-full justify-between gap-x-4">
         {" "}

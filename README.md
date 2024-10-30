@@ -91,7 +91,7 @@ git clone https://github.com/agordon123/git_note.git
 cd git_note
 npm install
 
-3. Set Up Environemnt Variables
+3. Set Up Environment Variables
 
 ```
 GITHUB_CLIENT_ID=

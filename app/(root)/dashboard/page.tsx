@@ -1,7 +1,4 @@
 import Dashboard from "@/components/shared/layout/Dashboard";
-import LeftSidebar from "@/components/shared/layout/LeftSidebar";
-import RightSidebar from "@/components/shared/layout/RightSidebar";
-import ResourceTag from "@/components/shared/ResourceTag";
 import { IPost } from "@/database/models/post.model";
 import {
   getPostCount,
@@ -35,19 +32,8 @@ export default async function Home({
   const postCardArray = cleanPosts.slice(0, 5);
   const slicedTags = postTags.slice(0, 11);
   return (
-    <main className="flex min-h-screen w-full flex-col text-white-300">
-      <LeftSidebar posts={posts!} />
-      <Dashboard
-        cleanPosts={postCardArray}
-        commitArray={commitArray!}
-        user={user.name}
-      />
-      <RightSidebar user={user}>
-        {slicedTags &&
-          slicedTags.map((tag) => (
-            <ResourceTag type="plain" text={tag} key={tag} />
-          ))}
-      </RightSidebar>
-    </main>
+    <div className="flex min-h-screen w-full flex-col text-white-300">
+      <Dashboard cleanPosts={postCardArray} commitArray={commitArray!} />
+    </div>
   );
 }

@@ -9,21 +9,24 @@ import PostFilter from "../posts/PostFilter";
 import { IPost } from "@/database/models/post.model";
 import PostCard from "../posts/PostCard";
 import { CreateType } from "@/types";
+import { useData } from "@/context/DataProvider";
 
 const Dashboard = ({
   commitArray,
-  user,
+
   cleanPosts,
 }: {
   commitArray: any[];
-  user: string;
+
   cleanPosts: IPost[];
 }) => {
   const searchParams = useSearchParams();
+  const data = useData();
+  const { name } = JSON.parse(JSON.stringify(data?.user));
   return (
-    <section className="flex w-full flex-1 flex-col overflow-auto px-[292px]">
+    <section className="flex w-full flex-1 flex-col overflow-auto ">
       <div className="mt-10 flex flex-col   px-10 py-5 ">
-        <span className="display-2-bold text-white-100">Hello {user}!</span>{" "}
+        <span className="display-2-bold text-white-100">Hello {name}!</span>{" "}
         <Separator />
         <span> Jot down your latest learnings and thoughts today!</span>
       </div>
