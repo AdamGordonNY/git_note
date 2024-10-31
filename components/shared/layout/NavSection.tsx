@@ -8,7 +8,7 @@ const NavSection = ({
   title: string;
 }) => {
   return (
-    <div className="border-b border-white-500 p-4">
+    <div className="space-y-6 border-b border-white-500 p-4">
       <div className="group m-auto mb-2 flex flex-col justify-start gap-4 rounded-md p-2">
         <h3 className="caption-small group-hover:text-white text-white-500">
           {title}

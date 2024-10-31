@@ -21,43 +21,54 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 export const DataProvider = ({
   children,
   userData,
+  postData,
+  tagData,
 }: {
   children: React.ReactNode;
   userData: IUser;
+  postData: IPost[];
+  tagData: string[];
 }) => {
-  const [data, setData] = useState<{
-    user: IUser | undefined;
-    posts: IPost[];
-    commitArray: number[];
-    tags: string[];
-    loading: boolean;
-  }>({
+  const [data, setData] = useState<DataContextType>({
     user: userData,
-    posts: [],
+    posts: postData || [],
     commitArray: [],
-    tags: [],
+    tags: tagData || [],
     loading: true,
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      const posts = await getRecentPosts(10);
-      const commitArray = (await getPostCount()) ?? [];
-      const tags = await getUniqueTags();
+    if (!userData || !postData || !tagData) {
+      const fetchData = async () => {
+        const posts = await getRecentPosts(10);
+        const commitArray = (await getPostCount()) ?? [];
+        const tags = await getUniqueTags();
 
-      setData({
-        user: JSON.parse(JSON.stringify(data.user)),
-        posts: (posts ?? []).slice(0, 5),
-        commitArray,
-        tags: tags.slice(0, 11),
+        setData({
+          user: userData,
+          posts: (posts ?? []).slice(0, 5),
+          commitArray,
+          tags: tags.slice(0, 11),
+          loading: false,
+        });
+      };
+
+      fetchData();
+    } else {
+      setData((prevData) => ({
+        ...prevData,
         loading: false,
-      });
-    };
-
-    fetchData();
-  }, []);
+      }));
+    }
+  }, [userData, postData, tagData]);
 
   return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 };
 
-export const useData = () => useContext(DataContext);
+export const useData = () => {
+  const context = useContext(DataContext);
+  if (!context) {
+    throw new Error("useData must be used within a DataProvider");
+  }
+  return context;
+};

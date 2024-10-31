@@ -22,11 +22,11 @@ const LeftSidebar = async ({ posts }: { posts: IPost[] }) => {
           <Image
             src={siteLogo}
             alt="logo"
-            className="ml-[28px] mt-[40px] h-[24px] w-[102px]"
+            className="ml-[28px] mt-10 h-[24px] w-[102px]"
           />
         </Link>
         <>
-          <div className="mt-20 flex  flex-col items-center justify-center space-y-2 border-b border-white-500">
+          <div className="my-10 flex flex-col  items-center justify-center gap-6 space-y-2 border-b-[.68px] border-white-500 pb-10">
             <Link href="/posts/add">
               <button
                 className="flex h-[38px] w-[235px] items-center justify-center gap-x-2 gap-y-1 rounded-md bg-gradient-to-r from-[#43b7fe] to-[#4f48e6] px-1.5 py-3 text-white-100"

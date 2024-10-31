@@ -54,34 +54,46 @@ const SocialLinks = ({
     <div className="justify-left flex  flex-col align-middle">
       {socialLinks.map((link) => {
         return (
-          <a
-            key={link.name}
-            href={link.url}
-            className="justify-left flex  flex-row content-center items-center gap-4 p-2  text-white-100 hover:shadow-lg"
-          >
-            {link.name === "twitter" && (
-              <Image src={twitterIcon} alt="twitter" height={16} width={16} />
-            )}
-            {link.name === "instagram" && (
-              <Image src={instagramIcon} alt="ig" height={16} width={16} />
-            )}
-            {link.name === "linkedin" && (
-              <Image src={linkedinIcon} alt="linkedin" height={16} width={16} />
-            )}
-            {link.name === "github" && (
-              <Image src={githubIcon} alt="github" height={16} width={16} />
-            )}
-            {link.name === "dribbble" && (
-              <Image src={dribbleIcon} alt="dribble" height={16} width={16} />
-            )}
-            {link.name === "facebook" && (
-              <Image src={facebookIcon} alt="facebook" height={16} width={16} />
-            )}
+          <>
+            <a
+              key={link.name}
+              href={link.url}
+              className="justify-left flex  flex-row content-center items-center gap-4 p-2  text-white-100 hover:shadow-lg"
+            >
+              {link.name === "twitter" && (
+                <Image src={twitterIcon} alt="twitter" height={16} width={16} />
+              )}
+              {link.name === "instagram" && (
+                <Image src={instagramIcon} alt="ig" height={16} width={16} />
+              )}
+              {link.name === "linkedin" && (
+                <Image
+                  src={linkedinIcon}
+                  alt="linkedin"
+                  height={16}
+                  width={16}
+                />
+              )}
+              {link.name === "github" && (
+                <Image src={githubIcon} alt="github" height={16} width={16} />
+              )}
+              {link.name === "dribbble" && (
+                <Image src={dribbleIcon} alt="dribble" height={16} width={16} />
+              )}
+              {link.name === "facebook" && (
+                <Image
+                  src={facebookIcon}
+                  alt="facebook"
+                  height={16}
+                  width={16}
+                />
+              )}
 
-            <span className="paragraph-2-regular capitalize text-white-300/50 ">
-              {link.username}
-            </span>
-          </a>
+              <span className="paragraph-2-regular capitalize text-white-300/50 ">
+                {link.username}
+              </span>
+            </a>
+          </>
         );
       })}
     </div>
