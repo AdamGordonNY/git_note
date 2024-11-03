@@ -13,11 +13,9 @@ import { useData } from "@/context/DataProvider";
 
 const Dashboard = ({
   commitArray,
-
   cleanPosts,
 }: {
   commitArray: any[];
-
   cleanPosts: IPost[];
 }) => {
   const searchParams = useSearchParams();
