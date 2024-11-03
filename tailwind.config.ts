@@ -19,7 +19,7 @@ const config = {
         lg: "960px",
         md: "720px",
         sm: "640px",
-        xs: "430px",
+        xs: "450px",
       },
     },
     extend: {

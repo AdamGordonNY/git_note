@@ -19,7 +19,7 @@ const ResourceTag = ({ type, text, onClick, ...props }: ResourceTagProps) => {
 
   const badgeType = type || "knowledge";
   const baseClass =
-    "inline-flex pl-2 pr-2 py-0.5 gap-1 rounded-[3px] items-center justify-center rounded-[3px] h-fit";
+    "inline-flex pl-2 pr-2 py-0.5 gap-1 rounded-[3px] items-center text-center justify-center rounded-[3px] h-fit";
 
   const label = {
     component: "Component",
@@ -32,7 +32,7 @@ const ResourceTag = ({ type, text, onClick, ...props }: ResourceTagProps) => {
     component: "bg-black-700 text-purple-500",
     workflow: "bg-black-700  text-blue-500",
     knowledge: "bg-black-700 text-green-500",
-    plain: "bg-black-700 text-white-100",
+    plain: "bg-black-700 text-white-300",
   };
   const iconSrc = {
     component: workflowBadge,

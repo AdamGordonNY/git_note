@@ -24,11 +24,14 @@ const Dashboard = ({
   const data = useData();
   const { name } = JSON.parse(JSON.stringify(data?.user));
   return (
-    <section className="flex w-full flex-1 flex-col overflow-auto ">
+    <section className="flex w-full flex-1 flex-col overflow-auto max-md:min-w-full ">
       <div className="mt-10 flex flex-col   px-10 py-5 ">
         <span className="display-2-bold text-white-100">Hello {name}!</span>{" "}
         <Separator />
-        <span> Jot down your latest learnings and thoughts today!</span>
+        <span className="max-lg:paragraph-1-regular max-lg:text-white-300">
+          {" "}
+          Jot down your latest learnings and thoughts today!
+        </span>
       </div>
       <div className="flex w-full flex-col px-10">
         <Suspense fallback={<Skeleton className="flex w-full  px-10 " />}>
@@ -39,7 +42,7 @@ const Dashboard = ({
       </div>
 
       <div className="flex w-full  flex-col gap-4 px-12 pt-5   max-md:columns-1">
-        <div className="display-1-bold flex w-full justify-between text-white-100">
+        <div className="display-1-bold max-lg:display-2-bold flex w-full justify-between text-white-100 max-lg:flex-col">
           <span className="text-left">Recent Posts</span>
           <PostFilter />
         </div>

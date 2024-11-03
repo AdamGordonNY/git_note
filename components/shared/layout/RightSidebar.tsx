@@ -21,7 +21,7 @@ const RightSidebar = ({ children }: { children?: React.ReactNode }) => {
 
   return (
     <Suspense fallback={<RightSidebarSkeleton />}>
-      <section className="flex w-[282px] flex-col items-center border-l-[1.5px] bg-black-800 text-white-100 max-lg:hidden">
+      <section className="flex w-[282px] flex-col items-center border-l-[1.5px] bg-black-800 text-white-100 max-md:hidden">
         <SidebarAvatars user={user!} />
         {isEdit && <EditSocials user={user!} />}
         {isProfile && (

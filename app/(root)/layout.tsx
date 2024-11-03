@@ -11,6 +11,8 @@ import { getOneUser } from "@/lib/actions/user.actions";
 import { DataProvider } from "@/context/DataProvider";
 import { Separator } from "@/components/ui/separator";
 import ResourceTag from "@/components/shared/ResourceTag";
+import { IPost } from "@/database/models/post.model";
+import MobileHeader from "@/components/shared/layout/MobileHeader";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getSession();
@@ -22,7 +24,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getOneUser(session?.user?.email!);
   const userPosts = await getRecentPosts(10);
   const cleanUser = JSON.parse(JSON.stringify(user)) as IUser;
-  const cleanPosts = JSON.parse(JSON.stringify(userPosts));
+  const cleanPosts = JSON.parse(JSON.stringify(userPosts)) as IPost[];
 
   const postTags: string[] = await getUniqueTags();
   const tagsToRender = postTags.slice(0, 12);
@@ -32,26 +34,33 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
       postData={cleanPosts}
       tagData={tagsToRender}
     >
-      <main className="flex min-h-screen w-full bg-black-900">
+      <main className="flex min-h-screen w-full bg-black-900 max-lg:flex-col max-md:min-w-[420px] max-md:max-w-full">
         {" "}
-        <LeftSidebar posts={cleanPosts!} />
-        <section className="flex-1 ">{children}</section>
-        <RightSidebar>
-          {" "}
-          <div className="mt-5  gap-2 px-2 py-3.5">
-            <Separator />
-            <div className="flex flex-col gap-3">
-              {tagsToRender?.map((tag) => (
-                <ResourceTag
-                  key={tag}
-                  type="plain"
-                  text={tag}
-                  className="text-white-100"
-                />
-              ))}
+        {/* Mobile header with toggle button */}
+        <MobileHeader />
+        {/* Desktop sidebar */}
+        <LeftSidebar posts={cleanPosts} />
+        <section className="flex-1 bg-black-900 max-lg:flex-col ">
+          {children}
+        </section>
+        <div className="hidden flex-col lg:flex">
+          <RightSidebar>
+            {" "}
+            <div className="mt-5  gap-2 px-2 py-3.5">
+              <Separator />
+              <div className="flex flex-col gap-3">
+                {tagsToRender?.map((tag) => (
+                  <ResourceTag
+                    key={tag}
+                    type="plain"
+                    text={tag}
+                    className="text-white-100"
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </RightSidebar>
+          </RightSidebar>{" "}
+        </div>
       </main>
     </DataProvider>
   );
