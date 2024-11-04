@@ -23,7 +23,7 @@ const Dashboard = ({
   const data = useData();
   const { name } = JSON.parse(JSON.stringify(data?.user));
   return (
-    <section className="flex w-full flex-1 flex-col overflow-auto px-3 max-md:min-w-full ">
+    <section className="flex w-full flex-1 flex-col overflow-auto px-3 max-lg:min-w-full ">
       <div className="mt-10 flex flex-col    py-5 lg:px-10 ">
         <span className="display-2-bold text-white-100">Hello {name}!</span>{" "}
         <Separator />
@@ -38,23 +38,22 @@ const Dashboard = ({
             values={commitArray && JSON.parse(JSON.stringify(commitArray))}
           />
         </Suspense>
-        <div className="flex w-full flex-row justify-between px-[30px]">
+        <div className="flex w-full flex-row justify-between lg:px-[30px]">
           <span className="text-white-300 max-lg:hidden">
             Learn how we count contributions
           </span>
-          <div className="flex flex-row gap-x-2 text-white-300">
+          <div className="flex flex-row items-center gap-x-2 text-white-300 max-lg:w-full max-lg:text-center">
             Less
             <HeatmapLegend />
             More
           </div>
         </div>
       </div>
-
-      <div className="flex w-full  flex-col gap-4 px-12 pt-5   max-md:columns-1">
-        <div className="display-1-bold max-lg:display-2-bold flex w-full justify-between text-white-100 max-lg:flex-col">
-          <span className="text-left">Recent Posts</span>
-          <PostFilter />
-        </div>
+      <div className="display-1-bold max-lg:display-2-bold flex w-full justify-between text-white-100 max-lg:flex-col">
+        <span className="text-left">Recent Posts</span>
+        <PostFilter />
+      </div>
+      <div className="flex w-full  flex-col gap-4 pt-5 max-md:columns-1   lg:px-12">
         <div className="columns-1 space-y-[18px]">
           <Suspense fallback={JSON.stringify({ searchParams })}>
             {cleanPosts &&

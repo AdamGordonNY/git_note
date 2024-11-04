@@ -18,7 +18,7 @@ const MobileHeader = () => {
   const toggleSidebar = () => {
     setIsSidebarVisible((prev) => !prev);
   };
-  const { posts } = useData();
+  const { posts, user } = useData();
   return (
     <>
       <div className="flex min-h-[70px] w-full min-w-[430px] flex-1 items-center justify-between bg-black-800 px-3.5  py-6 lg:hidden">
@@ -42,6 +42,7 @@ const MobileHeader = () => {
           <PopoverContent className="bg-black-800">
             {" "}
             <MobileSidebar
+              user={user!}
               isVisible={isSidebarVisible}
               onClose={() => setIsSidebarVisible(false)}
               posts={posts}

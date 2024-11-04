@@ -35,7 +35,7 @@ const PostFilter = () => {
   };
 
   return (
-    <div className="flex justify-end gap-x-3.5">
+    <div className="flex justify-end gap-x-3.5 max-lg:w-full max-lg:justify-between max-lg:gap-5">
       <CreateTypeBadge
         variant="knowledge"
         onClick={() =>
