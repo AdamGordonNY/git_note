@@ -2,12 +2,12 @@
 
 import React from "react";
 import { IUser } from "@/database/models/user.model";
-import { getRecentPosts, getUniqueTags } from "@/lib/actions/post.actions";
+import { getUniqueTags } from "@/lib/actions/post.actions";
 import LeftSidebar from "@/components/shared/layout/LeftSidebar";
 import RightSidebar from "@/components/shared/layout/RightSidebar";
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
-import { getOneUser } from "@/lib/actions/user.actions";
+import { getUserWithPosts } from "@/lib/actions/user.actions";
 import { DataProvider } from "@/context/DataProvider";
 import { Separator } from "@/components/ui/separator";
 import ResourceTag from "@/components/shared/ResourceTag";
@@ -21,10 +21,14 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
     redirect("/sign-in");
   }
 
-  const user = await getOneUser(session?.user?.email!);
-  const userPosts = await getRecentPosts(10);
+  const userWithPosts = await getUserWithPosts();
+  if (!userWithPosts) {
+    redirect("/sign-in");
+  }
+  const { user, posts } = userWithPosts;
+
   const cleanUser = JSON.parse(JSON.stringify(user)) as IUser;
-  const cleanPosts = JSON.parse(JSON.stringify(userPosts)) as IPost[];
+  const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
 
   const postTags: string[] = await getUniqueTags();
   const tagsToRender = postTags.slice(0, 12);

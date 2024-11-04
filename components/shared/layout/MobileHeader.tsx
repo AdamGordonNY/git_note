@@ -20,7 +20,7 @@ const MobileHeader = () => {
   const { posts } = useData();
   return (
     <>
-      <div className="flex h-[70px] w-full min-w-[430px] flex-1 items-center justify-between bg-black-800 px-1 py-1.5 lg:hidden">
+      <div className="flex min-h-[70px] w-full min-w-[430px] flex-1 items-center justify-between bg-black-800 px-3.5  py-6 lg:hidden">
         <Image
           src={logo}
           alt="logo"

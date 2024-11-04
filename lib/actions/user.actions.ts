@@ -12,7 +12,7 @@ import { revalidateTag, unstable_cache as cache } from "next/cache";
 import bcryptjs from "bcryptjs";
 import User, { IUser } from "@/database/models/user.model";
 import { getSession } from "../authOptions";
-
+import Post, { IPost } from "@/database/models/post.model";
 export const _getOneUser = async (email: string) => {
   try {
     await dbConnect();
@@ -84,6 +84,20 @@ export const updateUserSocials = async (socials: Partial<IUser["socials"]>) => {
     await User.findOneAndUpdate({ email }, { socials }, { new: true });
     revalidateTag("user");
     return true;
+  } catch (error) {
+    return false;
+  }
+};
+export const getUserWithPosts = async () => {
+  try {
+    await dbConnect();
+    const session = await getSession();
+    const email = session?.user?.email!;
+    const user = (await User.findOne({ email })) as IUser;
+    const posts = (await Post.find({ author: user._id })
+      .sort({ createdAt: -1 })
+      .limit(10)) as IPost[];
+    return { posts, user };
   } catch (error) {
     return false;
   }
