@@ -4,10 +4,9 @@ import CalendarHeatmap from "react-calendar-heatmap";
 import { Tooltip } from "react-tooltip";
 import { format } from "date-fns";
 
-import HeatmapLegend from "./HeatmapLegend";
 const HeatMap = ({ values }: { values: Date[] }) => {
   const dateCountMap = new Map<string, number>();
-  console.log(values);
+
   values.forEach((date: any) => {
     const dateString = date.split("T")[0]; // Extract date in YYYY-MM-DD format
     if (dateCountMap.has(dateString)) {
@@ -68,14 +67,6 @@ const HeatMap = ({ values }: { values: Date[] }) => {
         />
       )}
       <Tooltip id="my-tooltip" />
-      <div className="flex w-full flex-row justify-between px-[30px]">
-        <span className="text-white-300">Learn how we count contributions</span>
-        <div className="flex flex-row gap-x-2 text-white-300">
-          Less
-          <HeatmapLegend />
-          More
-        </div>
-      </div>
     </>
   );
 };

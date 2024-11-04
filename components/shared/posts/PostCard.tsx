@@ -11,13 +11,13 @@ const PostCard = async ({ post, type }: PostCardProps) => {
   return (
     <Link
       href={`/posts/${post?._id!}`}
-      className="flex h-[184px] cursor-pointer  break-inside-avoid-column flex-col space-y-4 rounded-[8px] bg-black-800 px-9 py-6 max-xs:max-w-[390px] "
+      className="flex h-[184px] cursor-pointer  break-inside-avoid-column flex-col space-y-4 rounded-[8px] bg-black-800 px-9 py-6 max-xs:max-w-[420px] "
     >
       <div className="gap-2.5 p-2 max-sm:gap-3.5">
         <ResourceTag type={type} />
       </div>
 
-      <span className="display-2-bold line-clamp-2 gap-[14px] text-white-100">
+      <span className="display-2-bold line-clamp-2 gap-[14px] text-white-100 max-lg:line-clamp-1">
         {post?.title}
       </span>
 

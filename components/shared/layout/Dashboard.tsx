@@ -10,6 +10,7 @@ import { IPost } from "@/database/models/post.model";
 import PostCard from "../posts/PostCard";
 import { CreateType } from "@/types";
 import { useData } from "@/context/DataProvider";
+import HeatmapLegend from "../HeatmapLegend";
 
 const Dashboard = ({
   commitArray,
@@ -22,21 +23,31 @@ const Dashboard = ({
   const data = useData();
   const { name } = JSON.parse(JSON.stringify(data?.user));
   return (
-    <section className="flex w-full flex-1 flex-col overflow-auto max-md:min-w-full ">
-      <div className="mt-10 flex flex-col   px-10 py-5 ">
+    <section className="flex w-full flex-1 flex-col overflow-auto px-3 max-md:min-w-full ">
+      <div className="mt-10 flex flex-col    py-5 lg:px-10 ">
         <span className="display-2-bold text-white-100">Hello {name}!</span>{" "}
         <Separator />
-        <span className="max-lg:paragraph-1-regular max-lg:text-white-300">
+        <span className="max-lg:paragraph-1-regular max-lg:text-white-300 ">
           {" "}
           Jot down your latest learnings and thoughts today!
         </span>
       </div>
-      <div className="flex w-full flex-col px-10">
+      <div className="flex w-full flex-col lg:px-10">
         <Suspense fallback={<Skeleton className="flex w-full  px-10 " />}>
           <HeatMap
             values={commitArray && JSON.parse(JSON.stringify(commitArray))}
           />
         </Suspense>
+        <div className="flex w-full flex-row justify-between px-[30px]">
+          <span className="text-white-300 max-lg:hidden">
+            Learn how we count contributions
+          </span>
+          <div className="flex flex-row gap-x-2 text-white-300">
+            Less
+            <HeatmapLegend />
+            More
+          </div>
+        </div>
       </div>
 
       <div className="flex w-full  flex-col gap-4 px-12 pt-5   max-md:columns-1">
