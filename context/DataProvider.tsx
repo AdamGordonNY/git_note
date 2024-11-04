@@ -23,25 +23,27 @@ export const DataProvider = ({
   userData,
   postData,
   tagData,
+  commitData,
 }: {
   children: React.ReactNode;
   userData: IUser;
   postData: IPost[];
   tagData: string[];
+  commitData: any[];
 }) => {
   const [data, setData] = useState<DataContextType>({
     user: userData,
     posts: postData || [],
-    commitArray: [],
+    commitArray: commitData,
     tags: tagData || [],
     loading: true,
   });
 
   useEffect(() => {
-    if (!userData || !postData || !tagData) {
+    if (!userData || !postData || !tagData || !commitData) {
       const fetchData = async () => {
-        const posts = await getRecentPosts(10);
-        const commitArray = (await getPostCount()) ?? [];
+        const posts = await getRecentPosts(10, userData.id!);
+        const commitArray = (await getPostCount(userData.id!)) ?? [];
         const tags = await getUniqueTags();
 
         setData({

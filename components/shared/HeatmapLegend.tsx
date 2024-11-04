@@ -10,7 +10,7 @@ const classes = [
 ];
 const HeatmapLegend = () => {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row max-lg:justify-center">
       {classes.map((className, index) => (
         <SquareIcon key={index} className={className} />
       ))}

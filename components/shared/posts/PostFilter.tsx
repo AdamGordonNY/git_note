@@ -43,14 +43,17 @@ const PostFilter = () => {
             ? handleRemoveFilter()
             : handleSelectButton("knowledge")
         }
+        className="max-h-10"
       />
       <CreateTypeBadge
         variant="workflow"
         onClick={() => handleSelectButton("workflow")}
+        className="max-h-10"
       />
       <CreateTypeBadge
         variant="component"
         onClick={() => handleSelectButton("component")}
+        className="max-h-10"
       />
     </div>
   );

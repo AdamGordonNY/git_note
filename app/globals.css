@@ -331,3 +331,33 @@ rdp {
 
   box-shadow: 0px 1px 1px 0px #0b13241a;
 }
+/* General scrollbar style for WebKit browsers */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height of the scrollbar (for horizontal scrollbars) */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded edges on the scrollbar thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color of the scrollbar track */
+}
+/* Scrollbar styling for Firefox */
+* {
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
+}
+/* styles.css */
+.PopoverContent {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.PopoverContent[data-side="top"] {
+  animation-name: slideUp;
+}
+.PopoverContent[data-side="bottom"] {
+  animation-name: slideDown;
+}

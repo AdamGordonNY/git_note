@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { IPost } from "@/database/models/post.model";
 import LeftSidebarContent from "./LeftSidebarContent";

@@ -11,7 +11,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const cleanPost = JSON.parse(JSON.stringify(fetchedPost)) as IPost;
 
   return (
-    <section className=" w-full gap-[20px]">
+    <section className="flex w-full flex-col gap-[20px] bg-black-900">
       <Suspense fallback={"loading..."}>
         <DisplayPost post={cleanPost} />
       </Suspense>

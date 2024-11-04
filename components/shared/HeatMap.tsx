@@ -28,7 +28,6 @@ const HeatMap = ({ values }: { values: Date[] }) => {
           startDate={"01/01/2024"}
           endDate={new Date("12/31/2024")}
           showWeekdayLabels={true}
-          weekdayLabels={["S", "M", "T", "W", "T", "F", "S"]}
           showOutOfRangeDays={false}
           gutterSize={5}
           tooltipDataAttrs={(value: { date: string; count: number }) => {

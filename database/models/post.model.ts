@@ -5,7 +5,7 @@ export interface IPost extends Document {
   title: string;
   content: string;
   description: string;
-  author: string;
+  author: Schema.Types.ObjectId;
   postType: string;
   tags?: string[];
   resourceLinks?: {
@@ -20,11 +20,12 @@ export interface IPost extends Document {
   experiences?: string[];
   image?: string;
   code?: string;
+  views?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-const PostSchema = new Schema({
+const PostSchema = new Schema<IPost>({
   postType: {
     type: String,
     required: true,
@@ -32,7 +33,7 @@ const PostSchema = new Schema({
 
   title: {
     type: String,
-    required: false,
+    required: true,
   },
   author: {
     type: Schema.Types.ObjectId,
@@ -45,7 +46,7 @@ const PostSchema = new Schema({
   },
   description: {
     type: String,
-    required: false,
+    required: true,
   },
   experiences: {
     type: [String],

@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useRef, useState, useTransition } from "react";
+import React, { Suspense, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deletePostById } from "@/lib/actions/post.actions";
 import { Edit, Loader2, X } from "lucide-react";
@@ -37,7 +37,7 @@ const EditOrDelete = ({
 }: EditOrDeleteProps) => {
   const className = `flex w-full justify-start gap-x-1 rounded-[5px] text-white-100`;
   return (
-    <>
+    <Suspense>
       {" "}
       <Dialog>
         <DialogTrigger asChild className="  bg-black-800">
@@ -55,7 +55,7 @@ const EditOrDelete = ({
           </Button>
         </DialogTrigger>
       </Dialog>
-    </>
+    </Suspense>
   );
 };
 export const ConfirmationModal = ({ postId }: { postId: string }) => {
@@ -82,7 +82,7 @@ export const ConfirmationModal = ({ postId }: { postId: string }) => {
     }
   };
   return (
-    <>
+    <Suspense>
       <Dialog modal>
         <DialogContent className="flex flex-col space-y-8 rounded-md bg-black-800 p-8">
           <DialogClose asChild>
@@ -111,7 +111,7 @@ export const ConfirmationModal = ({ postId }: { postId: string }) => {
           </DialogClose>
         </div>
       </Dialog>
-    </>
+    </Suspense>
   );
 };
 export const EditOrDeletePopover = ({
@@ -136,32 +136,34 @@ export const EditOrDeletePopover = ({
   };
 
   return (
-    <Popover key={postId} open={isOpen}>
-      <div className="relative flex items-center">
-        <ResourceTag type={postType as CreateType} />
-        <PopoverTrigger onClick={() => setIsOpen(!isOpen)}>
-          <VerticalEllipsisIcon />
-        </PopoverTrigger>
-        <PopoverContent
-          ref={ref}
-          className="Popover-Content absolute left-0 top-full mt-2 flex w-[175px] flex-col gap-y-1 bg-transparent p-2"
-        >
-          <EditOrDelete
-            disabled={pending}
-            action="edit"
-            postId={postId}
-            onClick={handleEditClick}
-          />
-          <EditOrDelete
-            disabled={pending}
-            action="delete"
-            postId={postId}
-            onClick={handleDeleteClick}
-          />
-        </PopoverContent>
-      </div>
-      {modalIsOpen && <ConfirmationModal postId={postId} />}
-    </Popover>
+    <Suspense>
+      <Popover key={postId} open={isOpen}>
+        <div className="relative flex items-center">
+          <ResourceTag type={postType as CreateType} />
+          <PopoverTrigger onClick={() => setIsOpen(!isOpen)}>
+            <VerticalEllipsisIcon />
+          </PopoverTrigger>
+          <PopoverContent
+            ref={ref}
+            className="PopoverContent absolute left-0 top-full mt-2 flex w-[175px] flex-col gap-y-1 bg-transparent p-2"
+          >
+            <EditOrDelete
+              disabled={pending}
+              action="edit"
+              postId={postId}
+              onClick={handleEditClick}
+            />
+            <EditOrDelete
+              disabled={pending}
+              action="delete"
+              postId={postId}
+              onClick={handleDeleteClick}
+            />
+          </PopoverContent>
+        </div>
+        {modalIsOpen && <ConfirmationModal postId={postId} />}
+      </Popover>
+    </Suspense>
   );
 };
 

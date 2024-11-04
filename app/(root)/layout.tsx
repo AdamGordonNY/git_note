@@ -2,7 +2,7 @@
 
 import React from "react";
 import { IUser } from "@/database/models/user.model";
-import { getUniqueTags } from "@/lib/actions/post.actions";
+import { getPostCount, getUniqueTags } from "@/lib/actions/post.actions";
 import LeftSidebar from "@/components/shared/layout/LeftSidebar";
 import RightSidebar from "@/components/shared/layout/RightSidebar";
 import { getSession } from "@/lib/authOptions";
@@ -29,7 +29,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
 
   const cleanUser = JSON.parse(JSON.stringify(user)) as IUser;
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
-
+  const commitArray = (await getPostCount(cleanUser.id)) as any[];
   const postTags: string[] = await getUniqueTags();
   const tagsToRender = postTags.slice(0, 12);
   return (
@@ -37,6 +37,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
       userData={cleanUser!}
       postData={cleanPosts}
       tagData={tagsToRender}
+      commitData={commitArray}
     >
       <main className="flex min-h-screen w-full bg-black-900 max-lg:flex-col max-md:min-w-[420px] max-md:max-w-full">
         {" "}
@@ -44,10 +45,10 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         <MobileHeader />
         {/* Desktop sidebar */}
         <LeftSidebar posts={cleanPosts} />
-        <section className="flex-1 bg-black-900 max-lg:flex-col ">
+        <section className="min-w-[430px] flex-1 bg-black-900 max-lg:w-full max-lg:flex-col ">
           {children}
         </section>
-        <div className="hidden flex-col lg:flex">
+        <div className="hidden flex-col bg-black-800 lg:flex">
           <RightSidebar>
             {" "}
             <div className="mt-5  gap-2 px-2 py-3.5">

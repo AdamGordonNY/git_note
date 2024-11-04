@@ -30,10 +30,10 @@ export const getUniqueTags = async () => {
     console.error("Error retrieving tags", error);
   }
 };
-export const getPostCount = async () => {
+export const getPostCount = async (userId: string) => {
   try {
     await dbConnect();
-    const postDates = await Post.find().select("createdAt");
+    const postDates = await Post.find({ userId }).select("createdAt");
     return postDates.map((post) => post.createdAt.toISOString());
   } catch (error) {
     console.log(error);
@@ -103,10 +103,12 @@ export const fetchPost = async (_id: string) => {
   }
 };
 
-export const getRecentPosts = async (limit: number) => {
+export const getRecentPosts = async (limit: number, userId: string) => {
   try {
     await dbConnect();
-    const posts = await Post.find({}).sort({ createdAt: -1 }).limit(limit);
+    const posts = await Post.find({ userId })
+      .sort({ createdAt: -1 })
+      .limit(limit);
     return posts as IPost[];
   } catch (error) {
     console.log(error);

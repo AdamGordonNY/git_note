@@ -11,7 +11,7 @@ const PostCard = async ({ post, type }: PostCardProps) => {
   return (
     <Link
       href={`/posts/${post?._id!}`}
-      className="flex h-[184px] cursor-pointer  break-inside-avoid-column flex-col space-y-4 rounded-[8px] bg-black-800 px-9 py-6 max-xs:max-w-[420px] "
+      className="flex h-[184px] min-w-full  cursor-pointer break-inside-avoid-column flex-col space-y-4 rounded-[8px] bg-black-800 px-9 py-6 max-lg:px-1 "
     >
       <div className="gap-2.5 p-2 max-sm:gap-3.5">
         <ResourceTag type={type} />
@@ -21,7 +21,7 @@ const PostCard = async ({ post, type }: PostCardProps) => {
         {post?.title}
       </span>
 
-      <div className="flex  gap-x-3">
+      <div className="flex gap-x-3">
         {post.tags &&
           post.tags.map((tag, idx) => (
             <div key={idx} className="overflow-hidden">
