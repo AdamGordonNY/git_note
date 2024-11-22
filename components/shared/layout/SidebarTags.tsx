@@ -9,13 +9,13 @@ const SidebarTag = ({ post }: { post: IPost }) => {
     <Link href={`/posts/${post._id}`}>
       <div className="flex items-center justify-start gap-x-3 ">
         {post.postType === "component" && (
-          <ComponentIcon className="stroke-purple-500" size={16} />
+          <ComponentIcon className="stroke-blue-500" size={16} />
         )}
         {post.postType === "knowledge" && (
           <KnowledgeIcon className="stroke-green-500" size={16} />
         )}
         {post.postType === "workflow" && (
-          <WorkflowIcon className="stroke-blue-500" size={16} />
+          <WorkflowIcon className="stroke-purple-500" size={16} />
         )}
         <span className="paragraph-3-medium text-white-300">{post.title}</span>
       </div>

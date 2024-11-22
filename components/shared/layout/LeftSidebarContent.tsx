@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import Image from "next/image";
 import jsmProLogo from "@/public/jsmProLogo.svg";
@@ -20,7 +20,7 @@ interface SidebarContentProps {
 const LeftSidebarContent = ({ posts }: SidebarContentProps) => {
   const tenMostRecentPosts = posts?.slice(0, 10)!;
   return (
-    <>
+    <Suspense>
       <Link href={"/dashboard"}>
         <Image
           src={logo}
@@ -67,7 +67,7 @@ const LeftSidebarContent = ({ posts }: SidebarContentProps) => {
         <Separator />
         <SignOutButton />{" "}
       </div>
-    </>
+    </Suspense>
   );
 };
 

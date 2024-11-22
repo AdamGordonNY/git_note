@@ -1,33 +1,32 @@
 "use client";
 // eslint-disable-next-line no-unused-vars
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
 import { removeKeysFromQuery } from "@/lib/utilities";
-const PostFilter = () => {
-  // const searchParams = useSearchParams();
+const PostFilter = ({ setPosts }: { setPosts: any }) => {
+  const searchParams = useSearchParams();
   const [active, setActive] = React.useState<string | null>(null);
   const router = useRouter();
-  // useEffect(() => {
-  //   const postType = searchParams.get("postType");
-  //   setActive(postType);
-  // }, [searchParams]);
+
+  useEffect(() => {
+    const postType = searchParams.get("filter");
+    setActive(postType);
+  }, [searchParams]);
+
   const handleSelectButton = (item: string) => {
-    // const mySearchParams = new URLSearchParams(searchParams.toString());
-    // mySearchParams.set("postType", item.toLowerCase());
-    // mySearchParams.set("page", "1");
-    // formUrlQuery({ params: active!, key: mySearchParams.keys(), value });
-    // router.push(
-    //   `${window.location?.origin}/posts/?${mySearchParams.get("postType")?.toString()}`,
-    //   undefined
-    // );
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("filter", item.toLowerCase());
+
+    router.push(`${window.location.pathname}?${params.toString()}`, undefined);
   };
+
   const handleRemoveFilter = () => {
     const currentQuery = window.location.search;
     const newQuery = removeKeysFromQuery({
       params: currentQuery,
-      keysToRemove: ["postType", "page", "pageSize"],
+      keysToRemove: ["filter"],
     });
 
     setActive(null);
@@ -47,12 +46,20 @@ const PostFilter = () => {
       />
       <CreateTypeBadge
         variant="workflow"
-        onClick={() => handleSelectButton("workflow")}
+        onClick={() =>
+          active === "workflow"
+            ? handleRemoveFilter()
+            : handleSelectButton("workflow")
+        }
         className="max-h-10"
       />
       <CreateTypeBadge
         variant="component"
-        onClick={() => handleSelectButton("component")}
+        onClick={() =>
+          active === "component"
+            ? handleRemoveFilter()
+            : handleSelectButton("component")
+        }
         className="max-h-10"
       />
     </div>

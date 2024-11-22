@@ -34,10 +34,8 @@ const MobileHeader = () => {
         </Link>
 
         <Popover>
-          <PopoverTrigger>
-            <button onClick={toggleSidebar} aria-label="Open Sidebar">
-              <Image src={burger} alt="dropdown" width={21} height={18} />
-            </button>
+          <PopoverTrigger onClick={toggleSidebar} aria-label="Open Sidebar">
+            <Image src={burger} alt="dropdown" width={21} height={18} />
           </PopoverTrigger>
           <PopoverContent className="bg-black-800">
             {" "}

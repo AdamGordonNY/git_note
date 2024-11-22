@@ -1,7 +1,7 @@
 import React from "react";
-import workflowBadge from "@/public/icons/monitor.svg";
+import componentBadge from "@/public/icons/monitor.svg";
 import knowledgeBadge from "@/public/icons/greenbubble.svg";
-import componentBadge from "@/public/icons/numberlist.svg";
+import workflowBadge from "@/public/icons/numberlist.svg";
 import Link from "next/link";
 import Image from "next/image";
 type SidebarLinkType =

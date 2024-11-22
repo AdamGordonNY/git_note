@@ -1,48 +1,36 @@
 "use client";
 
 import { Command } from "cmdk";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 import searchIcon from "@/public/searchIcon.svg";
 import { Layers } from "lucide-react";
 import shortcutIcon from "@/public/shortcutIcon.svg";
 import Image from "next/image";
+import useDebounce from "@/lib/hooks/useDebounce";
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utilities";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-// import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
-// import ComponentIcon from "@/components/ui/icons/ComponentIcon";
-// import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
-// import { IPost } from "@/database/models/post.model";
+import SearchItem from "./SearchItem";
+import { useData } from "@/context/DataProvider";
+import { IPost } from "@/database/models/post.model";
 
 const Search = () => {
-  const [open, setOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  // const [posts, setPosts] = useState<IPost[]>();
-  // const router = useRouter();
-  // const pathName = usePathname();
-  // useEffect(() => {
-  //   const getPosts = async () => {
-  //     const posts = await getAllPosts({searchQuery: searchTerm });
-  //     if (posts) setPosts(posts as unknown as IPost[]);
-  //   };
-
-  //   const setParams = async () => {
-  //     const newParams = urlManager(URLSearchParams.toString(), {
-  //       set: { search: searchTerm },
-  //     });
-  //     router.push(`?${newParams}`);
-  //   };
-
-  //   const timeout = setTimeout(() => {
-  //     if (pathName !== "/posts") return;
-  //     setParams();
-  //     getPosts();
-  //   }, 250);
-
-  //   return () => clearTimeout(timeout);
-  // }, [pathName, router, searchTerm]);
-
-  // Toggle the menu when ⌘K is pressed
+  const ref = React.useRef(null);
+  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const [loading, setLoading] = React.useState(false);
+  const query = searchParams.get("filter");
+  const [search, setSearch] = useState(query || "");
+  const [knowledgePosts, setKnowledgePosts] = useState<IPost[]>([]);
+  const [componentPosts, setComponentPosts] = useState<IPost[]>([]);
+  const [workflowPosts, setWorkflowPosts] = useState<IPost[]>([]);
+  const debouncedSearch = useDebounce<string>(search, 300);
+  const pathName = usePathname();
+  const posts = useData().posts;
   useEffect(() => {
     const down = (e: {
       key: string;
@@ -60,31 +48,61 @@ const Search = () => {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  // const iconMatch = (post: IPost) => {
-  //   switch (post.postType) {
-  //     case "component":
-  //       return (
-  //         <>
-  //           <ComponentIcon className="text-purple-500" size={18} />
-  //           <span>{post.title}</span>
-  //         </>
-  //       );
-  //     case "workflow":
-  //       return (
-  //         <>
-  //           <WorkflowIcon className="text-primary-500" size={18} />
-  //           <span>{post.title}</span>
-  //         </>
-  //       );
-  //     case "knowledge":
-  //       return (
-  //         <>
-  //           <KnowledgeIcon className="text-green-500" size={18} />
-  //           <span>{post.title}</span>
-  //         </>
-  //       );
-  //   }
-  // };
+  useEffect(() => {
+    if (debouncedSearch) {
+      const newUrl = formUrlQuery(
+        { params: searchParams.toString() },
+        { key: searchParams.keys(), value: debouncedSearch },
+        {
+          params: searchParams.toString(),
+          key: searchParams.keys(),
+          value: debouncedSearch,
+        }
+      );
+
+      router.push(newUrl);
+    } else {
+      if (query) {
+        const newUrl = removeKeysFromQuery({
+          params: searchParams.toString(),
+          keysToRemove: ["title"],
+        });
+
+        router.push(newUrl);
+      }
+    }
+  }, [debouncedSearch, router, pathname, searchParams, query]);
+  React.useEffect(() => {
+    async function getItems() {
+      open && setLoading(true);
+
+      setKnowledgePosts(
+        JSON.parse(
+          JSON.stringify(
+            posts.filter((post: IPost) => post.postType === "knowledge")
+          )
+        )
+      );
+      setComponentPosts(
+        JSON.parse(
+          JSON.stringify(
+            posts.filter((post: IPost) => post.postType === "component")
+          )
+        )
+      );
+      setWorkflowPosts(
+        JSON.parse(
+          JSON.stringify(
+            posts.filter((post: IPost) => post.postType === "workflow")
+          )
+        )
+      );
+      setLoading(false);
+    }
+
+    getItems();
+  }, [open, search]);
+
   return (
     <>
       <div
@@ -107,10 +125,11 @@ const Search = () => {
       </div>
 
       <Command.Dialog
+        ref={ref}
         open={open}
         onOpenChange={setOpen}
         label="Global Command Menu"
-        className="fixed inset-0 z-40 flex w-[%0%] items-center justify-center backdrop-blur"
+        className="fixed inset-0 z-40 flex w-full items-center justify-center backdrop-blur"
         onClick={(e) => {
           if (e.target === e.currentTarget) setOpen(false);
         }}
@@ -118,8 +137,8 @@ const Search = () => {
         <div className="z-50 flex w-full flex-col rounded-lg border border-white-100 bg-black-800 max-lg:w-full lg:w-[75%]">
           <div className="flex w-full items-center gap-x-2 border-none bg-black-700 p-4  py-3">
             <Command.Input
-              value={searchTerm}
-              onValueChange={setSearchTerm}
+              value={search}
+              onValueChange={(searchString) => setSearch(searchString)}
               className="paragraph-3-regular w-full border-none bg-black-700 p-0 py-1 text-white-300 placeholder:text-white-300 max-lg:w-full"
               placeholder="Type a command or search..."
             />
@@ -127,6 +146,7 @@ const Search = () => {
               ESC
             </div>
           </div>
+
           <Command.List className="paragraph-3-regular h-fit max-h-64 w-full overflow-auto p-4 text-white-300">
             <Command.Empty>No results found.</Command.Empty>
             <Command.Group>
@@ -135,25 +155,26 @@ const Search = () => {
                   <Layers size={18} />
                   Explore all posts
                 </Command.Item>
-              </Link>
-              {/* {posts &&
-                posts.length > 0 &&
-                posts.map((post) => {
+              </Link>{" "}
+              {knowledgePosts.length > 0 &&
+                knowledgePosts.map((post) => (
+                  <SearchItem item={post} setOpen={setOpen} key={post.id} />
+                ))}{" "}
+              {componentPosts &&
+                componentPosts.length > 0 &&
+                componentPosts.map((post) => {
                   return (
-                    <Link
-                      key={post.id}
-                      href={`/posts/${post.id}`}
-                      onClick={() => setOpen((open) => !open)}
-                    >
-                      <Command.Item
-                        className="flex cursor-pointer items-center gap-x-2 p-2 hover:rounded hover:bg-black-600 hover:py-2"
-                        value={post.title}
-                      >
-                        {iconMatch(post)}
-                      </Command.Item>
-                    </Link>
+                    <SearchItem item={post} setOpen={setOpen} key={post.id} />
                   );
-                })} */}
+                })}
+              {workflowPosts &&
+                workflowPosts.length > 0 &&
+                workflowPosts.map((post) => {
+                  return (
+                    <SearchItem item={post} setOpen={setOpen} key={post.id} />
+                  );
+                })}
+              <Command.Group></Command.Group>
             </Command.Group>
           </Command.List>
         </div>

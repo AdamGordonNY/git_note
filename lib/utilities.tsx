@@ -72,7 +72,11 @@ interface URLQueryParams {
   key: string;
   value: string | null;
 }
-export const formUrlQuery = ({ params, key, value }: URLQueryParams) => {
+export const formUrlQuery = (
+  p0: { params: string },
+  p1: { key: URLSearchParamsIterator<string>; value: any },
+  { params, key, value }: URLQueryParams
+) => {
   const currentURL = queryString.parse(params);
   currentURL[key] = value;
   return queryString.stringifyUrl(
@@ -137,12 +141,34 @@ export const turnNameToIcon = (iconName: string) => {
   }
 };
 
-const urlManager = (params: string, change: Partial<URLSearchParams>) => {
-  const param = queryString.parse(params);
-  Object.assign(param, change);
-  return queryString.stringify(param, {
+const urlManager = (
+  params: string,
+  change: Partial<URLSearchParams>,
+  options = { includePathname: false, pathname: "" }
+): string => {
+  // Parse the current query string
+  const currentParams = queryString.parse(params);
+
+  // Merge changes while skipping null or undefined values
+  const updatedParams = {
+    ...currentParams,
+    ...Object.fromEntries(
+      Object.entries(change).filter(
+        ([_, value]) => value !== null && value !== undefined
+      )
+    ),
+  };
+
+  // Stringify the updated query string
+  const query = queryString.stringify(updatedParams, {
     skipEmptyString: true,
+    skipNull: true,
   });
+
+  // Include pathname if required
+  return options.includePathname
+    ? `${options.pathname || window.location.pathname}?${query}`
+    : query;
 };
 
 export default urlManager;

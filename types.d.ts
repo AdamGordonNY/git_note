@@ -31,8 +31,8 @@ export type CommitReturnType = {
 };
 export type PostFetchType = {
   filter: "knowledge" | "all" | "component" | "workflow" | string;
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   searchQuery?: string;
-  path: string;
+  path?: string;
 };
