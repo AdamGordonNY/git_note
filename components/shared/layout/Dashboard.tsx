@@ -34,36 +34,35 @@ const Dashboard = () => {
   }, [filter, allPosts]);
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <section className="flex w-full flex-1 flex-col overflow-auto max-lg:min-w-full max-lg:px-3 ">
-        <div className="mt-10 flex flex-col    py-5 lg:px-10 ">
-          <span className="display-2-bold text-white-100 max-lg:text-center">
-            Hello {name}!
-          </span>{" "}
-          <Separator />
-          <span className="max-lg:paragraph-1-regular max-lg:text-white-300 ">
-            {" "}
-            Jot down your latest learnings and thoughts today!
+    <section className="flex w-full flex-1 flex-col overflow-auto max-lg:min-w-full max-lg:px-3 ">
+      <div className="mt-10 flex flex-col    py-5 lg:px-10 ">
+        <span className="display-2-bold text-white-100 max-lg:text-center">
+          Hello {name}!
+        </span>{" "}
+        <Separator />
+        <span className="max-lg:paragraph-1-regular max-lg:text-white-300 ">
+          {" "}
+          Jot down your latest learnings and thoughts today!
+        </span>
+      </div>
+      <div className="flex w-full flex-col max-lg:my-3 lg:px-10">
+        <Suspense fallback={<Skeleton className="flex w-full  lg:px-10 " />}>
+          <HeatMap
+            values={commitArray && JSON.parse(JSON.stringify(commitArray))}
+          />
+        </Suspense>
+        <div className="my-5 flex w-full flex-row justify-between  gap-y-3 max-lg:justify-center">
+          <span className="text-white-300 max-lg:hidden">
+            Learn how we count contributions
           </span>
-        </div>
-        <div className="flex w-full flex-col max-lg:my-3 lg:px-10">
-          <Suspense fallback={<Skeleton className="flex w-full  lg:px-10 " />}>
-            <HeatMap
-              values={commitArray && JSON.parse(JSON.stringify(commitArray))}
-            />
-          </Suspense>
-          <div className="my-5 flex w-full flex-row justify-between  gap-y-3 max-lg:justify-center">
-            <span className="text-white-300 max-lg:hidden">
-              Learn how we count contributions
-            </span>
-            <div className="max-lg:paragraph-4-regular flex flex-row items-center gap-x-2 text-white-300 max-lg:w-full max-lg:justify-center max-lg:text-center">
-              Less
-              <HeatmapLegend />
-              More
-            </div>
+          <div className="max-lg:paragraph-4-regular flex flex-row items-center gap-x-2 text-white-300 max-lg:w-full max-lg:justify-center max-lg:text-center">
+            Less
+            <HeatmapLegend />
+            More
           </div>
         </div>
-
+      </div>
+      <Suspense fallback={<LoadingSpinner />}>
         <div className="display-1-bold max-lg:display-2-bold flex w-full justify-between gap-y-3 text-white-100 max-lg:flex-col lg:px-10">
           <span className="pl-3 text-left">Recent Posts</span>
           <PostFilter
@@ -93,8 +92,8 @@ const Dashboard = () => {
             )}
           </div>
         </div>
-      </section>{" "}
-    </Suspense>
+      </Suspense>
+    </section>
   );
 };
 
