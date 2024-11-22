@@ -26,7 +26,7 @@ const PostFilter = ({ setPosts }: { setPosts: any }) => {
     const currentQuery = window.location.search;
     const newQuery = removeKeysFromQuery({
       params: currentQuery,
-      keysToRemove: ["filter", "page", "pageSize"],
+      keysToRemove: ["filter"],
     });
 
     setActive(null);
@@ -46,12 +46,20 @@ const PostFilter = ({ setPosts }: { setPosts: any }) => {
       />
       <CreateTypeBadge
         variant="workflow"
-        onClick={() => handleSelectButton("workflow")}
+        onClick={() =>
+          active === "workflow"
+            ? handleRemoveFilter()
+            : handleSelectButton("workflow")
+        }
         className="max-h-10"
       />
       <CreateTypeBadge
         variant="component"
-        onClick={() => handleSelectButton("component")}
+        onClick={() =>
+          active === "component"
+            ? handleRemoveFilter()
+            : handleSelectButton("component")
+        }
         className="max-h-10"
       />
     </div>

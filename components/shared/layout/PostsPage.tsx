@@ -1,39 +1,64 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import PostFilter from "../posts/PostFilter";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import PostCard from "../posts/PostCard";
-import { ResourceTagType } from "../ResourceTag";
-import { SearchParams } from "@/types";
+import { IPost } from "@/database/models/post.model";
+import { CreateType, SearchParams } from "@/types";
 import { useData } from "@/context/DataProvider";
+import LoadingSpinner from "../LoadingSpinner";
 
 const PostPage = ({ params }: { params?: SearchParams }) => {
-  const posts = useData().posts;
-  const [cleanPosts, setCleanPosts] = useState(posts ?? []);
+  const { posts: allPosts } = useData();
+  const [displayedPosts, setDisplayedPosts] = useState<IPost[]>(allPosts || []);
 
-  // eslint-disable-next-line no-unused-vars
   const searchParams = useSearchParams();
+  const filter = searchParams.get("filter");
+  const router = useRouter();
+
   useEffect(() => {
-    if (posts) {
-      setCleanPosts(posts);
+    if (filter && filter !== "all") {
+      const filteredPosts = allPosts?.filter(
+        (post) => post.postType === filter
+      );
+      setDisplayedPosts(filteredPosts || []);
+    } else {
+      setDisplayedPosts(allPosts || []);
     }
-  }, [cleanPosts, posts]);
+  }, [filter, allPosts]);
   return (
-    <Suspense>
+    <>
       <div className="display-1-bold flex w-full flex-row justify-between px-10 py-5 text-white-100">
-        <span>Browse Posts</span> <PostFilter setPosts={setCleanPosts} />
+        <span>Browse Posts</span>{" "}
+        <PostFilter
+          setPosts={(filterValue: any) => {
+            const newUrl = new URL(window.location.href);
+            if (filterValue === "all") {
+              newUrl.searchParams.delete("filter");
+            } else {
+              newUrl.searchParams.set("filter", filterValue);
+            }
+            router.push(newUrl.toString()); // Update the URL
+          }}
+        />
       </div>
       <div className="columns-2 space-y-[18px] px-4">
-        {cleanPosts &&
-          cleanPosts.map((post) => (
-            <PostCard
-              key={post._id}
-              post={post}
-              type={post?.postType! as ResourceTagType}
-            />
-          ))}
+        {" "}
+        <Suspense fallback={<LoadingSpinner />}>
+          {displayedPosts &&
+            displayedPosts.map((post) => (
+              <PostCard
+                key={post._id}
+                post={post}
+                type={post.postType as CreateType}
+              />
+            ))}
+          {!displayedPosts.length && (
+            <div className="flex w-full">No posts found</div>
+          )}{" "}
+        </Suspense>
       </div>
-    </Suspense>
+    </>
   );
 };
 
