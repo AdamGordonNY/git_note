@@ -74,7 +74,7 @@ interface URLQueryParams {
 }
 export const formUrlQuery = (
   p0: { params: string },
-  p1: { key: URLSearchParamsIterator<string>; value: any },
+  p1: { key: string; value: any },
   { params, key, value }: URLQueryParams
 ) => {
   const currentURL = queryString.parse(params);

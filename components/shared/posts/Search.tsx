@@ -52,7 +52,10 @@ const Search = () => {
     if (debouncedSearch) {
       const newUrl = formUrlQuery(
         { params: searchParams.toString() },
-        { key: searchParams.keys(), value: debouncedSearch },
+        {
+          key: Array.from(searchParams.keys()).join(","),
+          value: debouncedSearch,
+        },
         {
           params: searchParams.toString(),
           key: Array.from(searchParams.keys()).join(","),
