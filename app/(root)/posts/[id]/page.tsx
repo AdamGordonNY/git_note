@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { IPost } from "@/database/models/post.model";
 import DisplayPost from "@/components/shared/posts/display/DisplayPost";
 const Page = async ({ params }: { params: { id: string } }) => {
-  console.log(params);
   const fetchedPost = await fetchPost(params.id);
   if (!fetchedPost) {
     notFound();

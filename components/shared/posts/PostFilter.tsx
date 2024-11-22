@@ -1,29 +1,24 @@
 "use client";
 // eslint-disable-next-line no-unused-vars
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
 import { removeKeysFromQuery } from "@/lib/utilities";
-import { IPost } from "@/database/models/post.model";
-const PostFilter = ({
-  setPosts,
-}: {
-  setPosts: Dispatch<SetStateAction<IPost[]>>;
-}) => {
+const PostFilter = ({ setPosts }: { setPosts: any }) => {
   const searchParams = useSearchParams();
   const [active, setActive] = React.useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const postType = searchParams.get("postType");
+    const postType = searchParams.get("filter");
     setActive(postType);
   }, [searchParams]);
 
   const handleSelectButton = (item: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("filter", item.toLowerCase());
-    params.set("page", "1");
+
     router.push(`${window.location.pathname}?${params.toString()}`, undefined);
   };
 
@@ -31,7 +26,7 @@ const PostFilter = ({
     const currentQuery = window.location.search;
     const newQuery = removeKeysFromQuery({
       params: currentQuery,
-      keysToRemove: ["postType", "page", "pageSize"],
+      keysToRemove: ["filter", "page", "pageSize"],
     });
 
     setActive(null);

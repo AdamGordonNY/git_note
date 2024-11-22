@@ -1,7 +1,6 @@
 import PostPage from "@/components/shared/layout/PostsPage";
 
-import { IPost } from "@/database/models/post.model";
-import { getRecentPosts, getUniqueTags } from "@/lib/actions/post.actions";
+import { getUniqueTags } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 
@@ -20,21 +19,6 @@ const Page = async ({
 
   const postTags: string[] = await getUniqueTags();
   postTags.slice(0, 12);
-  // const page = Number(searchParams.page) || 1;
-  // const postType =
-  //   searchParams.postType ||
-  //   ("all" as "knowledge" | "all" | "component" | "workflow" | string);
-  // const response = await getAllPosts({
-  //   filter: postType,
-  //   page,
-  //   pageSize: 10,
-  //   searchQuery: "",
-  //   path: "/posts",
-  // });
-  // const postArray: IPost[] = [];
-  // response.forEach((post) => {
-  //   postArray.push(...post.posts);
-  // });
 
   return (
     <>

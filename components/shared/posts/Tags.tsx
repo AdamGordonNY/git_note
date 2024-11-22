@@ -15,7 +15,7 @@ const Tags = ({
 
   useEffect(() => {
     setValue("tags", tags);
-  }, [tags]);
+  }, [setValue, tags]);
 
   useEffect(() => {
     const onEnter = (event: KeyboardEvent) => {

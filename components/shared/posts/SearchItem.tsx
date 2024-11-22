@@ -14,28 +14,28 @@ const SearchItem = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { postType, _id, title } = item;
-  console.log(item);
+
   const iconMatch = () => {
     switch (postType) {
       case "component":
         return (
           <>
             <ComponentIcon className="text-purple-500" size={18} />
-            <span className="text-white-300">{title}</span>
+            <span className="text-white-100">{title}</span>
           </>
         );
       case "workflow":
         return (
           <>
-            <WorkflowIcon className="text-primary-500" size={18} />
-            <span className="text-white-300">{title}</span>
+            <WorkflowIcon className="text-blue-500" size={18} />
+            <span className="text-white-100">{title}</span>
           </>
         );
       case "knowledge":
         return (
           <>
             <KnowledgeIcon className="text-green-500" size={18} />
-            <span className="text-white-300">{title}</span>
+            <span className="text-white-100">{title}</span>
           </>
         );
     }
@@ -51,7 +51,7 @@ const SearchItem = ({
       <CommandItem
         value={item.title}
         key={item.id}
-        className="flex cursor-pointer items-center gap-x-2 p-2 hover:rounded hover:bg-black-600 hover:py-2"
+        className="flex cursor-pointer items-center gap-x-2 p-2 text-white-100 hover:rounded hover:bg-black-600 hover:py-2"
       >
         {iconMatch()}
       </CommandItem>
