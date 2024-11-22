@@ -22,6 +22,7 @@ const Search = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = React.useState(false);
   const query = searchParams.get("filter");
   const [search, setSearch] = useState(query || "");
@@ -29,7 +30,6 @@ const Search = () => {
   const [componentPosts, setComponentPosts] = useState<IPost[]>([]);
   const [workflowPosts, setWorkflowPosts] = useState<IPost[]>([]);
   const debouncedSearch = useDebounce<string>(search, 300);
-  const pathName = usePathname();
   const posts = useData().posts;
   useEffect(() => {
     const down = (e: {
@@ -55,7 +55,7 @@ const Search = () => {
         { key: searchParams.keys(), value: debouncedSearch },
         {
           params: searchParams.toString(),
-          key: searchParams.keys(),
+          key: Array.from(searchParams.keys()).join(","),
           value: debouncedSearch,
         }
       );
@@ -101,7 +101,7 @@ const Search = () => {
     }
 
     getItems();
-  }, [open, search]);
+  }, [open, posts, search]);
 
   return (
     <>
