@@ -42,7 +42,7 @@ export const DataProvider = ({
   useEffect(() => {
     if (!userData || !postData || !tagData || !commitData) {
       const fetchData = async () => {
-        const posts = await getRecentPosts(10, userData.id!);
+        const posts = await getRecentPosts(10!);
         const commitArray = (await getPostCount(userData.id!)) ?? [];
         const tags = await getUniqueTags();
 
@@ -62,7 +62,7 @@ export const DataProvider = ({
         loading: false,
       }));
     }
-  }, [userData, postData, tagData]);
+  }, [userData, postData, tagData, commitData]);
 
   return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 };

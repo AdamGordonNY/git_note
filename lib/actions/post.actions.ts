@@ -39,18 +39,57 @@ export const getPostCount = async (userId: string) => {
     console.log(error);
   }
 };
+export type SearchParams = {
+  page?: string; // Pagination page
+  postType?: string; // Post type
+  term?: string; // Search term
+  tag?: string; // Specific tag
+};
 
+export async function getPosts(params: SearchParams) {
+  await dbConnect();
+
+  const { page = "1", postType = "all", term, tag } = params;
+  const itemsPerPage = 10;
+
+  // Build query
+  const query: any = {};
+
+  if (postType && postType !== "all") {
+    query.type = postType;
+  }
+
+  if (term) {
+    query.$or = [
+      { title: { $regex: term, $options: "i" } },
+      { content: { $regex: term, $options: "i" } },
+    ];
+  }
+
+  if (tag) {
+    query.tags = tag;
+  }
+
+  // Fetch posts
+  const posts = await Post.find(query)
+    .skip((parseInt(page) - 1) * itemsPerPage)
+    .limit(itemsPerPage)
+    .exec();
+
+  // Return the data
+  return posts;
+}
 export const getAllPosts = async ({
   searchQuery,
   page,
   pageSize,
-  path,
+
   filter,
 }: PostFetchType): Promise<PostReturnType[]> => {
   try {
     await dbConnect();
 
-    const skipAmount = (page - 1) * pageSize;
+    const skipAmount = (page! - 1) * pageSize!;
 
     const query: FilterQuery<IPost> = {};
 
@@ -80,7 +119,7 @@ export const getAllPosts = async ({
     const filteredPosts = await Post.find(query)
       .sort(sortOptions)
       .skip(skipAmount)
-      .limit(pageSize);
+      .limit(pageSize!);
     // const isNext = totalPosts > skipAmount + Post.length;
 
     return [
@@ -103,10 +142,14 @@ export const fetchPost = async (_id: string) => {
   }
 };
 
-export const getRecentPosts = async (limit: number, userId: string) => {
+export const getRecentPosts = async (limit: number) => {
   try {
     await dbConnect();
-    const posts = await Post.find({ userId })
+    const session = await getSession();
+    const user = JSON.parse(
+      JSON.stringify(await getOneUser(session?.user?.email!))
+    );
+    const posts = await Post.find({ userId: user.id! })
       .sort({ createdAt: -1 })
       .limit(limit);
     return posts as IPost[];

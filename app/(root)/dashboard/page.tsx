@@ -20,8 +20,8 @@ export default async function Home({
   if (!user) {
     throw new Error("User not found");
   }
-  const { _id } = user;
-  const posts = await getRecentPosts(10, _id);
+
+  const posts = await getRecentPosts(10);
 
   const cleanPosts = JSON.parse(JSON.stringify(posts)) as IPost[];
   const postCardArray = cleanPosts.slice(0, 5);
