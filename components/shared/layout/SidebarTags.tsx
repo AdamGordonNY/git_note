@@ -1,21 +1,40 @@
 import React from "react";
-import ComponentIcon from "@/components/ui/icons/ComponentIcon";
-import KnowledgeIcon from "@/components/ui/icons/KnowledgeIcon";
-import WorkflowIcon from "@/components/ui/icons/WorkflowIcon";
 import { IPost } from "@/database/models/post.model";
 import Link from "next/link";
+import Image from "next/image";
+import componentBadge from "@/public/icons/component.svg";
+import knowledgeBadge from "@/public/icons/knowledge.svg";
+import workflowBadge from "@/public/icons/workflow.svg";
 const SidebarTag = ({ post }: { post: IPost }) => {
   return (
     <Link href={`/posts/${post._id}`}>
       <div className="flex items-center justify-start gap-x-3 ">
         {post.postType === "component" && (
-          <ComponentIcon className="stroke-blue-500" size={16} />
+          <Image
+            className="stroke-purple-500"
+            width={16}
+            height={16}
+            alt="component logo"
+            src={componentBadge}
+          />
         )}
         {post.postType === "knowledge" && (
-          <KnowledgeIcon className="stroke-green-500" size={16} />
+          <Image
+            src={knowledgeBadge}
+            className="stroke-green-500"
+            width={16}
+            height={16}
+            alt="component logo"
+          />
         )}
         {post.postType === "workflow" && (
-          <WorkflowIcon className="stroke-purple-500" size={16} />
+          <Image
+            className=" stroke-blue-500"
+            width={16}
+            height={16}
+            src={workflowBadge}
+            alt="component logo"
+          />
         )}
         <span className="paragraph-3-medium text-white-300">{post.title}</span>
       </div>

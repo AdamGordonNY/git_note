@@ -8,9 +8,9 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        workflow:
-          "border-transparent bg-purple-500/10 text-purple-500 shadow hover:bg-purple-500/20",
         component:
+          "border-transparent bg-purple-500/10 text-purple-500 shadow hover:bg-purple-500/20",
+        workflow:
           "border-transparent bg-blue-500/10  text-blue-500 shadow hover:bg-blue-500/20",
         knowledge:
           "border-transparent bg-green-500/10  text-green-500 shadow hover:bg-green-500/20",
