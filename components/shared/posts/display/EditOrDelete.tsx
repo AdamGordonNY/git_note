@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import VerticalEllipsisIcon from "@/components/ui/icons/VerticalEllipsisIcon";
-import ResourceTag from "../../ResourceTag"; // Ensure this import is correct
 import { CreateType } from "@/types";
 
 import {
@@ -21,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
+import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
 
 interface EditOrDeleteProps {
   action: "edit" | "delete";
@@ -139,7 +139,7 @@ export const EditOrDeletePopover = ({
     <Suspense>
       <Popover key={postId} open={isOpen}>
         <div className="relative flex items-center">
-          <ResourceTag type={postType as CreateType} />
+          <CreateTypeBadge variant={postType as CreateType} />
           <PopoverTrigger onClick={() => setIsOpen(!isOpen)}>
             <VerticalEllipsisIcon />
           </PopoverTrigger>

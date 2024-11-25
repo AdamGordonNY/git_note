@@ -74,7 +74,7 @@ interface URLQueryParams {
 }
 export const formUrlQuery = (
   p0: { params: string },
-  p1: { key: URLSearchParamsIterator<string>; value: any },
+  p1: { key: string; value: any },
   { params, key, value }: URLQueryParams
 ) => {
   const currentURL = queryString.parse(params);
@@ -143,8 +143,7 @@ export const turnNameToIcon = (iconName: string) => {
 
 const urlManager = (
   params: string,
-  change: Partial<URLSearchParams>,
-  options = { includePathname: false, pathname: "" }
+  change: Partial<URLSearchParams>
 ): string => {
   // Parse the current query string
   const currentParams = queryString.parse(params);
@@ -166,9 +165,7 @@ const urlManager = (
   });
 
   // Include pathname if required
-  return options.includePathname
-    ? `${options.pathname || window.location.pathname}?${query}`
-    : query;
+  return query;
 };
 
 export default urlManager;

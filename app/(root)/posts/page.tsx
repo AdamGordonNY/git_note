@@ -1,4 +1,5 @@
 import PostPage from "@/components/shared/layout/PostsPage";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
 import { getUniqueTags } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
@@ -6,11 +7,7 @@ import { redirect } from "next/navigation";
 
 import React, { Suspense } from "react";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) => {
+const Page = async () => {
   const session = await getSession();
 
   if (!session) {
@@ -22,8 +19,8 @@ const Page = async ({
 
   return (
     <>
-      <Suspense>
-        <PostPage params={JSON.parse(JSON.stringify(searchParams))} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <PostPage />
       </Suspense>
     </>
   );

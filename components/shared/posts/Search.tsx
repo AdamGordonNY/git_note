@@ -22,6 +22,7 @@ const Search = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = React.useState(false);
   const query = searchParams.get("filter");
   const [search, setSearch] = useState(query || "");
@@ -29,8 +30,7 @@ const Search = () => {
   const [componentPosts, setComponentPosts] = useState<IPost[]>([]);
   const [workflowPosts, setWorkflowPosts] = useState<IPost[]>([]);
   const debouncedSearch = useDebounce<string>(search, 300);
-  const pathName = usePathname();
-  const posts = useData().posts;
+
   useEffect(() => {
     const down = (e: {
       key: string;
@@ -47,15 +47,18 @@ const Search = () => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
-
+  const posts = useData().posts;
   useEffect(() => {
     if (debouncedSearch) {
       const newUrl = formUrlQuery(
         { params: searchParams.toString() },
-        { key: searchParams.keys(), value: debouncedSearch },
+        {
+          key: searchParams.get("filter")!,
+          value: debouncedSearch,
+        },
         {
           params: searchParams.toString(),
-          key: searchParams.keys(),
+          key: Array.from(searchParams.keys()).join(","),
           value: debouncedSearch,
         }
       );
@@ -75,14 +78,14 @@ const Search = () => {
   React.useEffect(() => {
     async function getItems() {
       open && setLoading(true);
-
-      setKnowledgePosts(
-        JSON.parse(
-          JSON.stringify(
-            posts.filter((post: IPost) => post.postType === "knowledge")
+      if (posts)
+        setKnowledgePosts(
+          JSON.parse(
+            JSON.stringify(
+              posts.filter((post: IPost) => post.postType === "knowledge")
+            )
           )
-        )
-      );
+        );
       setComponentPosts(
         JSON.parse(
           JSON.stringify(
@@ -101,7 +104,7 @@ const Search = () => {
     }
 
     getItems();
-  }, [open, search]);
+  }, [open, posts, search]);
 
   return (
     <>

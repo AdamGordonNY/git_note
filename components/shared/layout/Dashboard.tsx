@@ -11,7 +11,7 @@ import { CreateType } from "@/types";
 import { useData } from "@/context/DataProvider";
 import HeatmapLegend from "../HeatmapLegend";
 import LoadingSpinner from "../LoadingSpinner";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const Dashboard = () => {
   const { user, posts: allPosts, commitArray } = useData();
@@ -20,7 +20,6 @@ const Dashboard = () => {
 
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
-  const router = useRouter();
 
   useEffect(() => {
     if (filter && filter !== "all") {
@@ -65,17 +64,7 @@ const Dashboard = () => {
       <Suspense fallback={<LoadingSpinner />}>
         <div className="display-1-bold max-lg:display-2-bold flex w-full justify-between gap-y-3 text-white-100 max-lg:flex-col lg:px-10">
           <span className="pl-3 text-left">Recent Posts</span>
-          <PostFilter
-            setPosts={(filterValue: any) => {
-              const newUrl = new URL(window.location.href);
-              if (filterValue === "all") {
-                newUrl.searchParams.delete("filter");
-              } else {
-                newUrl.searchParams.set("filter", filterValue);
-              }
-              router.push(newUrl.toString()); // Update the URL
-            }}
-          />
+          <PostFilter />
         </div>
         <div className="flex w-full  flex-col gap-4 pt-5 max-md:columns-1   lg:px-12">
           <div className="columns-1 space-y-[18px] px-0">

@@ -180,7 +180,7 @@ const CreatePost = ({ uniqueTags, post }: CreatePostProps) => {
     if (post) {
       setEdit(true);
     }
-  }, []);
+  }, [post]);
   return (
     <>
       <form
