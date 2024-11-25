@@ -39,13 +39,13 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
       tagData={tagsToRender}
       commitData={commitArray}
     >
-      <main className="flex min-h-screen min-w-full bg-black-900 max-lg:flex-col max-md:min-w-[420px] max-md:max-w-full">
+      <main className="flex min-h-screen min-w-full bg-black-900 max-lg:flex-col max-md:min-w-full">
         {" "}
         {/* Mobile header with toggle button */}
         <MobileHeader />
         {/* Desktop sidebar */}
         <LeftSidebar posts={cleanPosts} />
-        <section className="min-w-[430px] flex-1 bg-black-900 max-lg:w-full max-lg:flex-col ">
+        <section className="flex flex-1 bg-black-900 max-lg:w-full max-lg:flex-col ">
           {children}
         </section>
         <div className="hidden flex-col bg-black-800 lg:flex">

@@ -137,9 +137,10 @@ export const EditOrDeletePopover = ({
 
   return (
     <Suspense>
-      <Popover key={postId} open={isOpen}>
-        <div className="relative flex items-center">
-          <CreateTypeBadge variant={postType as CreateType} />
+      {" "}
+      <div className="flex items-center gap-2.5 max-lg:min-w-full max-lg:justify-between">
+        <CreateTypeBadge variant={postType as CreateType} />
+        <Popover key={postId} open={isOpen}>
           <PopoverTrigger onClick={() => setIsOpen(!isOpen)}>
             <VerticalEllipsisIcon />
           </PopoverTrigger>
@@ -160,9 +161,10 @@ export const EditOrDeletePopover = ({
               onClick={handleDeleteClick}
             />
           </PopoverContent>
-        </div>
-        {modalIsOpen && <ConfirmationModal postId={postId} />}
-      </Popover>
+
+          {modalIsOpen && <ConfirmationModal postId={postId} />}
+        </Popover>{" "}
+      </div>
     </Suspense>
   );
 };

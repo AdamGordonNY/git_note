@@ -3,12 +3,17 @@ import ResourceTag, { ResourceTagType } from "../ResourceTag";
 import { IPost } from "@/database/models/post.model";
 import Link from "next/link";
 import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
+import { usePathname } from "next/navigation";
 
 interface PostCardProps {
   post: Partial<IPost>;
   type: ResourceTagType;
 }
 const PostCard = async ({ post, type }: PostCardProps) => {
+  const pathName = usePathname();
+  pathName === "/posts"
+    ? (post.tags = post.tags?.slice(0, 3))
+    : (post.tags = post.tags!);
   return (
     <Link
       href={`/posts/${post?._id!}`}
@@ -22,7 +27,7 @@ const PostCard = async ({ post, type }: PostCardProps) => {
         )}
       </div>
 
-      <span className="display-2-bold line-clamp-2 gap-[14px] text-white-100 max-lg:line-clamp-1">
+      <span className="display-2-bold line-clamp-2 gap-[14px] text-white-100">
         {post?.title}
       </span>
 

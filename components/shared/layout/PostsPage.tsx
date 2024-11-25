@@ -26,7 +26,7 @@ const PostPage = () => {
     }
   }, [filter, allPosts]);
   return (
-    <>
+    <div className="flex min-w-full flex-col">
       <div className="display-1-bold flex w-full flex-row justify-between px-10 py-5 text-white-100">
         <span>Browse Posts</span> <PostFilter />
       </div>
@@ -46,7 +46,7 @@ const PostPage = () => {
           )}{" "}
         </Suspense>
       </div>
-    </>
+    </div>
   );
 };
 

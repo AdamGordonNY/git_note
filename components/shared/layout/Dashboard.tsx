@@ -33,7 +33,7 @@ const Dashboard = () => {
   }, [filter, allPosts]);
 
   return (
-    <section className="flex w-full flex-1 flex-col overflow-auto max-lg:min-w-full max-lg:px-3 ">
+    <section className="flex w-full flex-1 flex-col overflow-hidden max-lg:min-w-full max-lg:px-3 ">
       <div className="mt-10 flex flex-col    py-5 lg:px-10 ">
         <span className="display-2-bold text-white-100 max-lg:text-center">
           Hello {name}!

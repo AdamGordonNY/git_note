@@ -27,8 +27,8 @@ const DisplayPostHeader = async ({
   return (
     <section className="flex h-[248px] w-full items-center justify-between gap-x-5 px-[30px] pb-[32px] pt-[40px] ">
       <div className="flex w-full flex-col  gap-x-5    ">
-        <div className="flex items-center justify-between">
-          <h1 className="display-1-bold line-clamp-1 w-4/5 text-white-100">
+        <div className="flex items-center justify-between max-lg:flex-col">
+          <h1 className="display-1-bold line-clamp-2 w-full text-white-100">
             {title}
           </h1>
           <EditOrDeletePopover postId={post._id!} postType={post.postType!} />
@@ -50,7 +50,7 @@ const DisplayPostHeader = async ({
             </span>
           </div>
           <div>
-            <div className="flex gap-3.5 capitalize">
+            <div className="flex flex-wrap gap-3.5 capitalize">
               {tags.map((tag, index) => (
                 <ResourceTag key={index} type="plain" text={tag} />
               ))}
