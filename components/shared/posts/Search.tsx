@@ -30,7 +30,7 @@ const Search = () => {
   const [componentPosts, setComponentPosts] = useState<IPost[]>([]);
   const [workflowPosts, setWorkflowPosts] = useState<IPost[]>([]);
   const debouncedSearch = useDebounce<string>(search, 300);
-  const posts = useData().posts;
+
   useEffect(() => {
     const down = (e: {
       key: string;
@@ -47,13 +47,13 @@ const Search = () => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
-
+  const posts = useData().posts;
   useEffect(() => {
     if (debouncedSearch) {
       const newUrl = formUrlQuery(
         { params: searchParams.toString() },
         {
-          key: Array.from(searchParams.keys()).join(","),
+          key: searchParams.get("filter")!,
           value: debouncedSearch,
         },
         {
@@ -78,14 +78,14 @@ const Search = () => {
   React.useEffect(() => {
     async function getItems() {
       open && setLoading(true);
-
-      setKnowledgePosts(
-        JSON.parse(
-          JSON.stringify(
-            posts.filter((post: IPost) => post.postType === "knowledge")
+      if (posts)
+        setKnowledgePosts(
+          JSON.parse(
+            JSON.stringify(
+              posts.filter((post: IPost) => post.postType === "knowledge")
+            )
           )
-        )
-      );
+        );
       setComponentPosts(
         JSON.parse(
           JSON.stringify(

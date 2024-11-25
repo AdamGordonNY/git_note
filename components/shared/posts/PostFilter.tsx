@@ -1,11 +1,11 @@
 "use client";
-// eslint-disable-next-line no-unused-vars
+
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 
 import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
 import { removeKeysFromQuery } from "@/lib/utilities";
-const PostFilter = ({ setPosts }: { setPosts: any }) => {
+const PostFilter = () => {
   const searchParams = useSearchParams();
   const [active, setActive] = React.useState<string | null>(null);
   const router = useRouter();

@@ -21,7 +21,7 @@ const MobileHeader = () => {
   const { posts, user } = useData();
   return (
     <>
-      <div className="flex min-h-[70px] w-full min-w-[430px] flex-1 items-center justify-between bg-black-800 px-3.5  py-6 lg:hidden">
+      <div className="flex min-h-[70px] w-full flex-1 items-center justify-between bg-black-800 py-6 max-sm:max-w-[630px]  sm:px-3.5 lg:hidden">
         <Link href={"/dashboard"}>
           {" "}
           <Image

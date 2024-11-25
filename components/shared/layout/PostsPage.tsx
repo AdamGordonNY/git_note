@@ -1,20 +1,19 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import PostFilter from "../posts/PostFilter";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import PostCard from "../posts/PostCard";
 import { IPost } from "@/database/models/post.model";
-import { CreateType, SearchParams } from "@/types";
+import { CreateType } from "@/types";
 import { useData } from "@/context/DataProvider";
 import LoadingSpinner from "../LoadingSpinner";
 
-const PostPage = ({ params }: { params?: SearchParams }) => {
+const PostPage = () => {
   const { posts: allPosts } = useData();
   const [displayedPosts, setDisplayedPosts] = useState<IPost[]>(allPosts || []);
 
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
-  const router = useRouter();
 
   useEffect(() => {
     if (filter && filter !== "all") {
@@ -29,18 +28,7 @@ const PostPage = ({ params }: { params?: SearchParams }) => {
   return (
     <>
       <div className="display-1-bold flex w-full flex-row justify-between px-10 py-5 text-white-100">
-        <span>Browse Posts</span>{" "}
-        <PostFilter
-          setPosts={(filterValue: any) => {
-            const newUrl = new URL(window.location.href);
-            if (filterValue === "all") {
-              newUrl.searchParams.delete("filter");
-            } else {
-              newUrl.searchParams.set("filter", filterValue);
-            }
-            router.push(newUrl.toString()); // Update the URL
-          }}
-        />
+        <span>Browse Posts</span> <PostFilter />
       </div>
       <div className="columns-2 space-y-[18px] px-4">
         {" "}
