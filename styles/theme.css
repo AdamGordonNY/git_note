@@ -20,22 +20,22 @@
 
   /* Display 2 Bold */
   .display-2-bold {
-    @apply text-3xl leading-8 font-bold;
+    @apply text-[24px] leading-8 font-bold;
   }
 
   /* H1 Medium */
   .h1-medium {
-    @apply text-2xl leading-7 font-medium;
+    @apply text-xl leading-7 font-medium;
   }
 
   /* H2 Medium */
   .h2-medium {
-    @apply text-base leading-[26px] font-medium; /* Custom line height */
+    @apply text-base leading-[24px] font-medium; /* Custom line height */
   }
 
   /* Paragraph 1 Bold */
   .paragraph-1-bold {
-    @apply text-xl leading-7 font-bold;
+    @apply text-[18px] leading-7 font-bold;
   }
 
   /* Paragraph 2 Bold */
@@ -50,7 +50,7 @@
 
   /* Paragraph 1 Medium */
   .paragraph-1-medium {
-    @apply text-xl leading-7 font-medium;
+    @apply text-[18px] leading-7 font-medium;
   }
 
   /* Paragraph 3 Medium */
