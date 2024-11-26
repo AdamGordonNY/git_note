@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "@/public/images/site-logo.png";
 import burger from "@/public/burger.svg";
@@ -12,13 +12,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 const MobileHeader = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-
+  const pathname = usePathname();
   const toggleSidebar = () => {
     setIsSidebarVisible((prev) => !prev);
   };
   const { posts, user } = useData();
+  useEffect(() => {
+    setIsSidebarVisible(false);
+  }, [pathname]);
   return (
     <>
       <div className="flex min-h-[70px] min-w-full flex-1 items-center justify-between bg-black-800 py-6   sm:px-3.5 lg:hidden">
