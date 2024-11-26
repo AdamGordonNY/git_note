@@ -25,7 +25,7 @@ const MobileHeader = () => {
   }, [pathname]);
   return (
     <>
-      <div className="flex min-h-[70px] min-w-full flex-1 items-center justify-between bg-black-800 py-6   sm:px-3.5 lg:hidden">
+      <div className="sticky flex h-[70px] min-w-full flex-1 items-center justify-between bg-black-800 py-6 align-top   sm:px-3.5 lg:hidden">
         <Link href={"/dashboard"}>
           {" "}
           <Image

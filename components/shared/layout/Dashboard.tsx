@@ -7,7 +7,6 @@ import HeatMap from "../HeatMap";
 import PostFilter from "../posts/PostFilter";
 import { IPost } from "@/database/models/post.model";
 import PostCard from "../posts/PostCard";
-import { CreateType } from "@/types";
 import { useData } from "@/context/DataProvider";
 import HeatmapLegend from "../HeatmapLegend";
 import LoadingSpinner from "../LoadingSpinner";
@@ -70,11 +69,7 @@ const Dashboard = () => {
           <div className="columns-1 space-y-[18px] px-0">
             {displayedPosts &&
               displayedPosts.map((post) => (
-                <PostCard
-                  key={post._id}
-                  post={post}
-                  type={post.postType as CreateType}
-                />
+                <PostCard key={post._id} post={post} />
               ))}
             {!displayedPosts.length && (
               <div className="flex w-full">No posts found</div>

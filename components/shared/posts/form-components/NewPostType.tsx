@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import React from "react";
 import { Controller } from "react-hook-form";
-import ResourceTag from "../../ResourceTag";
+import { CreateTypeBadge } from "@/components/ui/createTypeBadge";
 interface NewPostTypeProps {
   control: any;
 }
@@ -31,9 +31,9 @@ const NewPostType = ({ control }: NewPostTypeProps) => {
             >
               <SelectValue>
                 {field.value ? (
-                  <ResourceTag type={field.value} />
+                  <CreateTypeBadge variant={field.value} />
                 ) : (
-                  <ResourceTag type="knowledge" />
+                  <CreateTypeBadge variant="knowledge" />
                 )}
               </SelectValue>
             </SelectTrigger>
@@ -42,13 +42,13 @@ const NewPostType = ({ control }: NewPostTypeProps) => {
                 value="knowledge"
                 className="ring-0 focus:bg-black-800"
               >
-                <ResourceTag type="knowledge" />
+                <CreateTypeBadge variant="knowledge" />
               </SelectItem>
               <SelectItem value="component">
-                <ResourceTag type="component" />
+                <CreateTypeBadge variant="component" />
               </SelectItem>
               <SelectItem value="workflow">
-                <ResourceTag type="workflow" />
+                <CreateTypeBadge variant="workflow" />
               </SelectItem>
             </SelectContent>
           </Select>

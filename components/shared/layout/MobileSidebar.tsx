@@ -24,7 +24,7 @@ const MobileSidebar = ({
     <>
       {/* Overlay */}
       {isVisible && (
-        <div className="fixed inset-0 z-30" onClick={onClose}></div>
+        <div className="fixed inset-0 z-20" onClick={onClose}></div>
       )}
 
       {/* Sidebar Sheet */}

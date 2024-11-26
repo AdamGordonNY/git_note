@@ -1,7 +1,6 @@
 import PostPage from "@/components/shared/layout/PostsPage";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 
-import { getUniqueTags } from "@/lib/actions/post.actions";
 import { getSession } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
 
@@ -13,9 +12,6 @@ const Page = async () => {
   if (!session) {
     redirect("/sign-in");
   }
-
-  const postTags: string[] = await getUniqueTags();
-  postTags.slice(0, 12);
 
   return (
     <>

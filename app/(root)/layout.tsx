@@ -39,7 +39,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
       tagData={tagsToRender}
       commitData={commitArray}
     >
-      <main className="flex min-h-screen min-w-full bg-black-900 max-lg:flex-col max-md:min-w-full">
+      <main className="flex min-h-screen  min-w-full bg-black-900 max-lg:flex-col">
         {" "}
         {/* Mobile header with toggle button */}
         <MobileHeader />
