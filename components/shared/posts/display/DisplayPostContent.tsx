@@ -4,9 +4,8 @@ import type { DOMNode } from "html-react-parser";
 import RenderedCodeEditor from "./RenderedCodeEditor";
 interface DisplayPostContentProps {
   content: string;
-  image: string;
 }
-const DisplayPostContent = ({ content, image }: DisplayPostContentProps) => {
+const DisplayPostContent = ({ content }: DisplayPostContentProps) => {
   const transformNode = (node: DOMNode) => {
     if (node.type === "tag" && node.name === "pre") {
       let codeContent: string | undefined;

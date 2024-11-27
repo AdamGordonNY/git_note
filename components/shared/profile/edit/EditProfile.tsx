@@ -57,10 +57,12 @@ const EditProfile = ({ user }: EditProfileProps) => {
       experiences: experienceNames || [],
       technologies: user?.technologies || [],
       availability:
-        {
-          startTime: new Date(user?.startTime!),
-          endTime: new Date(user?.endTime!),
-        } || {},
+        user?.startTime && user?.endTime
+          ? {
+              startTime: new Date(user.startTime),
+              endTime: new Date(user.endTime),
+            }
+          : {},
       newProjects: user?.newProjects || false,
     },
   });

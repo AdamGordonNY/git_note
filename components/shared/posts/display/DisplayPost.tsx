@@ -33,7 +33,7 @@ const DisplayPost = ({ post }: DisplayPostProps) => {
       )}
       <hr className="text-white-300" />
       <h1 className="display-2-bold pl-[30px] text-white-100">Post Content </h1>
-      <DisplayPostContent content={post?.content!} image={post?.image!} />
+      <DisplayPostContent content={post?.content!} />
       <DisplayPostResources resources={post?.resourceLinks!} />
     </>
   );
